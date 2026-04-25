@@ -880,10 +880,15 @@ function saveArtCache() {
   try { sessionStorage.setItem('nesArtCache', JSON.stringify(artCache)); } catch(e) {}
 }
 
-// Fetch art for a single game title from TGDB
-const CORS_PROXY = 'https://corsproxy.io/?';
-function proxied(url) { return CORS_PROXY + encodeURIComponent(url); }
+// Proxy helper — routes through allorigins to bypass CORS
+async function proxiedJson(url) {
+  const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url));
+  if (!res.ok) throw new Error('proxy failed');
+  const wrapper = await res.json();
+  return JSON.parse(wrapper.contents);
+}
 
+// Fetch art for a single game title from TGDB
 async function fetchArt(gameId, title) {
   if (artCache[gameId] && artCache[gameId] !== 'pending') return artCache[gameId];
   artCache[gameId] = 'pending';
@@ -891,9 +896,7 @@ async function fetchArt(gameId, title) {
   try {
     // Step 1: search by name, filtered to NES
     const searchUrl = `https://api.thegamesdb.net/v1/Games/ByGameName?apikey=${TGDB_KEY}&name=${encodeURIComponent(title)}&fields=game_title&filter%5Bplatform%5D=${NES_PLATFORM_ID}`;
-    const searchRes = await fetch(proxied(searchUrl));
-    if (!searchRes.ok) throw new Error('search failed');
-    const searchData = await searchRes.json();
+    const searchData = await proxiedJson(searchUrl);
 
     const gamesList = searchData?.data?.games;
     if (!gamesList || gamesList.length === 0) {
@@ -909,9 +912,7 @@ async function fetchArt(gameId, title) {
 
     // Step 2: fetch boxart images for that game ID
     const imgUrl = `https://api.thegamesdb.net/v1/Games/Images?apikey=${TGDB_KEY}&games_id=${tgdbId}&filter%5Btype%5D=boxart`;
-    const imgRes = await fetch(proxied(imgUrl));
-    if (!imgRes.ok) throw new Error('images failed');
-    const imgData = await imgRes.json();
+    const imgData = await proxiedJson(imgUrl);
 
     const baseData = imgData?.data;
     const images = baseData?.images?.[tgdbId];
