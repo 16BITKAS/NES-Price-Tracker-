@@ -78,8 +78,8 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0,229,192,0.08);
-  border: 1px solid rgba(0,229,192,0.25);
+  background: rgba(230,0,18,0.08);
+  border: 1px solid rgba(230,0,18,0.3);
   border-radius: 4px;
   padding: 5px 12px;
   font-family: 'Space Mono', monospace;
@@ -95,7 +95,7 @@ header {
   width: 6px; height: 6px;
   background: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 8px rgba(230,0,18,0.5);
   animation: pulse 2s infinite;
 }
 
@@ -191,11 +191,11 @@ h1 span { color: var(--accent); }
 
 .bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #00b8a0);
+  background: linear-gradient(90deg, var(--accent), #b0000e);
   width: 0%;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 999px;
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 8px rgba(230,0,18,0.5);
 }
 
 /* Controls */
@@ -225,7 +225,7 @@ h1 span { color: var(--accent); }
 .controls input:focus,
 .controls select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--glow);
+  box-shadow: 0 0 0 3px rgba(230,0,18,0.15);
 }
 
 .controls input::placeholder { color: var(--muted); }
@@ -244,11 +244,11 @@ button {
 
 button.primary {
   background: var(--accent);
-  color: #040d0b;
-  box-shadow: 0 0 20px rgba(0,229,192,0.25);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(230,0,18,0.3);
 }
 
-button.primary:hover { box-shadow: 0 0 28px rgba(0,229,192,0.45); transform: translateY(-1px); }
+button.primary:hover { box-shadow: 0 0 28px rgba(230,0,18,0.5); transform: translateY(-1px); }
 
 button.secondary {
   background: var(--surface2);
@@ -344,8 +344,9 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .game-title {
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: -0.01em;
 }
 
@@ -410,7 +411,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .owned-check:checked {
   background: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(0,229,192,0.4);
+  box-shadow: 0 0 10px rgba(230,0,18,0.5);
 }
 
 .owned-check:checked::after {
@@ -419,11 +420,113 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: 12px;
-  color: #040d0b;
+  color: #ffffff;
   font-weight: 900;
 }
 
 .owned-check:hover { border-color: var(--accent); }
+
+/* Cover art */
+.cover-cell {
+  width: 48px;
+  padding: 6px 10px !important;
+}
+
+.cover-wrap {
+  position: relative;
+  width: 38px;
+  height: 52px;
+  border-radius: 4px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cover-thumb {
+  width: 38px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  display: block;
+  background: var(--surface2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cover-wrap:hover .cover-thumb {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(230,0,18,0.4);
+}
+
+.cover-placeholder {
+  width: 38px;
+  height: 52px;
+  border-radius: 4px;
+  border: 1px dashed var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.cover-loading {
+  width: 38px;
+  height: 52px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-loading::after {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Hover popup */
+#artPopup {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.8));
+}
+
+#artPopup.visible { opacity: 1; }
+
+#artPopup img {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  display: block;
+}
+
+#artPopup .popup-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 6px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Footer */
 .footer {
@@ -518,6 +621,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
         <tr>
           <th class="sortable" data-sort="owned">Own</th>
           <th class="sortable" data-sort="id">#</th>
+          <th>Cover</th>
           <th class="sortable" data-sort="title">Game</th>
           <th class="sortable" data-sort="year">Year</th>
           <th class="sortable" data-sort="estimate">eBay Est.</th>
@@ -530,10 +634,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   </div>
 
   <div class="footer">
-    Data saves in this browser via localStorage. Developer shown under game title when available, otherwise falls back to publisher.
+    Data saves in this browser via localStorage. Cover art fetched lazily from TheGamesDB; cached in sessionStorage per game.
   </div>
 
 </main>
+
+<!-- Art hover popup -->
+<div id="artPopup">
+  <img id="artPopupImg" src="" alt="">
+  <div class="popup-title" id="artPopupTitle"></div>
+</div>
 
 <script>
 const STORAGE_KEY = "nesTrackerSaveV2";
@@ -651,9 +761,12 @@ function render() {
     const dev = developerOf(g);
     const pub = g.publisher && g.publisher !== dev ? ` · ${esc(g.publisher)}` : '';
     const hasPrice = valueOf(g) > 0;
-    return `<tr data-id="${g.id}">
+    return `<tr data-id="${g.id}" data-title="${esc(g.title)}">
       <td><input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}></td>
       <td><span class="game-id">${g.id}</span></td>
+      <td class="cover-cell"><div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}">
+        <div class="cover-loading" id="cover-${g.id}"></div>
+      </div></td>
       <td>
         <div class="game-title">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
@@ -670,6 +783,9 @@ function render() {
       </td>
     </tr>`;
   }).join('');
+
+  // Lazy-load covers for visible rows
+  requestAnimationFrame(lazyLoadVisibleCovers);
 }
 
 async function refreshGame(g) {
@@ -745,6 +861,186 @@ document.getElementById('resetData').addEventListener('click', () => {
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
   }
+});
+
+// ─── Cover Art ───────────────────────────────────────────────────────────────
+const TGDB_KEY = '79771b8d8ce5aac5fbf8e78756749e761291f9335bce5ddbdb8900e2458374d7';
+const TGDB_CDN_THUMB = 'https://cdn.thegamesdb.net/images/thumb/';
+const TGDB_CDN_ORIG  = 'https://cdn.thegamesdb.net/images/original/';
+const NES_PLATFORM_ID = 7;
+const artCache = {}; // gameId -> { thumb, orig, title } | 'none' | 'pending'
+
+// Load from sessionStorage on startup
+try {
+  const stored = JSON.parse(sessionStorage.getItem('nesArtCache') || '{}');
+  Object.assign(artCache, stored);
+} catch(e) {}
+
+function saveArtCache() {
+  try { sessionStorage.setItem('nesArtCache', JSON.stringify(artCache)); } catch(e) {}
+}
+
+// Fetch art for a single game title from TGDB
+async function fetchArt(gameId, title) {
+  if (artCache[gameId] && artCache[gameId] !== 'pending') return artCache[gameId];
+  artCache[gameId] = 'pending';
+
+  try {
+    // Step 1: search by name, filtered to NES
+    const searchUrl = `https://api.thegamesdb.net/v1/Games/ByGameName?apikey=${TGDB_KEY}&name=${encodeURIComponent(title)}&fields=game_title&filter%5Bplatform%5D=${NES_PLATFORM_ID}`;
+    const searchRes = await fetch(searchUrl);
+    if (!searchRes.ok) throw new Error('search failed');
+    const searchData = await searchRes.json();
+
+    const gamesList = searchData?.data?.games;
+    if (!gamesList || gamesList.length === 0) {
+      artCache[gameId] = 'none';
+      saveArtCache();
+      return 'none';
+    }
+
+    // Pick the best match: exact title match preferred, else first result
+    const titleLower = title.toLowerCase();
+    const match = gamesList.find(g => g.game_title.toLowerCase() === titleLower) || gamesList[0];
+    const tgdbId = match.id;
+
+    // Step 2: fetch boxart images for that game ID
+    const imgUrl = `https://api.thegamesdb.net/v1/Games/Images?apikey=${TGDB_KEY}&games_id=${tgdbId}&filter%5Btype%5D=boxart`;
+    const imgRes = await fetch(imgUrl);
+    if (!imgRes.ok) throw new Error('images failed');
+    const imgData = await imgRes.json();
+
+    const baseData = imgData?.data;
+    const images = baseData?.images?.[tgdbId];
+    if (!images || images.length === 0) {
+      artCache[gameId] = 'none';
+      saveArtCache();
+      return 'none';
+    }
+
+    // Find front boxart; fallback to first image
+    const front = images.find(i => i.type === 'boxart' && i.side === 'front') || images[0];
+    const result = {
+      thumb: TGDB_CDN_THUMB + front.filename,
+      orig:  TGDB_CDN_ORIG  + front.filename,
+      title: match.game_title
+    };
+    artCache[gameId] = result;
+    saveArtCache();
+    return result;
+  } catch(err) {
+    console.warn('Art fetch failed for', title, err);
+    artCache[gameId] = 'none';
+    saveArtCache();
+    return 'none';
+  }
+}
+
+// Apply art result to a cover cell
+function applyCover(gameId, art) {
+  const el = document.getElementById(`cover-${gameId}`);
+  if (!el) return;
+  const wrap = el.closest('.cover-wrap');
+  if (!wrap) return;
+
+  if (art === 'none' || art === 'pending') {
+    el.outerHTML = `<div class="cover-placeholder" id="cover-${gameId}">🎮</div>`;
+    return;
+  }
+
+  el.outerHTML = `<img class="cover-thumb" id="cover-${gameId}" src="${art.thumb}" alt="${wrap.dataset.title}" loading="lazy">`;
+}
+
+// Queue for rate-limiting fetches
+let fetchQueue = [];
+let fetchActive = 0;
+const MAX_CONCURRENT = 3;
+
+async function processFetchQueue() {
+  while (fetchQueue.length > 0 && fetchActive < MAX_CONCURRENT) {
+    const { gameId, title } = fetchQueue.shift();
+    fetchActive++;
+    fetchArt(gameId, title).then(art => {
+      fetchActive--;
+      applyCover(gameId, art);
+      processFetchQueue();
+    });
+  }
+}
+
+// Observe visible rows and load their covers lazily
+let observer;
+function lazyLoadVisibleCovers() {
+  if (observer) observer.disconnect();
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const wrap = entry.target;
+      const gameId = wrap.dataset.gameId;
+      const title  = wrap.dataset.title;
+      if (!gameId || !title) return;
+
+      observer.unobserve(wrap);
+
+      // Already cached?
+      const cached = artCache[gameId];
+      if (cached && cached !== 'pending') {
+        applyCover(gameId, cached);
+        return;
+      }
+
+      // Queue it
+      if (!fetchQueue.find(q => q.gameId === gameId) && cached !== 'pending') {
+        fetchQueue.push({ gameId, title });
+        processFetchQueue();
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  document.querySelectorAll('.cover-wrap').forEach(wrap => observer.observe(wrap));
+}
+
+// Scroll also triggers lazy load
+window.addEventListener('scroll', () => lazyLoadVisibleCovers(), { passive: true });
+
+// ─── Hover Popup ─────────────────────────────────────────────────────────────
+const popup    = document.getElementById('artPopup');
+const popupImg = document.getElementById('artPopupImg');
+const popupTtl = document.getElementById('artPopupTitle');
+let popupTimer;
+
+document.getElementById('tbody').addEventListener('mouseover', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) return;
+  const gameId = wrap.dataset.gameId;
+  const art = artCache[gameId];
+  if (!art || art === 'none' || art === 'pending') return;
+
+  clearTimeout(popupTimer);
+  popupImg.src = art.orig;
+  popupTtl.textContent = art.title;
+  popup.classList.add('visible');
+});
+
+document.getElementById('tbody').addEventListener('mousemove', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) { popup.classList.remove('visible'); return; }
+
+  const margin = 16;
+  const pw = 180 + margin;
+  let left = e.clientX + margin;
+  let top  = e.clientY - 60;
+  if (left + pw > window.innerWidth) left = e.clientX - pw;
+  if (top < 8) top = 8;
+  popup.style.left = left + 'px';
+  popup.style.top  = top + 'px';
+});
+
+document.getElementById('tbody').addEventListener('mouseout', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) return;
+  popup.classList.remove('visible');
 });
 
 populateFilters();
