@@ -1485,8 +1485,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Dig Dug II - Trouble in Paradise (USA).mp4"
   },
   "Digger T. Rock: The Legend of the Lost City": {
-    "snap": "snaps/Digger T. Rock - The Legend of the Lost City (Europe).png",
-    "title": "titles/Digger T. Rock - The Legend of the Lost City (Europe).png",
+    "boxfront": "boxfronts/Digger - The Legend of the Lost City (USA).png",
+    "boxback": "boxbacks/Digger - The Legend of the Lost City (USA).png",
+    "cartridge": "cartridges/Digger - The Legend of the Lost City (USA).png",
+    "clearlogo": "clearlogos/Digger - The Legend of the Lost City (USA).png",
+    "snap": "snaps/Digger - The Legend of the Lost City (USA).png",
+    "title": "titles/Digger - The Legend of the Lost City (USA).png",
     "trailer": "trailers/Digger T. Rock - The Legend of the Lost City (USA).mp4"
   },
   "Dirty Harry: The War Against Drugs": {
