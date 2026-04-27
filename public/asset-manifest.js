@@ -3472,6 +3472,7 @@ window.nesAssetManifest = {
     "trailer": "trailers/Milon's Secret Castle (USA).mp4"
   },
   "Miracle Piano Teaching System, The": {
+    "boxfront": "boxfronts/Miracle Piano Teaching System, The (USA).png",
     "boxback": "boxbacks/Miracle Piano Teaching System, The (USA).png",
     "cartridge": "cartridges/Miracle Piano Teaching System, The (USA).png",
     "clearlogo": "clearlogos/Miracle Piano Teaching System, The (USA).png",
