@@ -811,42 +811,27 @@ function openModal(gameId) {
   document.getElementById('modalContent').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
 
-      <!-- TOP LEFT: Box art + info side by side -->
-      <div style="display:flex;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;">
-          <div style="display:flex;gap:6px;">
-            <button onclick="switchBox('front')" id="btnFront" style="font-family:'Space Mono',monospace;font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;">Front</button>
-            <button onclick="switchBox('back')" id="btnBack" style="font-family:'Space Mono',monospace;font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;">Back</button>
-          </div>
-          <img id="boxImg" src="${front}" data-front="${front}" data-back="${back}" alt="Box Art"
-            style="width:130px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+      <!-- TOP LEFT: Box front and back side by side -->
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;justify-content:center;">
-          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--accent);">#${String(g.id).padStart(3,'0')}</div>
-          <img src="${logo}" alt="${esc(g.title)}" style="max-height:50px;max-width:160px;object-fit:contain;object-position:left;"
-            onerror="this.style.display='none'">
-          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;">
-            ${g.publisher ? `<div style="margin-bottom:4px;">🏢 ${esc(g.publisher)}</div>` : ''}
-            ${g.year ? `<div style="margin-bottom:4px;">📅 ${g.year}</div>` : ''}
-            ${g.genre ? `<div style="margin-bottom:4px;">🎮 ${esc(g.genre)}</div>` : ''}
-            ${valueOf(g) ? `<div style="margin-top:8px;font-size:15px;font-weight:700;color:var(--accent);">${fmt(g.estimate)} <span style="font-size:10px;color:var(--muted);font-weight:400;">eBay est.</span></div>` : ''}
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-            ${g.owned ? '<span class="pill" style="border-color:var(--accent);color:var(--accent);font-size:10px;">✓ Owned</span>' : ''}
-            <a href="${ebayUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid var(--border);border-radius:6px;">eBay</a>
-            <a href="${priceChartingUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid var(--border);border-radius:6px;">PriceCharting</a>
-          </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
         </div>
       </div>
 
-      <!-- TOP RIGHT: Cartridge + Description -->
-      <div style="display:flex;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="flex-shrink:0;display:flex;align-items:center;">
-          <img src="${cart}" alt="Cartridge" style="width:90px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
+      <!-- TOP RIGHT: Cartridge focused, description below -->
+      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="display:flex;justify-content:center;">
+          <img src="${cart}" alt="Cartridge" style="max-height:180px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
             onerror="this.style.display='none'">
         </div>
-        <div style="flex:1;overflow-y:auto;">
+        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
           <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
         </div>
@@ -869,28 +854,8 @@ function openModal(gameId) {
   document.body.style.overflow = 'hidden';
 }
 
-function switchBox(side) {
-  const img = document.getElementById('boxImg');
-  const btnFront = document.getElementById('btnFront');
-  const btnBack  = document.getElementById('btnBack');
-  if (side === 'front') {
-    img.src = img.dataset.front;
-    btnFront.style.background = 'var(--accent)';
-    btnFront.style.color = '#fff';
-    btnFront.style.borderColor = 'var(--accent)';
-    btnBack.style.background = 'transparent';
-    btnBack.style.color = 'var(--muted)';
-    btnBack.style.borderColor = 'var(--border)';
-  } else {
-    img.src = img.dataset.back;
-    btnBack.style.background = 'var(--accent)';
-    btnBack.style.color = '#fff';
-    btnBack.style.borderColor = 'var(--accent)';
-    btnFront.style.background = 'transparent';
-    btnFront.style.color = 'var(--muted)';
-    btnFront.style.borderColor = 'var(--border)';
-  }
-}
+
+
 
 document.getElementById('gameModal').addEventListener('click', e => {
   if (e.target === document.getElementById('gameModal')) closeModal();
