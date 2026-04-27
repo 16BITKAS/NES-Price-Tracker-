@@ -2891,6 +2891,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Kung-Fu Heroes (USA).mp4"
   },
   "L'Empereur": {
+    "boxfront": "boxfronts/Empereur, L' (USA).png",
+    "boxback": "boxbacks/Empereur, L' (USA).png",
+    "cartridge": "cartridges/Empereur, L' (USA).png",
+    "clearlogo": "clearlogos/Empereur, L' (USA).png",
+    "snap": "snaps/Empereur, L' (USA).png",
+    "title": "titles/Empereur, L' (USA).png",
     "trailer": "trailers/L'Empereur (USA).mp4"
   },
   "Laser Invasion": {
