@@ -865,7 +865,15 @@ window.nesAssetManifest = {
     "title": "titles/Bugs Bunny Crazy Castle, The (USA).png",
     "trailer": "trailers/Bugs Bunny Crazy Castle, The (USA).mp4"
   },
-  "Bump 'n' Jump": {},
+  "Bump 'n' Jump": {
+    "boxfront": "boxfronts/Bump'n'Jump (USA).png",
+    "boxback": "boxbacks/Bump'n'Jump (USA).png",
+    "cartridge": "cartridges/Bump'n'Jump (USA).png",
+    "clearlogo": "clearlogos/Bump'n'Jump (USA).png",
+    "snap": "snaps/Bump'n'Jump (USA).png",
+    "title": "titles/Bump'n'Jump (USA).png",
+    "trailer": "trailers/Bump'n'Jump (USA).mp4"
+  },
   "Burai Fighter": {
     "boxfront": "boxfronts/Burai Fighter (USA).png",
     "boxback": "boxbacks/Burai Fighter (USA).png",
@@ -1325,7 +1333,15 @@ window.nesAssetManifest = {
     "title": "titles/Dash Galaxy in the Alien Asylum (USA).png",
     "trailer": "trailers/Dash Galaxy in the Alien Asylum (USA).mp4"
   },
-  "David Crane’s: A Boy and His Blob – Trouble on Blobolonia": {},
+  "David Crane’s: A Boy and His Blob – Trouble on Blobolonia": {
+    "boxfront": "boxfronts/Boy and His Blob, A - Trouble on Blobolonia (USA).png",
+    "boxback": "boxbacks/Boy and His Blob, A - Trouble on Blobolonia (USA).png",
+    "cartridge": "cartridges/Boy and His Blob, A - Trouble on Blobolonia (USA).png",
+    "clearlogo": "clearlogos/Boy and His Blob, A - Trouble on Blobolonia (USA).png",
+    "snap": "snaps/Boy and His Blob, A - Trouble on Blobolonia (Europe) (Rev A).png",
+    "title": "titles/Boy and His Blob, A - Trouble on Blobolonia (Europe) (Rev A).png",
+    "trailer": "trailers/Boy and His Blob, A - Trouble on Blobolonia (USA).mp4"
+  },
   "Day Dreamin' Davey": {
     "boxfront": "boxfronts/Day Dreamin' Davey (USA).png",
     "boxback": "boxbacks/Day Dreamin' Davey (USA).png",
