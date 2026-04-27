@@ -797,7 +797,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <button class="danger" id="resetData">Reset</button>
   </div>
 
-  <p id="priceStatus">Prices will load when you click Refresh prices.</p>
+  <p id="priceStatus"></p>
 
   <div class="tablewrap">
     <table>
@@ -830,7 +830,19 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 <!-- Game Detail Modal -->
 <div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
   <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
-    <button onclick="closeModal()"  style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:2px solid var(--border);color:var(--ink);border-radius:0;width:32px;height:32px;padding:0;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;font-family:'Press Start 2P',monospace;line-height:1;">X</button>
+    <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
     <div id="modalContent" style="padding:32px;"></div>
   </div>
 </div>
@@ -1091,36 +1103,7 @@ function openModal(gameId) {
   document.getElementById('modalContent').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
 
-      <!-- TOP LEFT: Box front and back side by side -->
-      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
-          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-            onerror="this.style.opacity='0.2'">
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
-          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-            onerror="this.style.opacity='0.2'">
-        </div>
-      </div>
-
-      <!-- TOP RIGHT: Title screen + Description -->
-      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <!-- Title screen image -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Title Screen</div>
-          <img src="${title_screen}" alt="Title Screen" style="max-width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-            onerror="this.parentElement.style.display='none'">
-        </div>
-        <!-- Description -->
-        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
-          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
-        </div>
-      </div>
-
-      <!-- BOTTOM LEFT: Game info -->
+      <!-- TOP LEFT: Game info (was bottom-left) -->
       <div style="display:flex;flex-direction:column;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:16px;">
 
         <!-- Clear logo -->
@@ -1174,6 +1157,35 @@ function openModal(gameId) {
             onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink)'">PriceCharting</a>
         </div>
 
+      </div>
+
+      <!-- TOP RIGHT: Title screen + Description -->
+      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <!-- Title screen image -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Title Screen</div>
+          <img src="${title_screen}" alt="Title Screen" style="max-width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.parentElement.style.display='none'">
+        </div>
+        <!-- Description -->
+        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
+          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
+        </div>
+      </div>
+
+      <!-- BOTTOM LEFT: Box front and back side by side (was top-left) -->
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
       </div>
 
       <!-- BOTTOM RIGHT: Gameplay snap (click to play trailer) -->
