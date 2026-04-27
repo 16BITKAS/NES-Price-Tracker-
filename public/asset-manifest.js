@@ -881,7 +881,15 @@ window.nesAssetManifest = {
     "title": "titles/Bugs Bunny Crazy Castle, The (USA).png",
     "trailer": "trailers/Bugs Bunny Crazy Castle, The (USA).mp4"
   },
-  "Bump 'n' Jump": {},
+  "Bump 'n' Jump": {
+    "boxfront": "boxfronts/Bump'n'Jump (USA).png",
+    "boxback": "boxbacks/Bump'n'Jump (USA).png",
+    "cartridge": "cartridges/Bump'n'Jump (USA).png",
+    "clearlogo": "clearlogos/Bump'n'Jump (USA).png",
+    "snap": "snaps/Bump'n'Jump (USA).png",
+    "title": "titles/Bump'n'Jump (USA).png",
+    "trailer": "trailers/Bump'n'Jump (USA).mp4"
+  },
   "Burai Fighter": {
     "boxfront": "boxfronts/Burai Fighter (USA).png",
     "boxback": "boxbacks/Burai Fighter (USA).png",
@@ -1679,8 +1687,24 @@ window.nesAssetManifest = {
     "title": "titles/Duck Hunt (World).png",
     "trailer": "trailers/Duck Hunt (World).mp4"
   },
-  "Duck Tales": {},
-  "Duck Tales 2": {},
+  "Duck Tales": {
+    "boxfront": "boxfronts/DuckTales (USA).png",
+    "boxback": "boxbacks/DuckTales (USA).png",
+    "cartridge": "cartridges/DuckTales (USA).png",
+    "clearlogo": "clearlogos/DuckTales (USA).png",
+    "snap": "snaps/DuckTales (Europe).png",
+    "title": "titles/DuckTales (Europe).png",
+    "trailer": "trailers/Disney's DuckTales (USA).mp4"
+  },
+  "Duck Tales 2": {
+    "boxfront": "boxfronts/DuckTales 2 (USA).png",
+    "boxback": "boxbacks/DuckTales 2 (USA).png",
+    "cartridge": "cartridges/DuckTales 2 (USA).png",
+    "clearlogo": "clearlogos/DuckTales 2 (USA).png",
+    "snap": "snaps/DuckTales 2 (Europe) (Beta).png",
+    "title": "titles/DuckTales 2 (Europe) (Beta).png",
+    "trailer": "trailers/Disney's DuckTales 2 (USA).mp4"
+  },
   "Dungeon Magic: Sword of the Elements": {
     "boxfront": "boxfronts/Dungeon Magic - Sword of the Elements (USA).png",
     "boxback": "boxbacks/Dungeon Magic - Sword of the Elements (USA).png",
@@ -2006,12 +2030,6 @@ window.nesAssetManifest = {
     "trailer": "trailers/Gargoyle's Quest II - The Demon Darkness (USA).mp4"
   },
   "Garry Kitchen’s: Battle Tank": {
-    "boxfront": "boxfronts/Battletank (USA).png",
-    "boxback": "boxbacks/Battletank (USA).png",
-    "cartridge": "cartridges/Battletank (USA).png",
-    "clearlogo": "clearlogos/Battletank (USA).png",
-    "snap": "snaps/Battletank (USA).png",
-    "title": "titles/Battletank (USA).png",
     "trailer": "trailers/Battle Tank (USA).mp4"
   },
   "Gauntlet": {
@@ -2734,15 +2752,7 @@ window.nesAssetManifest = {
     "title": "titles/Kickle Cubicle (Europe).png",
     "trailer": "trailers/Kickle Cubicle (USA).mp4"
   },
-  "Kickmaster": {
-    "boxfront": "boxfronts/Kick Master (USA).png",
-    "boxback": "boxbacks/Kick Master (USA).png",
-    "cartridge": "cartridges/Kick Master (USA).png",
-    "clearlogo": "clearlogos/Kick Master (USA).png",
-    "snap": "snaps/Kick Master (USA).png",
-    "title": "titles/Kick Master (USA).png",
-    "trailer": "trailers/Kick Master (USA).mp4"
-  },
+  "Kickmaster": {},
   "Kid Icarus": {
     "boxfront": "boxfronts/Kid Icarus (USA, Europe).png",
     "boxback": "boxbacks/Kid Icarus (USA, Europe).png",
@@ -4425,12 +4435,6 @@ window.nesAssetManifest = {
     "trailer": "trailers/Shooting Range (USA).mp4"
   },
   "Short Order / Eggsplode": {
-    "boxfront": "boxfronts/Short Order + Egg-Splode! (USA).png",
-    "boxback": "boxbacks/Short Order + Egg-Splode! (USA).png",
-    "cartridge": "cartridges/Short Order + Egg-Splode! (USA).png",
-    "clearlogo": "clearlogos/Short Order + Egg-Splode! (USA).png",
-    "snap": "snaps/Short Order + Egg-Splode! (USA).png",
-    "title": "titles/Short Order + Egg-Splode! (USA).png",
     "trailer": "trailers/Short Order-Eggsplode! (USA).mp4"
   },
   "Side Pocket": {
@@ -5377,15 +5381,7 @@ window.nesAssetManifest = {
     "title": "titles/Totally Rad (Europe).png",
     "trailer": "trailers/Totally Rad (USA).mp4"
   },
-  "Touchdown Fever": {
-    "boxfront": "boxfronts/Touch Down Fever (USA).png",
-    "boxback": "boxbacks/Touch Down Fever (USA).png",
-    "cartridge": "cartridges/Touch Down Fever (USA).png",
-    "clearlogo": "clearlogos/Touch Down Fever (USA).png",
-    "snap": "snaps/Touch Down Fever (Japan).png",
-    "title": "titles/Touch Down Fever (Japan).png",
-    "trailer": "trailers/Touch Down Fever (USA).mp4"
-  },
+  "Touchdown Fever": {},
   "Town & Country Surf Designs": {
     "boxfront": "boxfronts/Town & Country Surf Designs - Thrilla's Surfari (USA).png",
     "boxback": "boxbacks/Town & Country Surf Designs - Thrilla's Surfari (USA).png",
