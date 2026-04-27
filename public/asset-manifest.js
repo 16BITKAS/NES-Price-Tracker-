@@ -685,7 +685,15 @@ window.nesAssetManifest = {
     "title": "titles/Bill & Ted's Excellent Video Game Adventure (USA).png",
     "trailer": "trailers/Bill & Ted's Excellent Video Game Adventure (USA).mp4"
   },
-  "Bill Elliot's: NASCAR Challenge": {},
+  "Bill Elliot's: NASCAR Challenge": {
+    "boxfront": "boxfronts/Bill Elliott's NASCAR Challenge (USA).png",
+    "boxback": "boxbacks/Bill Elliott's NASCAR Challenge (USA).png",
+    "cartridge": "cartridges/Bill Elliott's NASCAR Challenge (USA).png",
+    "clearlogo": "clearlogos/Bill Elliott's NASCAR Challenge (USA).png",
+    "snap": "snaps/Bill Elliott's NASCAR Challenge (USA).png",
+    "title": "titles/Bill Elliott's NASCAR Challenge (USA).png",
+    "trailer": "trailers/Bill Elliott's NASCAR Challenge (USA).mp4"
+  },
   "Bionic Commando": {
     "boxfront": "boxfronts/Bionic Commando (USA).png",
     "boxback": "boxbacks/Bionic Commando (USA).png",
@@ -1639,8 +1647,24 @@ window.nesAssetManifest = {
     "title": "titles/Duck Hunt (World).png",
     "trailer": "trailers/Duck Hunt (World).mp4"
   },
-  "Duck Tales": {},
-  "Duck Tales 2": {},
+  "Duck Tales": {
+    "boxfront": "boxfronts/DuckTales (USA).png",
+    "boxback": "boxbacks/DuckTales (USA).png",
+    "cartridge": "cartridges/DuckTales (USA).png",
+    "clearlogo": "clearlogos/DuckTales (USA).png",
+    "snap": "snaps/DuckTales (Europe).png",
+    "title": "titles/DuckTales (Europe).png",
+    "trailer": "trailers/Disney's DuckTales (USA).mp4"
+  },
+  "Duck Tales 2": {
+    "boxfront": "boxfronts/DuckTales 2 (USA).png",
+    "boxback": "boxbacks/DuckTales 2 (USA).png",
+    "cartridge": "cartridges/DuckTales 2 (USA).png",
+    "clearlogo": "clearlogos/DuckTales 2 (USA).png",
+    "snap": "snaps/DuckTales 2 (Europe) (Beta).png",
+    "title": "titles/DuckTales 2 (Europe) (Beta).png",
+    "trailer": "trailers/Disney's DuckTales 2 (USA).mp4"
+  },
   "Dungeon Magic: Sword of the Elements": {
     "boxfront": "boxfronts/Dungeon Magic - Sword of the Elements (USA).png",
     "boxback": "boxbacks/Dungeon Magic - Sword of the Elements (USA).png",
@@ -4223,8 +4247,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/S.C.A.T. - Special Cybernetic Attack Team (USA).png",
     "cartridge": "cartridges/S.C.A.T. - Special Cybernetic Attack Team (USA).png",
     "clearlogo": "clearlogos/S.C.A.T. - Special Cybernetic Attack Team (USA).png",
-    "snap": "snaps/S.C.A.T. - Special Cybernetic Attack Team (USA).png",
-    "title": "titles/S.C.A.T. - Special Cybernetic Attack Team (USA).png",
+    "snap": "snaps/Pescatore (Japan) (Proto).png",
+    "title": "titles/Pescatore (Japan) (Proto).png",
     "trailer": "trailers/S.C.A.T. - Special Cybernetic Attack Team (USA).mp4"
   },
   "Section-Z": {
