@@ -2762,7 +2762,15 @@ window.nesAssetManifest = {
     "title": "titles/Kickle Cubicle (Europe).png",
     "trailer": "trailers/Kickle Cubicle (USA).mp4"
   },
-  "Kickmaster": {},
+  "Kickmaster": {
+    "boxfront": "boxfronts/Kick Master (USA).png",
+    "boxback": "boxbacks/Kick Master (USA).png",
+    "cartridge": "cartridges/Kick Master (USA).png",
+    "clearlogo": "clearlogos/Kick Master (USA).png",
+    "snap": "snaps/Kick Master (USA).png",
+    "title": "titles/Kick Master (USA).png",
+    "trailer": "trailers/Kick Master (USA).mp4"
+},
   "Kid Icarus": {
     "boxfront": "boxfronts/Kid Icarus (USA, Europe).png",
     "boxback": "boxbacks/Kid Icarus (USA, Europe).png",
