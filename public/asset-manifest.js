@@ -2510,13 +2510,22 @@ window.nesAssetManifest = {
     "title": "titles/Incredible Crash Dummies, The (USA).png",
     "trailer": "trailers/Incredible Crash Dummies, The (USA).mp4"
   },
-  "Indiana Jones and the Last Crusade": {
+  "Indiana Jones and the Last Crusade (TAITO)": {
     "boxfront": "boxfronts/Indiana Jones and the Last Crusade (USA) (Taito).png",
     "boxback": "boxbacks/Indiana Jones and the Last Crusade (USA) (Taito).png",
     "cartridge": "cartridges/Indiana Jones and the Last Crusade (Taito) (USA).png",
     "clearlogo": "clearlogos/Indiana Jones and the Last Crusade (Taito) (USA).png",
     "snap": "snaps/Indiana Jones and the Last Crusade (Europe).png",
     "title": "titles/Indiana Jones and the Last Crusade (Europe).png",
+    "trailer": "trailers/Indiana Jones and the Last Crusade (Taito) (USA).mp4"
+  },
+  "Indiana Jones and the Last Crusade (UBISOFT)": {
+    "boxfront": "boxfronts/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
+    "boxback": "boxbacks/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
+    "cartridge": "cartridges/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
+    "clearlogo": "clearlogos/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
+    "snap": "snaps/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
+    "title": "titles/Indiana Jones and the Last Crusade (USA) (UBI Soft).png",
     "trailer": "trailers/Indiana Jones and the Last Crusade (Taito) (USA).mp4"
   },
   "Indiana Jones and the Temple of Doom": {
