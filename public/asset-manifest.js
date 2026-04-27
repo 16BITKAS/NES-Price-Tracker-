@@ -76,8 +76,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/Addams Family, The (USA).png",
     "cartridge": "cartridges/Addams Family, The (USA).png",
     "clearlogo": "clearlogos/Addams Family, The (USA).png",
-    "snap": "snaps/Addams Family, The (Europe) (En,Fr,De).png",
-    "title": "titles/Addams Family, The (Europe) (En,Fr,De).png",
+    "snap": "snaps/Addams Family, The (USA).png",
+    "title": "titles/Addams Family, The (USA).png",
     "trailer": "trailers/Addams Family, The (USA).mp4"
   },
   "Addams Family, The: Pugsley's Scavenger Hunt": {
@@ -85,8 +85,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/Addams Family, The - Pugsley's Scavenger Hunt (USA).png",
     "cartridge": "cartridges/Addams Family, The - Pugsley's Scavenger Hunt (USA).png",
     "clearlogo": "clearlogos/Addams Family, The - Pugsley's Scavenger Hunt (USA).png",
-    "snap": "snaps/Addams Family, The - Pugsley's Scavenger Hunt (Europe) (Beta).png",
-    "title": "titles/Addams Family, The - Pugsley's Scavenger Hunt (Europe) (Beta).png",
+    "snap": "snaps/Addams Family, The - Pugsley's Scavenger Hunt (USA).png",
+    "title": "titles/Addams Family, The - Pugsley's Scavenger Hunt (USA).png",
     "trailer": "trailers/Addams Family, The - Pugsley's Scavenger Hunt (USA).mp4"
   },
   "Advanced Dungeons & Dragons: Dragon Strike": {
@@ -103,8 +103,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
     "cartridge": "cartridges/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
     "clearlogo": "clearlogos/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
-    "snap": "snaps/Advanced Dungeons & Dragons - Heroes of the Lance (Japan).png",
-    "title": "titles/Advanced Dungeons & Dragons - Heroes of the Lance (Japan).png",
+    "snap": "snaps/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
+    "title": "titles/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
     "trailer": "trailers/Advanced Dungeons & Dragons - Heroes of the Lance (USA).mp4"
   },
   "Advanced Dungeons & Dragons: Hillsfar": {
@@ -112,8 +112,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/Advanced Dungeons & Dragons - Hillsfar (USA).png",
     "cartridge": "cartridges/Advanced Dungeons & Dragons - Hillsfar (USA).png",
     "clearlogo": "clearlogos/Advanced Dungeons & Dragons - Hillsfar (USA).png",
-    "snap": "snaps/Advanced Dungeons & Dragons - Hillsfar (Japan).png",
-    "title": "titles/Advanced Dungeons & Dragons - Hillsfar (Japan).png",
+    "snap": "snaps/Advanced Dungeons & Dragons - Hillsfar (USA).png",
+    "title": "titles/Advanced Dungeons & Dragons - Hillsfar (USA).png",
     "trailer": "trailers/Advanced Dungeons & Dragons - Hillsfar (USA).mp4"
   },
   "Advanced Dungeons & Dragons: Pool of Radiance": {
@@ -121,8 +121,8 @@ window.nesAssetManifest = {
     "boxback": "boxbacks/Advanced Dungeons & Dragons - Pool of Radiance (USA).png",
     "cartridge": "cartridges/Advanced Dungeons & Dragons - Pool of Radiance (USA).png",
     "clearlogo": "clearlogos/Advanced Dungeons & Dragons - Pool of Radiance (USA).png",
-    "snap": "snaps/Advanced Dungeons & Dragons - Pool of Radiance (Japan).png",
-    "title": "titles/Advanced Dungeons & Dragons - Pool of Radiance (Japan).png",
+    "snap": "snaps/clearlogos/Advanced Dungeons & Dragons - Pool of Radiance (USA).png",
+    "title": "titles/clearlogos/Advanced Dungeons & Dragons - Pool of Radiance (USA).png",
     "trailer": "trailers/Advanced Dungeons & Dragons - Pool of Radiance (USA).mp4"
   },
   "Adventure Island": {
