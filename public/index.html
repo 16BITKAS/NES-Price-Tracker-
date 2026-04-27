@@ -688,7 +688,7 @@ function toImageName(title) {
   // "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
   // "720" -> "720 Degrees (USA)"
   let name = title
-    .replace(/:/g, ' -')   // colon -> space dash
+    .replace(/:/g, ' - ')  // colon -> space dash space
     .replace(/\s+/g, ' ')  // normalize spaces
     .trim();
   return name + ' (USA)';
@@ -803,51 +803,63 @@ function openModal(gameId) {
   const g = games.find(x => x.id === gameId);
   if (!g) return;
 
-  const imgName = toImageName(g.title);
   const front = imgUrl('boxfronts', g.title);
-  const back = imgUrl('boxbacks', g.title);
-  const cart = imgUrl('cartridges', g.title);
-  const logo = imgUrl('clearlogos', g.title);
-  const snap = imgUrl('snaps', g.title);
-
-  function imgBlock(src, label) {
-    return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-      <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">${label}</div>
-      <img src="${src}" alt="${label}" loading="lazy" style="max-width:100%;max-height:200px;object-fit:contain;border-radius:8px;border:1px solid var(--border);background:var(--surface2);"
-        onerror="this.parentElement.style.opacity='0.2'">
-    </div>`;
-  }
+  const back  = imgUrl('boxbacks',  g.title);
+  const cart  = imgUrl('cartridges', g.title);
+  const logo  = imgUrl('clearlogos', g.title);
+  const snap  = imgUrl('snaps',      g.title);
 
   document.getElementById('modalContent').innerHTML = `
-    <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
-      <img src="${front}" alt="${esc(g.title)}" style="width:160px;height:auto;object-fit:contain;border-radius:10px;border:2px solid var(--accent);box-shadow:0 0 30px rgba(230,0,18,0.3);flex-shrink:0;"
-        onerror="this.style.display='none'">
-      <div style="flex:1;min-width:200px;">
-        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">#${g.id}</div>
-        <h2 style="font-size:clamp(18px,3vw,28px);font-weight:800;line-height:1.1;margin-bottom:12px;">${esc(g.title)}</h2>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
-          ${g.genre ? `<span class="pill">${esc(g.genre)}</span>` : ''}
-          ${g.year ? `<span class="pill">${g.year}</span>` : ''}
-          ${g.publisher ? `<span class="pill">${esc(g.publisher)}</span>` : ''}
-          ${g.owned ? '<span class="pill" style="border-color:var(--accent);color:var(--accent);">✓ Owned</span>' : ''}
-        </div>
-        ${g.description ? `<p style="font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:16px;">${esc(g.description)}</p>` : ''}
-        ${valueOf(g) ? `<div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--accent);">${fmt(g.estimate)}<span style="font-size:12px;color:var(--muted);margin-left:8px;">eBay est.</span></div>` : ''}
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-          <a href="${ebayUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;">eBay</a>
-          <a href="${priceChartingUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;">PriceCharting</a>
-        </div>
-      </div>
-    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
 
-    <div style="margin-top:32px;">
-      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Media</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;">
-        ${imgBlock(back, 'Box Back')}
-        ${imgBlock(cart, 'Cartridge')}
-        ${imgBlock(logo, 'Clear Logo')}
-        ${imgBlock(snap, 'Gameplay')}
+      <!-- TOP LEFT: Box art with front/back toggle -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="display:flex;gap:8px;margin-bottom:4px;">
+          <button onclick="switchBox('front')" id="btnFront" style="font-family:'Space Mono',monospace;font-size:11px;padding:5px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;">Front</button>
+          <button onclick="switchBox('back')" id="btnBack" style="font-family:'Space Mono',monospace;font-size:11px;padding:5px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;">Back</button>
+        </div>
+        <img id="boxImg" src="${front}" data-front="${front}" data-back="${back}" alt="Box Art"
+          style="max-width:100%;max-height:320px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          onerror="this.style.opacity='0.2'">
       </div>
+
+      <!-- TOP RIGHT: Cartridge + Description -->
+      <div style="display:flex;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="flex-shrink:0;display:flex;align-items:center;">
+          <img src="${cart}" alt="Cartridge" style="width:90px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
+            onerror="this.style.display='none'">
+        </div>
+        <div style="flex:1;overflow-y:auto;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
+          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
+        </div>
+      </div>
+
+      <!-- BOTTOM LEFT: Info panel with clear logo -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--accent);">#${String(g.id).padStart(3,'0')}</div>
+        <img src="${logo}" alt="${esc(g.title)}" style="max-height:60px;max-width:100%;object-fit:contain;object-position:left;"
+          onerror="this.style.display='none'">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;">
+          ${g.publisher ? `<div style="margin-bottom:4px;">🏢 ${esc(g.publisher)}</div>` : ''}
+          ${g.year ? `<div style="margin-bottom:4px;">📅 ${g.year}</div>` : ''}
+          ${g.genre ? `<div style="margin-bottom:4px;">🎮 ${esc(g.genre)}</div>` : ''}
+          ${valueOf(g) ? `<div style="margin-top:8px;font-size:16px;font-weight:700;color:var(--accent);">${fmt(g.estimate)} <span style="font-size:10px;color:var(--muted);font-weight:400;">eBay est.</span></div>` : ''}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;">
+          ${g.owned ? '<span class="pill" style="border-color:var(--accent);color:var(--accent);">✓ Owned</span>' : ''}
+          <a href="${ebayUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;">eBay</a>
+          <a href="${priceChartingUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;">PriceCharting</a>
+        </div>
+      </div>
+
+      <!-- BOTTOM RIGHT: Gameplay snap -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Gameplay</div>
+        <img src="${snap}" alt="Gameplay" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          onerror="this.style.opacity='0.2'">
+      </div>
+
     </div>
   `;
 
@@ -855,9 +867,27 @@ function openModal(gameId) {
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal() {
-  document.getElementById('gameModal').style.display = 'none';
-  document.body.style.overflow = '';
+function switchBox(side) {
+  const img = document.getElementById('boxImg');
+  const btnFront = document.getElementById('btnFront');
+  const btnBack  = document.getElementById('btnBack');
+  if (side === 'front') {
+    img.src = img.dataset.front;
+    btnFront.style.background = 'var(--accent)';
+    btnFront.style.color = '#fff';
+    btnFront.style.borderColor = 'var(--accent)';
+    btnBack.style.background = 'transparent';
+    btnBack.style.color = 'var(--muted)';
+    btnBack.style.borderColor = 'var(--border)';
+  } else {
+    img.src = img.dataset.back;
+    btnBack.style.background = 'var(--accent)';
+    btnBack.style.color = '#fff';
+    btnBack.style.borderColor = 'var(--accent)';
+    btnFront.style.background = 'transparent';
+    btnFront.style.color = 'var(--muted)';
+    btnFront.style.borderColor = 'var(--border)';
+  }
 }
 
 document.getElementById('gameModal').addEventListener('click', e => {
