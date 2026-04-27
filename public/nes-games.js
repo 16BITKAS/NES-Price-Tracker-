@@ -177,7 +177,7 @@ window.nesGames = [
   {"id":173,"title":"Double Dare","publisher":"GameTek","owned":false,"year":1990,"genre":"Game Show","description":"NES adaptation of the classic Nickelodeon slime game show."},
   {"id":174,"title":"Double Dragon","publisher":"Tradewest","owned":false,"year":1988,"genre":"Fighting","description":"Classic two-player brawler featuring the Lee brothers fighting the Black Warriors."},
   {"id":175,"title":"Double Dragon II: The Revenge","publisher":"Acclaim","owned":false,"year":1990,"genre":"Fighting","description":"The Lee brothers return to rescue Marian from a time-traveling enemy."},
-  {"id":176,"title":"Double Dragon II: The Sacred Stones","publisher":"Acclaim","owned":false,"year":1993,"genre":"Fighting","description":"Third entry in the series with enhanced moves and enemy variety."},
+  {"id":176,"title":"Double Dragon III: The Sacred Stones","publisher":"Acclaim","owned":false,"year":1993,"genre":"Fighting","description":"Third entry in the series with enhanced moves and enemy variety."},
   {"id":177,"title":"Double Dribble","publisher":"Konami","owned":false,"year":1987,"genre":"Sports","description":"Five-on-five basketball with simple controls and competitive AI."},
   {"id":178,"title":"Dr. Chaos","publisher":"FCI","owned":false,"year":1988,"genre":"Action","description":"Explorer battles monsters in a mysterious haunted house adventure."},
   {"id":179,"title":"Dr. Jekyll and Mr. Hyde","publisher":"Bandai","owned":false,"year":1988,"genre":"Action","description":"Adventure based on the R.L. Stevenson story with unforgiving gameplay."},
