@@ -797,7 +797,6 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <button class="danger" id="resetData">Reset</button>
   </div>
 
-  <p class="note"><span class="warn">Note:</span> estimates use active eBay listings through your API bridge.</p>
   <p id="priceStatus">Prices will load when you click Refresh prices.</p>
 
   <div class="tablewrap">
@@ -844,7 +843,7 @@ const oldState = JSON.parse(localStorage.getItem("nesTrackerSaveV1") || "{}");
 const state = Object.keys(rawState).length ? rawState : oldState;
 const games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
 
-let sortKey = "id";
+let sortKey = "title";
 let sortDir = "asc";
 
 const fmt = n => Number.isFinite(Number(n))
