@@ -1078,6 +1078,7 @@ function openModal(gameId) {
   const cart  = imgUrl('cartridges', g.title);
   const logo  = imgUrl('clearlogos', g.title);
   const snap  = imgUrl('snaps',      g.title);
+  const title_screen = imgUrl('titles', g.title);
 
   function trailerName(title) {
     // Match filename convention: "Title (USA).mp4"
@@ -1105,9 +1106,16 @@ function openModal(gameId) {
         </div>
       </div>
 
-      <!-- TOP RIGHT: Description only -->
+      <!-- TOP RIGHT: Title screen + Description -->
       <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="flex:1;overflow-y:auto;">
+        <!-- Title screen image -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Title Screen</div>
+          <img src="${title_screen}" alt="Title Screen" style="max-width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.parentElement.style.display='none'">
+        </div>
+        <!-- Description -->
+        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
           <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
         </div>
