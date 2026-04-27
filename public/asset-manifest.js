@@ -1574,14 +1574,14 @@ window.nesAssetManifest = {
     "title": "titles/Double Dragon II - The Revenge (Europe).png",
     "trailer": "trailers/Double Dragon II - The Revenge (USA).mp4"
   },
-  "Double Dragon II: The Sacred Stones": {
-    "boxfront": "boxfronts/Double Dragon (USA).png",
-    "boxback": "boxbacks/Double Dragon (USA).png",
-    "cartridge": "cartridges/Double Dragon (USA).png",
-    "clearlogo": "clearlogos/Double Dragon (USA).png",
-    "snap": "snaps/Double Dragon (Europe).png",
-    "title": "titles/Double Dragon (Europe).png",
-    "trailer": "trailers/Double Dragon (USA).mp4"
+  "Double Dragon III: The Sacred Stones": {
+    "boxfront": "boxfronts/Double Dragon III - The Sacred Stones (USA).png",
+    "boxback": "boxbacks/Double Dragon III - The Sacred Stones (USA).png",
+    "cartridge": "cartridges/Double Dragon III - The Sacred Stones (USA).png",
+    "clearlogo": "clearlogos/Double Dragon III - The Sacred Stones (USA).png",
+    "snap": "snaps/Double Dragon III - The Sacred Stones (USA).png",
+    "title": "titles/Double Dragon III - The Sacred Stones (USA).png",
+    "trailer": "trailers/Double Dragon III - The Sacred Stones (USA).mp4"
   },
   "Double Dribble": {
     "boxfront": "boxfronts/Double Dribble (USA) (Rev A).png",
