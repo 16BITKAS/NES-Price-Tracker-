@@ -435,33 +435,45 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 /* Checkbox */
 .owned-check {
-  appearance: none;
-  width: 20px; height: 20px;
-  border: 2px solid var(--border);
+  display: none;
+}
+
+.pixel-check {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   position: relative;
-  transition: all 0.15s;
-  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.owned-check:checked {
+.pixel-check:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(230,0,18,0.2);
+}
+
+.pixel-check.is-checked {
   background: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(230,0,18,0.5);
+  box-shadow: 0 0 16px rgba(230,0,18,0.6);
 }
 
-.owned-check:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 12px;
-  color: #ffffff;
-  font-weight: 900;
+.pixel-check svg {
+  display: none;
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
 }
 
-.owned-check:hover { border-color: var(--accent); }
+.pixel-check.is-checked svg {
+  display: block;
+}
 
 /* Cover art */
 .cover-cell {
@@ -802,7 +814,26 @@ function render() {
     const hasPrice = valueOf(g) > 0;
     const coverSrc = imgUrl('boxfronts', g.title);
     return `<tr data-id="${g.id}" data-title="${esc(g.title)}">
-      <td><input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}></td>
+      <td style="text-align:center;">
+        <input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}>
+        <div class="pixel-check ${g.owned ? 'is-checked' : ''}" role="checkbox">
+          <svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" style="shape-rendering:crispEdges;">
+            <rect x="0" y="0" width="1" height="1" fill="white"/>
+            <rect x="1" y="1" width="1" height="1" fill="white"/>
+            <rect x="2" y="2" width="1" height="1" fill="white"/>
+            <rect x="3" y="3" width="1" height="1" fill="white"/>
+            <rect x="4" y="4" width="1" height="1" fill="white"/>
+            <rect x="5" y="5" width="1" height="1" fill="white"/>
+            <rect x="6" y="6" width="1" height="1" fill="white"/>
+            <rect x="6" y="0" width="1" height="1" fill="white"/>
+            <rect x="5" y="1" width="1" height="1" fill="white"/>
+            <rect x="4" y="2" width="1" height="1" fill="white"/>
+            <rect x="2" y="4" width="1" height="1" fill="white"/>
+            <rect x="1" y="5" width="1" height="1" fill="white"/>
+            <rect x="0" y="6" width="1" height="1" fill="white"/>
+          </svg>
+        </div>
+      </td>
       <td class="cover-cell">
         <div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}" onclick="openModal(${g.id})">
           <img class="cover-thumb" src="${coverSrc}" alt="${esc(g.title)}" loading="lazy"
@@ -925,6 +956,21 @@ document.querySelectorAll('th.sortable').forEach(th => {
 });
 
 // ─── Owned toggle ─────────────────────────────────────────────────────────────
+document.getElementById('tbody').addEventListener('click', e => {
+  const pc = e.target.closest('.pixel-check');
+  if (!pc) return;
+  const tr = pc.closest('tr');
+  if (!tr) return;
+  const g = games.find(x => x.id == tr.dataset.id);
+  if (!g) return;
+  g.owned = !g.owned;
+  pc.classList.toggle('is-checked', g.owned);
+  const cb = tr.querySelector('.owned-check');
+  if (cb) cb.checked = g.owned;
+  save();
+  renderStats();
+});
+
 document.getElementById('tbody').addEventListener('change', e => {
   const tr = e.target.closest('tr');
   if (!tr) return;
