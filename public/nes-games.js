@@ -1,4067 +1,682 @@
 // Licensed North American NES retail set
-// Source: user-uploaded spreadsheet, 677 titles, no variants
+// 677 titles with year, genre, and description
 
 window.nesGames = [
-  {
-    "id": 1,
-    "title": "720",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 2,
-    "title": "1942",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 3,
-    "title": "10-Yard Fight",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 4,
-    "title": "1943: The Battle of Midway",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 5,
-    "title": "3-D Battles of World Runner, The",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 6,
-    "title": "8 Eyes",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 7,
-    "title": "A Nightmare on Elm Street",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 8,
-    "title": "Abadox: The Deadly Inner War",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 9,
-    "title": "Addams Family, The",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 10,
-    "title": "Addams Family, The: Pugsley's Scavenger Hunt",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 11,
-    "title": "Advanced Dungeons & Dragons: Dragon Strike",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 12,
-    "title": "Advanced Dungeons & Dragons: Heroes of the Lance",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 13,
-    "title": "Advanced Dungeons & Dragons: Hillsfar",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 14,
-    "title": "Advanced Dungeons & Dragons: Pool of Radiance",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 15,
-    "title": "Adventure Island",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 16,
-    "title": "Adventure Island 3",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 17,
-    "title": "Adventure Island II",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 18,
-    "title": "Adventures in the Magic Kingdom",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 19,
-    "title": "Adventures of Bayou Billy, The",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 20,
-    "title": "Adventures of Dino Riki",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 21,
-    "title": "Adventures of Gilligan's Island, The",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 22,
-    "title": "Adventures of Lolo",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 23,
-    "title": "Adventures of Lolo 2",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 24,
-    "title": "Adventures of Lolo 3",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 25,
-    "title": "Adventures of Rad Gravity, The",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 26,
-    "title": "Adventures of Rocky And Bullwinkle And Friends, The",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 27,
-    "title": "Adventures of Tom Sawyer",
-    "publisher": "SETA",
-    "owned": false
-  },
-  {
-    "id": 28,
-    "title": "Air Fortress",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 29,
-    "title": "Airwolf",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 30,
-    "title": "Al Unser Jr.: Turbo Racing",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 31,
-    "title": "Alex DeMeo\u2019s: Race America",
-    "publisher": "Absolute",
-    "owned": false
-  },
-  {
-    "id": 32,
-    "title": "Alfred Chicken",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 33,
-    "title": "Alien 3",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 34,
-    "title": "All-Pro Basketball",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 35,
-    "title": "Alpha Mission",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 36,
-    "title": "Amagon",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 37,
-    "title": "American Gladiators",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 38,
-    "title": "Anticipation",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 39,
-    "title": "Arch Rivals: A Basketbrawl!",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 40,
-    "title": "Archon",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 41,
-    "title": "Arkanoid",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 42,
-    "title": "Arkista's Ring",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 43,
-    "title": "Astyanax",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 44,
-    "title": "Athena",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 45,
-    "title": "Athletic World",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 46,
-    "title": "Attack of the Killer Tomatoes",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 47,
-    "title": "Back to the Future",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 48,
-    "title": "Back to the Future II & III",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 49,
-    "title": "Bad Dudes",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 50,
-    "title": "Bad News Baseball",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 51,
-    "title": "Bad Street Brawler",
-    "publisher": "Mattel",
-    "owned": false
-  },
-  {
-    "id": 52,
-    "title": "Balloon Fight",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 53,
-    "title": "Bandai Golf: Challenge Pebble Beach",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 54,
-    "title": "Bandit Kings of Ancient China",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 55,
-    "title": "Barbie",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 56,
-    "title": "Bard's Tale, The",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 57,
-    "title": "Barker Bill's: Trick Shooting",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 58,
-    "title": "Base Wars: Cyber Stadium Series",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 59,
-    "title": "Baseball",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 60,
-    "title": "Baseball Simulator 1.000",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 61,
-    "title": "Baseball Stars",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 62,
-    "title": "Baseball Stars 2",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 63,
-    "title": "Bases Loaded",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 64,
-    "title": "Bases Loaded 2: Second Season",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 65,
-    "title": "Bases Loaded 3",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 66,
-    "title": "Bases Loaded 4",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 67,
-    "title": "Batman Returns",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 68,
-    "title": "Batman: Return of the Joker",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 69,
-    "title": "Batman: The Video Game",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 70,
-    "title": "Battle Chess",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 71,
-    "title": "Battle of Olympus, The",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 72,
-    "title": "Battleship",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 73,
-    "title": "Battletoads",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 74,
-    "title": "Battletoads Double Dragon",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 75,
-    "title": "Beetlejuice",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 76,
-    "title": "Best of the Best: Championship Karate",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 77,
-    "title": "Bigfoot",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 78,
-    "title": "Bill & Ted's: Excellent Video Game Adventure",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 79,
-    "title": "Bill Elliot's: NASCAR Challenge",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 80,
-    "title": "Bionic Commando",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 81,
-    "title": "Black Bass, The",
-    "publisher": "Hot-B",
-    "owned": false
-  },
-  {
-    "id": 82,
-    "title": "Blades of Steel",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 83,
-    "title": "Blaster Master",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 84,
-    "title": "Blue Marlin",
-    "publisher": "Hot-B",
-    "owned": false
-  },
-  {
-    "id": 85,
-    "title": "Blues Brothers, The",
-    "publisher": "Titus",
-    "owned": false
-  },
-  {
-    "id": 86,
-    "title": "Bo Jackson Baseball",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 87,
-    "title": "Bomberman",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 88,
-    "title": "Bomberman II",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 89,
-    "title": "Bonk's Adventure",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 90,
-    "title": "Boulder Dash",
-    "publisher": "JVC",
-    "owned": false
-  },
-  {
-    "id": 91,
-    "title": "Bram Stoker's: Dracula",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 92,
-    "title": "Break Time: The National Pool Tour",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 93,
-    "title": "Breakthru",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 94,
-    "title": "Bubble Bobble",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 95,
-    "title": "Bubble Bobble Part 2",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 96,
-    "title": "Bucky O'Hare",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 97,
-    "title": "Bugs Bunny Birthday Blowout, The",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 98,
-    "title": "Bugs Bunny Crazy Castle, The",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 99,
-    "title": "Bump 'n' Jump",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 100,
-    "title": "Burai Fighter",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 101,
-    "title": "BurgerTime",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 102,
-    "title": "Cabal",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 103,
-    "title": "Caesar's Palace",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 104,
-    "title": "California Games",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 105,
-    "title": "Captain America and the Avengers",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 106,
-    "title": "Captain Planet and the Planeteers",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 107,
-    "title": "Captain Skyhawk",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 108,
-    "title": "Casino Kid",
-    "publisher": "SOFEL",
-    "owned": false
-  },
-  {
-    "id": 109,
-    "title": "Casino Kid II",
-    "publisher": "SOFEL",
-    "owned": false
-  },
-  {
-    "id": 110,
-    "title": "Castelian",
-    "publisher": "Triffix",
-    "owned": false
-  },
-  {
-    "id": 111,
-    "title": "Castle of Dragon",
-    "publisher": "SETA",
-    "owned": false
-  },
-  {
-    "id": 112,
-    "title": "Castlequest",
-    "publisher": "ASCII / NEXOFT",
-    "owned": false
-  },
-  {
-    "id": 113,
-    "title": "Castlevania",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 114,
-    "title": "Castlevania II: Simon's Quest",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 115,
-    "title": "Castlevania III: Dracula's Curse",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 116,
-    "title": "Caveman Games",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 117,
-    "title": "Championship Bowling",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 118,
-    "title": "Championship Pool",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 119,
-    "title": "Chessmaster, The",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 120,
-    "title": "Chip 'n Dale: Rescue Rangers",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 121,
-    "title": "Chip 'n Dale: Rescue Rangers 2",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 122,
-    "title": "Chris Evert & Ivan Lendl In: Top Players\u2019 Tennis",
-    "publisher": "Asmik",
-    "owned": false
-  },
-  {
-    "id": 123,
-    "title": "Chubby Cherub",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 124,
-    "title": "Circus Caper",
-    "publisher": "Toho",
-    "owned": false
-  },
-  {
-    "id": 125,
-    "title": "City Connection",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 126,
-    "title": "Clash at Demonhead",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 127,
-    "title": "Classic Concentration",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 128,
-    "title": "Cliffhanger",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 129,
-    "title": "Clu Clu Land",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 130,
-    "title": "Cobra Command",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 131,
-    "title": "Cobra Triangle",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 132,
-    "title": "Code Name: Viper",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 133,
-    "title": "Color a Dinosaur",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 134,
-    "title": "Commando",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 135,
-    "title": "Conan",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 136,
-    "title": "Conflict",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 137,
-    "title": "Conquest of the Crystal Palace",
-    "publisher": "Asmik",
-    "owned": false
-  },
-  {
-    "id": 138,
-    "title": "Contra",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 139,
-    "title": "Contra Force",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 140,
-    "title": "Cool World",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 141,
-    "title": "Cowboy Kid",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 142,
-    "title": "Crash 'n' the Boys: Street Challenge",
-    "publisher": "American Technos",
-    "owned": false
-  },
-  {
-    "id": 143,
-    "title": "Crystalis",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 144,
-    "title": "Cyberball",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 145,
-    "title": "Cybernoid: The Fighting Machine",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 146,
-    "title": "Dance Aerobics",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 147,
-    "title": "Danny Sullivan's: Indy Heat",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 148,
-    "title": "Darkman",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 149,
-    "title": "Darkwing Duck",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 150,
-    "title": "Dash Galaxy: in the Alien Asylum",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 151,
-    "title": "David Crane\u2019s: A Boy and His Blob \u2013 Trouble on Blobolonia",
-    "publisher": "Absolute",
-    "owned": false
-  },
-  {
-    "id": 152,
-    "title": "Day Dreamin' Davey",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 153,
-    "title": "Days of Thunder",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 154,
-    "title": "Deadly Towers",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 155,
-    "title": "Defender II",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 156,
-    "title": "Defender of the Crown",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 157,
-    "title": "Defenders of Dynatron City",
-    "publisher": "JVC",
-    "owned": false
-  },
-  {
-    "id": 158,
-    "title": "D\u00e9j\u00e0 Vu",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 159,
-    "title": "Demon Sword",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 160,
-    "title": "Desert Commander",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 161,
-    "title": "Destination Earthstar",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 162,
-    "title": "Destiny of an Emperor",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 163,
-    "title": "Dick Tracy",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 164,
-    "title": "Die Hard",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 165,
-    "title": "Dig Dug II: Trouble In Paradise",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 166,
-    "title": "Digger T. Rock: The Legend of the Lost City",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 167,
-    "title": "Dirty Harry: The War Against Drugs",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 168,
-    "title": "Donkey Kong",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 169,
-    "title": "Donkey Kong 3",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 170,
-    "title": "Donkey Kong Classics",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 171,
-    "title": "Donkey Kong Jr.",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 172,
-    "title": "Donkey Kong Jr. Math",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 173,
-    "title": "Double Dare",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 174,
-    "title": "Double Dragon",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 175,
-    "title": "Double Dragon II: The Revenge",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 176,
-    "title": "Double Dragon II: The Sacred Stones",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 177,
-    "title": "Double Dribble",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 178,
-    "title": "Dr. Chaos",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 179,
-    "title": "Dr. Jekyll and Mr. Hyde",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 180,
-    "title": "Dr. Mario",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 181,
-    "title": "Dragon Fighter",
-    "publisher": "SOFEL",
-    "owned": false
-  },
-  {
-    "id": 182,
-    "title": "Dragon Power",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 183,
-    "title": "Dragon Spirit: The New Legend",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 184,
-    "title": "Dragon Warrior",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 185,
-    "title": "Dragon Warrior II",
-    "publisher": "Enix",
-    "owned": false
-  },
-  {
-    "id": 186,
-    "title": "Dragon Warrior III",
-    "publisher": "Enix",
-    "owned": false
-  },
-  {
-    "id": 187,
-    "title": "Dragon Warrior IV",
-    "publisher": "Enix",
-    "owned": false
-  },
-  {
-    "id": 188,
-    "title": "Duck Hunt",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 189,
-    "title": "Duck Tales",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 190,
-    "title": "Duck Tales 2",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 191,
-    "title": "Dungeon Magic: Sword of the Elements",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 192,
-    "title": "Dusty Diamond's: All-Star Softball",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 193,
-    "title": "Dynowarz: The Destruction of Spondylus",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 194,
-    "title": "Elevator Action",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 195,
-    "title": "Eliminator Boat Duel",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 196,
-    "title": "Excitebike",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 197,
-    "title": "F-117A Stealth Fighter",
-    "publisher": "MicroProse",
-    "owned": false
-  },
-  {
-    "id": 198,
-    "title": "F-15 Strike Eagle",
-    "publisher": "MicroProse",
-    "owned": false
-  },
-  {
-    "id": 199,
-    "title": "Family Feud",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 200,
-    "title": "Faria: A World of Mystery & Danger!",
-    "publisher": "ASCII / NEXOFT",
-    "owned": false
-  },
-  {
-    "id": 201,
-    "title": "Faxanadu",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 202,
-    "title": "Felix the Cat",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 203,
-    "title": "Ferrari Grand Prix Challenge",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 204,
-    "title": "Fester's Quest",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 205,
-    "title": "Final Fantasy",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 206,
-    "title": "Fire 'n Ice",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 207,
-    "title": "Fisher-Price: Firehouse Rescue",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 208,
-    "title": "Fisher-Price: I Can Remember",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 209,
-    "title": "Fisher-Price: Perfect Fit",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 210,
-    "title": "Fist of the North Star",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 211,
-    "title": "Flight of the Intruder",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 212,
-    "title": "Flintstones, The: Rescue of Dino & Hoppy",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 213,
-    "title": "Flintstones, The: The Surprise at Dinosaur Peak",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 214,
-    "title": "Flying Dragon: The Secret Scroll",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 215,
-    "title": "Flying Warriors",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 216,
-    "title": "Formula One: Built to Win",
-    "publisher": "SETA",
-    "owned": false
-  },
-  {
-    "id": 217,
-    "title": "Fox's: Peter Pan & The Pirates \u2013 The Revenge of Captain Hook",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 218,
-    "title": "Frankenstein: The Monster Returns",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 219,
-    "title": "Freedom Force",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 220,
-    "title": "Friday the 13th",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 221,
-    "title": "Fun House",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 222,
-    "title": "G.I. Joe: A Real American Hero",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 223,
-    "title": "G.I. Joe: The Atlantis Factor",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 224,
-    "title": "Galaga: Demons of Death",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 225,
-    "title": "Galaxy 5000: Racing in the 51st Century",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 226,
-    "title": "Gargoyle's Quest II",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 227,
-    "title": "Garry Kitchen\u2019s: Battle Tank",
-    "publisher": "Absolute",
-    "owned": false
-  },
-  {
-    "id": 228,
-    "title": "Gauntlet",
-    "publisher": "Tengen",
-    "owned": false
-  },
-  {
-    "id": 229,
-    "title": "Gauntlet II",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 230,
-    "title": "Gemfire",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 231,
-    "title": "Genghis Khan",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 232,
-    "title": "George Foreman\u2019s: KO Boxing",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 233,
-    "title": "Ghost Lion",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 234,
-    "title": "Ghostbusters",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 235,
-    "title": "Ghostbusters II",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 236,
-    "title": "Ghosts 'n Goblins",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 237,
-    "title": "Ghoul School",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 238,
-    "title": "Goal!",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 239,
-    "title": "Goal! 2",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 240,
-    "title": "Godzilla 2: War of the Monsters",
-    "publisher": "Toho",
-    "owned": false
-  },
-  {
-    "id": 241,
-    "title": "Godzilla: Monster of Monsters!",
-    "publisher": "Toho",
-    "owned": false
-  },
-  {
-    "id": 242,
-    "title": "Gold Medal Challenge '92",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 243,
-    "title": "Golf",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 244,
-    "title": "Golf Grand Slam",
-    "publisher": "Atlus",
-    "owned": false
-  },
-  {
-    "id": 245,
-    "title": "Golgo 13: Top Secret Episode",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 246,
-    "title": "Goonies II, The",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 247,
-    "title": "Gotcha!: The Sport!",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 248,
-    "title": "Gradius",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 249,
-    "title": "Great Waldo Search, The",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 250,
-    "title": "Greg Norman's: Golf Power",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 251,
-    "title": "Gremlins 2: The New Batch",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 252,
-    "title": "Guardian Legend, The",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 253,
-    "title": "Guerrilla War",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 254,
-    "title": "Gumshoe",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 255,
-    "title": "Gun.Smoke",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 256,
-    "title": "Gun+Nac",
-    "publisher": "ASCII / NEXOFT",
-    "owned": false
-  },
-  {
-    "id": 257,
-    "title": "Gyromite",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 258,
-    "title": "Gyruss",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 259,
-    "title": "Harlem Globetrotters",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 260,
-    "title": "Hatris",
-    "publisher": "Bullet-Proof",
-    "owned": false
-  },
-  {
-    "id": 261,
-    "title": "Heavy Barrel",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 262,
-    "title": "Heavy Shreddin'",
-    "publisher": "Parker Brothers",
-    "owned": false
-  },
-  {
-    "id": 263,
-    "title": "High Speed",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 264,
-    "title": "Hogan's Alley",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 265,
-    "title": "Hollywood Squares",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 266,
-    "title": "Home Alone",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 267,
-    "title": "Home Alone 2: Lost in New York",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 268,
-    "title": "Hook",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 269,
-    "title": "Hoops",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 270,
-    "title": "Hudson Hawk",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 271,
-    "title": "Hunt for Red October, The",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 272,
-    "title": "Hydlide",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 273,
-    "title": "Ice Climber",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 274,
-    "title": "Ice Hockey",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 275,
-    "title": "Ikari Warriors",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 276,
-    "title": "Ikari Warriors II: Victory Road",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 277,
-    "title": "Ikari Warriors III: The Rescue",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 278,
-    "title": "Image Fight",
-    "publisher": "IREM",
-    "owned": false
-  },
-  {
-    "id": 279,
-    "title": "Incredible Crash Dummies, The",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 280,
-    "title": "Indiana Jones and the Last Crusade",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 281,
-    "title": "Indiana Jones and the Last Crusade",
-    "publisher": "Ubisoft",
-    "owned": false
-  },
-  {
-    "id": 282,
-    "title": "Indiana Jones and the Temple of Doom",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 283,
-    "title": "Infiltrator",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 284,
-    "title": "Iron Tank: The Invasion of Normandy",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 285,
-    "title": "Isolated Warrior",
-    "publisher": "NTVIC",
-    "owned": false
-  },
-  {
-    "id": 286,
-    "title": "Ivan \"Ironman\" Stewart's: Super Off Road",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 287,
-    "title": "Jack Nicklaus': Greatest 18 Holes of Major Championship Golf",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 288,
-    "title": "Jackal",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 289,
-    "title": "Jackie Chan's: Action Kung Fu",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 290,
-    "title": "James Bond Jr.",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 291,
-    "title": "Jaws",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 292,
-    "title": "Jeopardy!",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 293,
-    "title": "Jeopardy!: 25th Anniversary Edition",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 294,
-    "title": "Jeopardy!: Jr. Edition",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 295,
-    "title": "Jetsons, The: Cogswell's Caper",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 296,
-    "title": "Jimmy Connors Tennis",
-    "publisher": "Ubisoft",
-    "owned": false
-  },
-  {
-    "id": 297,
-    "title": "Joe & Mac",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 298,
-    "title": "John Elway's: Quarterback",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 299,
-    "title": "Jordan vs. Bird: One on One",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 300,
-    "title": "Journey to Silius",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 301,
-    "title": "Joust",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 302,
-    "title": "Jungle Book, The",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 303,
-    "title": "Jurassic Park",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 304,
-    "title": "Kabuki: Quantum Fighter",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 305,
-    "title": "Karate Champ",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 306,
-    "title": "Karate Kid, The",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 307,
-    "title": "Karnov",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 308,
-    "title": "Kickle Cubicle",
-    "publisher": "IREM",
-    "owned": false
-  },
-  {
-    "id": 309,
-    "title": "Kickmaster",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 310,
-    "title": "Kid Icarus",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 311,
-    "title": "Kid Klown in Night Mayor World",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 312,
-    "title": "Kid Kool: and the Quest for the Seven Wonder Herbs",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 313,
-    "title": "Kid Niki: Radical Ninja",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 314,
-    "title": "King's Knight",
-    "publisher": "Squaresoft",
-    "owned": false
-  },
-  {
-    "id": 315,
-    "title": "King's Quest V",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 316,
-    "title": "Kings of the Beach: Professional Beach Volleyball",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 317,
-    "title": "Kirby's Adventure",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 318,
-    "title": "Kiwi Kraze: A Bird-Brained Adventure!",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 319,
-    "title": "Klash Ball",
-    "publisher": "SOFEL",
-    "owned": false
-  },
-  {
-    "id": 320,
-    "title": "Knight Rider",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 321,
-    "title": "Krion Conquest, The",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 322,
-    "title": "Krusty\u2019s Fun House",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 323,
-    "title": "Kung Fu",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 324,
-    "title": "Kung Fu Heroes",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 325,
-    "title": "L'Empereur",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 326,
-    "title": "Laser Invasion",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 327,
-    "title": "Last Action Hero",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 328,
-    "title": "Last Ninja, The",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 329,
-    "title": "Last Starfighter, The",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 330,
-    "title": "Lee Trevino's: Fighting Golf",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 331,
-    "title": "Legacy of the Wizard",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 332,
-    "title": "Legend of Kage, The",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 333,
-    "title": "Legend of Zelda, The",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 334,
-    "title": "Legendary Wings, The",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 335,
-    "title": "Legends of the Diamond: The Baseball Championship Game",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 336,
-    "title": "Lemmings",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 337,
-    "title": "Lethal Weapon",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 338,
-    "title": "Life Force",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 339,
-    "title": "Little League Baseball: Championship Series",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 340,
-    "title": "Little Mermaid, The",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 341,
-    "title": "Little Nemo: The Dream Master",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 342,
-    "title": "Little Ninja Brothers",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 343,
-    "title": "Little Samson",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 344,
-    "title": "Lode Runner",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 345,
-    "title": "Lone Ranger, The",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 346,
-    "title": "Loopz",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 347,
-    "title": "Low G Man: The Low Gravity Man",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 348,
-    "title": "Lunar Pool",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 349,
-    "title": "M.C. Kids",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 350,
-    "title": "M.U.L.E.",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 351,
-    "title": "M.U.S.C.L.E.: Tag Team Match",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 352,
-    "title": "Mach Rider",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 353,
-    "title": "Mad Max",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 354,
-    "title": "Mafat Conspiracy, The",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 355,
-    "title": "Magic Darts",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 356,
-    "title": "Magic Johnson's: Fast Break",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 357,
-    "title": "Magic of Scheherazade, The",
-    "publisher": "Culture Brain",
-    "owned": false
-  },
-  {
-    "id": 358,
-    "title": "Magician",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 359,
-    "title": "Magmax",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 360,
-    "title": "Major League Baseball",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 361,
-    "title": "Maniac Mansion",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 362,
-    "title": "Mappy-Land",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 363,
-    "title": "Marble Madness",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 364,
-    "title": "Mario Is Missing!",
-    "publisher": "Mindscape (The Software Toolworks)",
-    "owned": false
-  },
-  {
-    "id": 365,
-    "title": "Mario's Time Machine",
-    "publisher": "Mindscape (The Software Toolworks)",
-    "owned": false
-  },
-  {
-    "id": 366,
-    "title": "Mechanized Attack",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 367,
-    "title": "Mega Man",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 368,
-    "title": "Mega Man 2",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 369,
-    "title": "Mega Man 3",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 370,
-    "title": "Mega Man 4",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 371,
-    "title": "Mega Man 5",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 372,
-    "title": "Mega Man 6",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 373,
-    "title": "Mendel Palace",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 374,
-    "title": "Metal Gear",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 375,
-    "title": "Metal Mech: Man & Machine",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 376,
-    "title": "Metal Storm",
-    "publisher": "IREM",
-    "owned": false
-  },
-  {
-    "id": 377,
-    "title": "Metroid",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 378,
-    "title": "Michael Andretti's: World GP",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 379,
-    "title": "Mickey Mousecapade",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 380,
-    "title": "Mickey's Adventure in Numberland",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 381,
-    "title": "Mickey's Safari in Letterland",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 382,
-    "title": "Might & Magic: Secret of the Inner Sanctum",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 383,
-    "title": "Mighty Bombjack",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 384,
-    "title": "Mighty Final Fight",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 385,
-    "title": "Mike Tyson's: Punch-Out!!",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 386,
-    "title": "Millipede",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 387,
-    "title": "Milon's Secret Castle",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 388,
-    "title": "Miracle Piano Teaching System, The",
-    "publisher": "Mindscape (The Software Toolworks)",
-    "owned": false
-  },
-  {
-    "id": 389,
-    "title": "Mission: Impossible",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 390,
-    "title": "Monopoly",
-    "publisher": "Parker Brothers",
-    "owned": false
-  },
-  {
-    "id": 391,
-    "title": "Monster in My Pocket",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 392,
-    "title": "Monster Party",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 393,
-    "title": "Monster Truck Rally",
-    "publisher": "INTV",
-    "owned": false
-  },
-  {
-    "id": 394,
-    "title": "Motor City Patrol",
-    "publisher": "Matchbox",
-    "owned": false
-  },
-  {
-    "id": 395,
-    "title": "Ms. Pac-Man",
-    "publisher": "Namco",
-    "owned": false
-  },
-  {
-    "id": 396,
-    "title": "MTV: Remote Control",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 397,
-    "title": "Muppet Adventure: Chaos at the Carnival",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 398,
-    "title": "Mutant Virus, The",
-    "publisher": "ASC",
-    "owned": false
-  },
-  {
-    "id": 399,
-    "title": "Mystery Quest",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 400,
-    "title": "NARC",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 401,
-    "title": "NES Open: Tournament Golf",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 402,
-    "title": "NES Play Action Football",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 403,
-    "title": "NFL Football",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 404,
-    "title": "Nigel Mansell's: World Championship Racing",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 405,
-    "title": "Nightshade",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 406,
-    "title": "Ninja Crusaders",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 407,
-    "title": "Ninja Gaiden",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 408,
-    "title": "Ninja Gaiden II: The Dark Sword of Chaos",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 409,
-    "title": "Ninja Gaiden III: The Ancient Ship of Doom",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 410,
-    "title": "Ninja Kid",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 411,
-    "title": "Nintendo World Cup",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 412,
-    "title": "Nobunaga's Ambition",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 413,
-    "title": "Nobunaga's Ambition II",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 414,
-    "title": "North and South",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 415,
-    "title": "Operation Wolf: Take No Prisoners",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 416,
-    "title": "ORB 3-D",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 417,
-    "title": "Original Mario Bros., The",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 418,
-    "title": "Othello",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 419,
-    "title": "Overlord",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 420,
-    "title": "P.O.W.: Prisoners of War",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 421,
-    "title": "Pac-Man",
-    "publisher": "Namco",
-    "owned": false
-  },
-  {
-    "id": 422,
-    "title": "Pac-Man",
-    "publisher": "Tengen",
-    "owned": false
-  },
-  {
-    "id": 423,
-    "title": "Palamedes",
-    "publisher": "Hot-B",
-    "owned": false
-  },
-  {
-    "id": 424,
-    "title": "Panic Restaurant",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 425,
-    "title": "Paperboy",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 426,
-    "title": "Paperboy 2",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 427,
-    "title": "Phantom Fighter",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 428,
-    "title": "Pictionary",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 429,
-    "title": "Pin-Bot",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 430,
-    "title": "Pinball",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 431,
-    "title": "Pinball Quest",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 432,
-    "title": "Pipe Dream",
-    "publisher": "Bullet-Proof",
-    "owned": false
-  },
-  {
-    "id": 433,
-    "title": "Pirates!",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 434,
-    "title": "Platoon",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 435,
-    "title": "Popeye",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 436,
-    "title": "Power Blade",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 437,
-    "title": "Power Blade 2",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 438,
-    "title": "Power Punch II",
-    "publisher": "ASC",
-    "owned": false
-  },
-  {
-    "id": 439,
-    "title": "Predator",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 440,
-    "title": "Prince of Persia",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 441,
-    "title": "Princess Tomato in the Salad Kingdom",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 442,
-    "title": "Pro Sport Hockey",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 443,
-    "title": "Pro Wrestling",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 444,
-    "title": "Punch-Out!!",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 445,
-    "title": "Punisher, The",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 446,
-    "title": "Puss N' Boots: Pero's Great Adventure",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 447,
-    "title": "Puzznic",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 448,
-    "title": "Q*Bert",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 449,
-    "title": "Qix",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 450,
-    "title": "R.B.I. Baseball",
-    "publisher": "Tengen",
-    "owned": false
-  },
-  {
-    "id": 451,
-    "title": "R.C. Pro-Am",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 452,
-    "title": "R.C. Pro-Am II",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 453,
-    "title": "Racket Attack",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 454,
-    "title": "Rad Racer",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 455,
-    "title": "Rad Racer II",
-    "publisher": "Squaresoft",
-    "owned": false
-  },
-  {
-    "id": 456,
-    "title": "Raid on Bungeling Bay",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 457,
-    "title": "Rainbow Islands",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 458,
-    "title": "Rally Bike",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 459,
-    "title": "Rambo",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 460,
-    "title": "Rampage",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 461,
-    "title": "Rampart",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 462,
-    "title": "Ren & Stimpy Show, The: Buckeroo$!",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 463,
-    "title": "Renegade",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 464,
-    "title": "Rescue: The Embassy Mission",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 465,
-    "title": "Ring King",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 466,
-    "title": "River City Ransom",
-    "publisher": "American Technos",
-    "owned": false
-  },
-  {
-    "id": 467,
-    "title": "RoadBlasters",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 468,
-    "title": "Robin Hood: Prince of Thieves",
-    "publisher": "Virgin",
-    "owned": false
-  },
-  {
-    "id": 469,
-    "title": "RoboCop",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 470,
-    "title": "RoboCop 2",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 471,
-    "title": "RoboCop 3",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 472,
-    "title": "RoboWarrior",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 473,
-    "title": "Rock 'n Ball",
-    "publisher": "NTVIC",
-    "owned": false
-  },
-  {
-    "id": 474,
-    "title": "Rocket Ranger",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 475,
-    "title": "Rocketeer, The",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 476,
-    "title": "Rockin' Kats",
-    "publisher": "Atlus",
-    "owned": false
-  },
-  {
-    "id": 477,
-    "title": "Roger Clemens': MVP Baseball",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 478,
-    "title": "Rollerball",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 479,
-    "title": "Rollerblade Racer",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 480,
-    "title": "Rollergames",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 481,
-    "title": "Romance of the Three Kingdoms",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 482,
-    "title": "Romance of the Three Kingdoms II",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 483,
-    "title": "Roundball 2-on-2 Challenge",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 484,
-    "title": "Rush'n Attack",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 485,
-    "title": "Rygar",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 486,
-    "title": "S.C.A.T.",
-    "publisher": "Natsume",
-    "owned": false
-  },
-  {
-    "id": 487,
-    "title": "Section-Z",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 488,
-    "title": "Seicross",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 489,
-    "title": "Sesame Street: 123",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 490,
-    "title": "Sesame Street: ABC",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 491,
-    "title": "Sesame Street: ABC & 123",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 492,
-    "title": "Sesame Street: Big Bird's Hide & Speak",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 493,
-    "title": "Sesame Street: Countdown",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 494,
-    "title": "Shadow of the Ninja",
-    "publisher": "Natsume",
-    "owned": false
-  },
-  {
-    "id": 495,
-    "title": "Shadowgate",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 496,
-    "title": "Shatterhand",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 497,
-    "title": "Shingen the Ruler",
-    "publisher": "Hot-B",
-    "owned": false
-  },
-  {
-    "id": 498,
-    "title": "Shooting Range",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 499,
-    "title": "Short Order / Eggsplode",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 500,
-    "title": "Side Pocket",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 501,
-    "title": "Silent Service",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 502,
-    "title": "Silk Worm",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 503,
-    "title": "Silver Surfer",
-    "publisher": "Arcadia",
-    "owned": false
-  },
-  {
-    "id": 504,
-    "title": "Simpsons, The: Barman Meets Radioactive Man",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 505,
-    "title": "Simpsons, The: Bart vs. the Space Mutants",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 506,
-    "title": "Simpsons, The: Bart vs. the World",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 507,
-    "title": "Skate or Die",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 508,
-    "title": "Skate or Die 2: The Search for Double Trouble",
-    "publisher": "EA",
-    "owned": false
-  },
-  {
-    "id": 509,
-    "title": "Ski or Die",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 510,
-    "title": "Sky Kid",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 511,
-    "title": "Sky Shark",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 512,
-    "title": "Slalom",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 513,
-    "title": "Smash T.V.",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 514,
-    "title": "Snake Rattle n Roll",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 515,
-    "title": "Snake's Revenge",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 516,
-    "title": "Snoopy's Silly Sports Spectacular",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 517,
-    "title": "Snow Brothers",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 518,
-    "title": "Soccer",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 519,
-    "title": "Solar Jetman: Hunt for the Golden Warpship",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 520,
-    "title": "Solomon's Key",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 521,
-    "title": "Solstice: The Quest for the Staff of Demnos",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 522,
-    "title": "Space Shuttle Project",
-    "publisher": "Absolute",
-    "owned": false
-  },
-  {
-    "id": 523,
-    "title": "Spelunker",
-    "publisher": "Broderbund",
-    "owned": false
-  },
-  {
-    "id": 524,
-    "title": "Spider-Man: Return of the Sinister Six",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 525,
-    "title": "Spot: The Videogame!",
-    "publisher": "Arcadia",
-    "owned": false
-  },
-  {
-    "id": 526,
-    "title": "Spy Hunter",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 527,
-    "title": "Spy vs. Spy",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 528,
-    "title": "Sqoon",
-    "publisher": "IREM",
-    "owned": false
-  },
-  {
-    "id": 529,
-    "title": "Stack-Up",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 530,
-    "title": "Stadium Events",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 531,
-    "title": "Stanley: The Search for Dr. Livingston",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 532,
-    "title": "Star Force",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 533,
-    "title": "Star Soldier",
-    "publisher": "Taxan",
-    "owned": false
-  },
-  {
-    "id": 534,
-    "title": "Star Trek 25th Anniversary",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 535,
-    "title": "Star Trek: The Next Generation",
-    "publisher": "Absolute",
-    "owned": false
-  },
-  {
-    "id": 536,
-    "title": "Star Tropics",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 537,
-    "title": "Star Tropics II: Zoda's Revenge",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 538,
-    "title": "Star Voyager",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 539,
-    "title": "Star Wars",
-    "publisher": "JVC",
-    "owned": false
-  },
-  {
-    "id": 540,
-    "title": "Star Wars: The Empire Strikes Back",
-    "publisher": "JVC",
-    "owned": false
-  },
-  {
-    "id": 541,
-    "title": "Starship Hector",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 542,
-    "title": "Stealth ATF",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 543,
-    "title": "Stinger",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 544,
-    "title": "Street Cop",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 545,
-    "title": "Street Fighter 2010: The Final Fight",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 546,
-    "title": "Strider",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 547,
-    "title": "Sullivan Bluth Presents: Dragon's Lair",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 548,
-    "title": "Super C",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 549,
-    "title": "Super Cars",
-    "publisher": "Electro-Brain",
-    "owned": false
-  },
-  {
-    "id": 550,
-    "title": "Super Dodge Ball",
-    "publisher": "Sony Imagesoft",
-    "owned": false
-  },
-  {
-    "id": 551,
-    "title": "Super Glove Ball",
-    "publisher": "Mattel",
-    "owned": false
-  },
-  {
-    "id": 552,
-    "title": "Super Jeopardy!",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 553,
-    "title": "Super Mario Bros.",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 554,
-    "title": "Super Mario Bros. / Duck Hunt",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 555,
-    "title": "Super Mario Bros. / Duck Hunt / World Class Track Meet",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 556,
-    "title": "Super Mario Bros. 2",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 557,
-    "title": "Super Mario Bros. 3",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 558,
-    "title": "Super Pitfall",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 559,
-    "title": "Super Spike V'Ball",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 560,
-    "title": "Super Spike V'Ball / Nintendo World Cup",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 561,
-    "title": "Super Spy Hunter",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 562,
-    "title": "Super Team Games",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 563,
-    "title": "Superman",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 564,
-    "title": "Swamp Thing",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 565,
-    "title": "Sword Master",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 566,
-    "title": "Swords and Serpents",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 567,
-    "title": "T2 Terminator 2: Judgment Day",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 568,
-    "title": "Taboo: The Sixth Sense",
-    "publisher": "Tradewest",
-    "owned": false
-  },
-  {
-    "id": 569,
-    "title": "Tag Team Wrestling",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 570,
-    "title": "Talespin",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 571,
-    "title": "Target: Renegade",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 572,
-    "title": "Tecmo Baseball",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 573,
-    "title": "Tecmo Bowl",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 574,
-    "title": "Tecmo Cup: Soccer Game",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 575,
-    "title": "Tecmo NBA Basketball",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 576,
-    "title": "Tecmo Super Bowl",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 577,
-    "title": "Tecmo World Wrestling",
-    "publisher": "Tecmo",
-    "owned": false
-  },
-  {
-    "id": 578,
-    "title": "Teenage Mutant Ninja Turtles",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 579,
-    "title": "Teenage Mutant Ninja Turtles II: The Arcade Game",
-    "publisher": "Konami (Ultra)",
-    "owned": false
-  },
-  {
-    "id": 580,
-    "title": "Teenage Mutant Ninja Turtles III: The Manhattan Project",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 581,
-    "title": "Teenage Mutant Ninja Turtles: Tournament Fighters",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 582,
-    "title": "Tennis",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 583,
-    "title": "Terminator, The",
-    "publisher": "Mindscape",
-    "owned": false
-  },
-  {
-    "id": 584,
-    "title": "Terra Cresta",
-    "publisher": "Vic Tokai",
-    "owned": false
-  },
-  {
-    "id": 585,
-    "title": "Tetris",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 586,
-    "title": "Tetris 2",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 587,
-    "title": "Three Stooges, The",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 588,
-    "title": "Thunder and Lightning",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 589,
-    "title": "Thunderbirds",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 590,
-    "title": "Thundercade",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 591,
-    "title": "Tiger-Heli",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 592,
-    "title": "Time Lord",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 593,
-    "title": "Times of Lore",
-    "publisher": "Toho",
-    "owned": false
-  },
-  {
-    "id": 594,
-    "title": "Tiny Toon Adventures",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 595,
-    "title": "Tiny Toon Adventures 2: Trouble in Wackyland",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 596,
-    "title": "Tiny Toon Adventures: Cartoon Workshop",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 597,
-    "title": "To The Earth",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 598,
-    "title": "Toki",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 599,
-    "title": "Tom & Jerry: The Ultimate Game of Cat and Mouse!",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 600,
-    "title": "Tombs & Treasure",
-    "publisher": "Activision (Infocom)",
-    "owned": false
-  },
-  {
-    "id": 601,
-    "title": "Top Gun",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 602,
-    "title": "Top Gun: The Second Mission",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 603,
-    "title": "Total Recall",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 604,
-    "title": "Totally Rad",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 605,
-    "title": "Touchdown Fever",
-    "publisher": "SNK",
-    "owned": false
-  },
-  {
-    "id": 606,
-    "title": "Town & Country Surf Designs",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 607,
-    "title": "Town & Country Surf Designs II: Thrilla\u2019s Surfari",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 608,
-    "title": "Toxic Crusaders",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 609,
-    "title": "Track & Field",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 610,
-    "title": "Track & Field II",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 611,
-    "title": "Treasure Master",
-    "publisher": "ASC",
-    "owned": false
-  },
-  {
-    "id": 612,
-    "title": "Trog!",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 613,
-    "title": "Trojan",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 614,
-    "title": "Twin Cobra",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 615,
-    "title": "Twin Eagle",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 616,
-    "title": "Ultima: Exodus",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 617,
-    "title": "Ultima: Quest of the Avatar",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 618,
-    "title": "Ultima: Warriors of Destiny",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 619,
-    "title": "Ultimate Air Combat",
-    "publisher": "Activision",
-    "owned": false
-  },
-  {
-    "id": 620,
-    "title": "Ultimate Basketball",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 621,
-    "title": "Uncanny X-Men, The",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 622,
-    "title": "Uncharted Waters",
-    "publisher": "KOEI",
-    "owned": false
-  },
-  {
-    "id": 623,
-    "title": "Uninvited",
-    "publisher": "Kemco",
-    "owned": false
-  },
-  {
-    "id": 624,
-    "title": "Untouchables, The",
-    "publisher": "Ocean",
-    "owned": false
-  },
-  {
-    "id": 625,
-    "title": "Urban Champion",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 626,
-    "title": "Vegas Dream",
-    "publisher": "HAL",
-    "owned": false
-  },
-  {
-    "id": 627,
-    "title": "Vice: Project Doom",
-    "publisher": "Sammy",
-    "owned": false
-  },
-  {
-    "id": 628,
-    "title": "Videomation",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 629,
-    "title": "Volleyball",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 630,
-    "title": "Wacky Races",
-    "publisher": "Atlus",
-    "owned": false
-  },
-  {
-    "id": 631,
-    "title": "Wall Street Kid",
-    "publisher": "SOFEL",
-    "owned": false
-  },
-  {
-    "id": 632,
-    "title": "Wario's Woods",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 633,
-    "title": "Wayne Gretzky Hockey",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 634,
-    "title": "Wayne's World",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 635,
-    "title": "WCW: World Championship Wrestling",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 636,
-    "title": "Werewolf: The Last Warrior",
-    "publisher": "Data East",
-    "owned": false
-  },
-  {
-    "id": 637,
-    "title": "Wheel of Fortune",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 638,
-    "title": "Wheel of Fortune: Family Edition",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 639,
-    "title": "Wheel of Fortune: Featuring Vanna White",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 640,
-    "title": "Wheel of Fortune: Junior Edition",
-    "publisher": "GameTek",
-    "owned": false
-  },
-  {
-    "id": 641,
-    "title": "Where in Time Is Carmen Sandiego?",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 642,
-    "title": "Where's Waldo?",
-    "publisher": "THQ",
-    "owned": false
-  },
-  {
-    "id": 643,
-    "title": "Who Framed Roger Rabbit?",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 644,
-    "title": "Whomp 'Em",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 645,
-    "title": "Widget",
-    "publisher": "Atlus",
-    "owned": false
-  },
-  {
-    "id": 646,
-    "title": "Wild Gunman",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 647,
-    "title": "Will Harvey Presents: The Immortal",
-    "publisher": "EA",
-    "owned": false
-  },
-  {
-    "id": 648,
-    "title": "Willow",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 649,
-    "title": "Win, Lose or Draw",
-    "publisher": "Hi-Tech",
-    "owned": false
-  },
-  {
-    "id": 650,
-    "title": "Winter Games",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 651,
-    "title": "Wizardry Master Series II: Knight of Diamonds",
-    "publisher": "ASCII / NEXOFT",
-    "owned": false
-  },
-  {
-    "id": 652,
-    "title": "Wizardry Master Series: Proving Grounds of the Mad Overlord",
-    "publisher": "ASCII / NEXOFT",
-    "owned": false
-  },
-  {
-    "id": 653,
-    "title": "Wizards & Warriors",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 654,
-    "title": "Wizards & Warriors II: Iron Sword",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 655,
-    "title": "Wizards & Warriors III: Kuros...Visions of Power",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 656,
-    "title": "Wolverine",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 657,
-    "title": "World Champ",
-    "publisher": "Romstar",
-    "owned": false
-  },
-  {
-    "id": 658,
-    "title": "World Class Track Meet",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 659,
-    "title": "World Games",
-    "publisher": "Milton Bradley",
-    "owned": false
-  },
-  {
-    "id": 660,
-    "title": "Wrath of the Black Manta",
-    "publisher": "Taito",
-    "owned": false
-  },
-  {
-    "id": 661,
-    "title": "Wrecking Crew",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 662,
-    "title": "Wurm: Journey to the Center of the Earth",
-    "publisher": "Asmik",
-    "owned": false
-  },
-  {
-    "id": 663,
-    "title": "WWF WrestleMania",
-    "publisher": "Acclaim",
-    "owned": false
-  },
-  {
-    "id": 664,
-    "title": "WWF: King of the Ring",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 665,
-    "title": "WWF: WrestleMania Challenge",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 666,
-    "title": "WWF: Wrestlemania Steel Cage Challenge",
-    "publisher": "Acclaim (LJN)",
-    "owned": false
-  },
-  {
-    "id": 667,
-    "title": "Xenophobe",
-    "publisher": "Sunsoft",
-    "owned": false
-  },
-  {
-    "id": 668,
-    "title": "Xevious: The Avenger",
-    "publisher": "Bandai",
-    "owned": false
-  },
-  {
-    "id": 669,
-    "title": "Xexyz",
-    "publisher": "Hudson",
-    "owned": false
-  },
-  {
-    "id": 670,
-    "title": "Yo! Noid",
-    "publisher": "Capcom",
-    "owned": false
-  },
-  {
-    "id": 671,
-    "title": "Yoshi",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 672,
-    "title": "Yoshi's Cookie",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 673,
-    "title": "Young Indiana Jones Chronicles, The",
-    "publisher": "Jaleco",
-    "owned": false
-  },
-  {
-    "id": 674,
-    "title": "Zanac",
-    "publisher": "FCI",
-    "owned": false
-  },
-  {
-    "id": 675,
-    "title": "Zelda II: The Adventure of Link",
-    "publisher": "Nintendo",
-    "owned": false
-  },
-  {
-    "id": 676,
-    "title": "Zen: Intergalactic Ninja",
-    "publisher": "Konami",
-    "owned": false
-  },
-  {
-    "id": 677,
-    "title": "Zombie Nation",
-    "publisher": "Meldac",
-    "owned": false
-  }
+  {"id":1,"title":"720","publisher":"Mindscape","owned":false,"year":1989,"genre":"Sports","description":"Skate park action game based on the classic Atari arcade title."},
+  {"id":2,"title":"1942","publisher":"Capcom","owned":false,"year":1986,"genre":"Shooter","description":"WWII aerial shooter where you battle waves of Japanese fighter planes."},
+  {"id":3,"title":"10-Yard Fight","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Early NES football game with simple field goal and running mechanics."},
+  {"id":4,"title":"1943: The Battle of Midway","publisher":"Capcom","owned":false,"year":1988,"genre":"Shooter","description":"WWII aerial sequel with upgraded planes and more intense combat."},
+  {"id":5,"title":"3-D Battles of World Runner, The","publisher":"Acclaim","owned":false,"year":1987,"genre":"Action","description":"3D runner where you dodge obstacles and battle enemies across wild terrain."},
+  {"id":6,"title":"8 Eyes","publisher":"Taxan","owned":false,"year":1990,"genre":"Action","description":"Side-scrolling adventure with two heroes battling cultists across eight worlds."},
+  {"id":7,"title":"A Nightmare on Elm Street","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"Licensed horror game based on the slasher film franchise."},
+  {"id":8,"title":"Abadox: The Deadly Inner War","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Shooter","description":"Sci-fi shooter where you battle parasites inside a living planet."},
+  {"id":9,"title":"Addams Family, The","publisher":"Ocean","owned":false,"year":1992,"genre":"Platformer","description":"Platform game based on the classic TV show and film franchise."},
+  {"id":10,"title":"Addams Family, The: Pugsley's Scavenger Hunt","publisher":"Ocean","owned":false,"year":1993,"genre":"Platformer","description":"Pugsley hunts for items hidden throughout the Addams Family mansion."},
+  {"id":11,"title":"Advanced Dungeons & Dragons: Dragon Strike","publisher":"FCI","owned":false,"year":1992,"genre":"Strategy","description":"D&D fantasy strategy game where you control a dragon in aerial combat."},
+  {"id":12,"title":"Advanced Dungeons & Dragons: Heroes of the Lance","publisher":"FCI","owned":false,"year":1991,"genre":"RPG","description":"D&D RPG with a top-down view and real-time combat in a fantasy world."},
+  {"id":13,"title":"Advanced Dungeons & Dragons: Hillsfar","publisher":"FCI","owned":false,"year":1993,"genre":"RPG","description":"D&D adventure focused on a single city with arena battles and exploration."},
+  {"id":14,"title":"Advanced Dungeons & Dragons: Pool of Radiance","publisher":"FCI","owned":false,"year":1992,"genre":"RPG","description":"Full D&D RPG adaptation with party-based exploration and turn-based combat."},
+  {"id":15,"title":"Adventure Island","publisher":"Hudson","owned":false,"year":1987,"genre":"Platformer","description":"Master Higgins runs and jumps through tropical islands collecting fruit."},
+  {"id":16,"title":"Adventure Island 3","publisher":"Hudson","owned":false,"year":1992,"genre":"Platformer","description":"Third island adventure with new weapons and dinosaur companions."},
+  {"id":17,"title":"Adventure Island II","publisher":"Hudson","owned":false,"year":1991,"genre":"Platformer","description":"Second adventure adds dinosaur mounts and underwater stages."},
+  {"id":18,"title":"Adventures in the Magic Kingdom","publisher":"Capcom","owned":false,"year":1990,"genre":"Platformer","description":"Collect items across Disneyland attractions with Mickey as your guide."},
+  {"id":19,"title":"Adventures of Bayou Billy, The","publisher":"Konami","owned":false,"year":1989,"genre":"Action","description":"A gun-toting game set in the Louisiana bayou with notoriously brutal difficulty."},
+  {"id":20,"title":"Adventures of Dino Riki","publisher":"Hudson","owned":false,"year":1988,"genre":"Shooter","description":"Vertically-scrolling shooter where a caveman fights prehistoric enemies."},
+  {"id":21,"title":"Adventures of Gilligan's Island, The","publisher":"Bandai","owned":false,"year":1990,"genre":"Adventure","description":"Explore an island based on the classic TV sitcom stranded cast."},
+  {"id":22,"title":"Adventures of Lolo","publisher":"HAL","owned":false,"year":1989,"genre":"Puzzle","description":"Charming puzzle game where Lolo must collect heart framers to escape rooms."},
+  {"id":23,"title":"Adventures of Lolo 2","publisher":"HAL","owned":false,"year":1990,"genre":"Puzzle","description":"Sequel with more challenging rooms and new puzzle mechanics for Lolo."},
+  {"id":24,"title":"Adventures of Lolo 3","publisher":"HAL","owned":false,"year":1991,"genre":"Puzzle","description":"Final Lolo puzzle game with the most complex room designs in the series."},
+  {"id":25,"title":"Adventures of Rad Gravity, The","publisher":"Activision","owned":false,"year":1990,"genre":"Platformer","description":"A space explorer jumps across planets fighting alien enemies with a jetpack."},
+  {"id":26,"title":"Adventures of Rocky And Bullwinkle And Friends, The","publisher":"THQ","owned":false,"year":1992,"genre":"Platformer","description":"Rocky and Bullwinkle embark on a platforming adventure through cartoon worlds."},
+  {"id":27,"title":"Adventures of Tom Sawyer","publisher":"SETA","owned":false,"year":1989,"genre":"Platformer","description":"Tom Sawyer side-scroller with rafting and platforming through Mississippi settings."},
+  {"id":28,"title":"Air Fortress","publisher":"HAL","owned":false,"year":1990,"genre":"Shooter","description":"Space shooter where you manage a fortress and battle alien invaders."},
+  {"id":29,"title":"Airwolf","publisher":"Acclaim","owned":false,"year":1988,"genre":"Shooter","description":"Side-scrolling shooter based on the Vietnam War helicopter TV series."},
+  {"id":30,"title":"Al Unser Jr.: Turbo Racing","publisher":"Data East","owned":false,"year":1990,"genre":"Racing","description":"Indy car racing game endorsed by the real-world racing champion."},
+  {"id":31,"title":"Alex DeMeo’s: Race America","publisher":"Absolute","owned":false,"year":1990,"genre":"Racing","description":"Road racing game with a top-down perspective and tournament mode."},
+  {"id":32,"title":"Alfred Chicken","publisher":"Mindscape","owned":false,"year":1992,"genre":"Platformer","description":"A chicken character platformer with unique level design and humor."},
+  {"id":33,"title":"Alien 3","publisher":"Acclaim (LJN)","owned":false,"year":1993,"genre":"Action","description":"Licensed action platformer based on the Alien 3 film."},
+  {"id":34,"title":"All-Pro Basketball","publisher":"Vic Tokai","owned":false,"year":1989,"genre":"Sports","description":"Five-on-five basketball simulation with standard league play."},
+  {"id":35,"title":"Alpha Mission","publisher":"SNK","owned":false,"year":1987,"genre":"Shooter","description":"Vertical space shooter with upgradable weaponry and intense enemy waves."},
+  {"id":36,"title":"Amagon","publisher":"Sammy","owned":false,"year":1988,"genre":"Action","description":"A jungle warrior transforms and fights enemies in a side-scrolling adventure."},
+  {"id":37,"title":"American Gladiators","publisher":"GameTek","owned":false,"year":1991,"genre":"Sports","description":"Based on the TV show with various athletic mini-game competitions."},
+  {"id":38,"title":"Anticipation","publisher":"Nintendo","owned":false,"year":1988,"genre":"Puzzle","description":"Nintendo's board game puzzler where you connect colors without crossing lines."},
+  {"id":39,"title":"Arch Rivals: A Basketbrawl!","publisher":"Acclaim","owned":false,"year":1992,"genre":"Sports","description":"Basketball brawler where fouls are intentional and fighting is encouraged."},
+  {"id":40,"title":"Archon","publisher":"Activision","owned":false,"year":1989,"genre":"Strategy","description":"Classic computer strategy game with light and dark fantasy armies."},
+  {"id":41,"title":"Arkanoid","publisher":"Taito","owned":false,"year":1987,"genre":"Puzzle","description":"Classic brick-breaking paddle game with a spaceship and power-ups."},
+  {"id":42,"title":"Arkista's Ring","publisher":"Sammy","owned":false,"year":1990,"genre":"Action","description":"Fantasy action game where an elf archer fights through haunted forests."},
+  {"id":43,"title":"Astyanax","publisher":"Jaleco","owned":false,"year":1990,"genre":"Action","description":"A warrior battles mythical monsters in ancient Greece."},
+  {"id":44,"title":"Athena","publisher":"SNK","owned":false,"year":1987,"genre":"Action","description":"Greek goddess battles enemies in a side-scrolling action adventure."},
+  {"id":45,"title":"Athletic World","publisher":"Bandai","owned":false,"year":1987,"genre":"Sports","description":"Power Pad sports game with various athletic running challenges."},
+  {"id":46,"title":"Attack of the Killer Tomatoes","publisher":"THQ","owned":false,"year":1992,"genre":"Platformer","description":"B-movie parody platformer where tomatoes have taken over the world."},
+  {"id":47,"title":"Back to the Future","publisher":"Acclaim (LJN)","owned":false,"year":1989,"genre":"Action","description":"Licensed game based on the Back to the Future film with time travel."},
+  {"id":48,"title":"Back to the Future II & III","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"Covers events of the second and third films in one licensed package."},
+  {"id":49,"title":"Bad Dudes","publisher":"Data East","owned":false,"year":1988,"genre":"Action","description":"Rescue the President from ninjas in this classic beat-em-up arcade port."},
+  {"id":50,"title":"Bad News Baseball","publisher":"Tecmo","owned":false,"year":1990,"genre":"Sports","description":"Arcade-style baseball with cartoon characters and simple mechanics."},
+  {"id":51,"title":"Bad Street Brawler","publisher":"Mattel","owned":false,"year":1987,"genre":"Action","description":"Street brawler where you punch through waves of street thugs."},
+  {"id":52,"title":"Balloon Fight","publisher":"Nintendo","owned":false,"year":1984,"genre":"Action","description":"Pop balloons to fly and battle enemies in this early Nintendo classic."},
+  {"id":53,"title":"Bandai Golf: Challenge Pebble Beach","publisher":"Bandai","owned":false,"year":1990,"genre":"Sports","description":"Golf simulation set at the famous Pebble Beach golf course."},
+  {"id":54,"title":"Bandit Kings of Ancient China","publisher":"KOEI","owned":false,"year":1990,"genre":"Strategy","description":"Historical strategy game set during ancient Chinese warlord conflicts."},
+  {"id":55,"title":"Barbie","publisher":"Hi-Tech","owned":false,"year":1991,"genre":"Puzzle","description":"Fashion-themed puzzle game aimed at younger players and Barbie fans."},
+  {"id":56,"title":"Bard's Tale, The","publisher":"FCI","owned":false,"year":1991,"genre":"RPG","description":"Dark fantasy RPG adapted from the classic computer role-playing series."},
+  {"id":57,"title":"Barker Bill's: Trick Shooting","publisher":"Nintendo","owned":false,"year":1990,"genre":"Shooter","description":"Zapper light gun game featuring a circus performer shooting acts."},
+  {"id":58,"title":"Base Wars: Cyber Stadium Series","publisher":"Konami (Ultra)","owned":false,"year":1991,"genre":"Sports","description":"Futuristic baseball where robots play the sport with special abilities."},
+  {"id":59,"title":"Baseball","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Simple NES launch title baseball with basic batting and pitching."},
+  {"id":60,"title":"Baseball Simulator 1.000","publisher":"Culture Brain","owned":false,"year":1990,"genre":"Sports","description":"Deep baseball simulation with custom team creation features."},
+  {"id":61,"title":"Baseball Stars","publisher":"SNK","owned":false,"year":1989,"genre":"Sports","description":"Create and manage your own baseball team across a full season."},
+  {"id":62,"title":"Baseball Stars 2","publisher":"Romstar","owned":false,"year":1992,"genre":"Sports","description":"Sequel to Baseball Stars with improved gameplay and team management."},
+  {"id":63,"title":"Bases Loaded","publisher":"Jaleco","owned":false,"year":1988,"genre":"Sports","description":"Realistic baseball simulation with franchise and season modes."},
+  {"id":64,"title":"Bases Loaded 2: Second Season","publisher":"Jaleco","owned":false,"year":1990,"genre":"Sports","description":"Second Bases Loaded installment with updated rosters and stadiums."},
+  {"id":65,"title":"Bases Loaded 3","publisher":"Jaleco","owned":false,"year":1991,"genre":"Sports","description":"Third entry improves on the series' simulation depth and controls."},
+  {"id":66,"title":"Bases Loaded 4","publisher":"Jaleco","owned":false,"year":1991,"genre":"Sports","description":"Final Bases Loaded game with enhanced pitching and batting mechanics."},
+  {"id":67,"title":"Batman Returns","publisher":"Konami","owned":false,"year":1993,"genre":"Action","description":"Batman battles villains from the Tim Burton sequel film."},
+  {"id":68,"title":"Batman: Return of the Joker","publisher":"Sunsoft","owned":false,"year":1992,"genre":"Action","description":"Dark platformer where Batman fights the Joker's resurrected gang."},
+  {"id":69,"title":"Batman: The Video Game","publisher":"Sunsoft","owned":false,"year":1989,"genre":"Action","description":"Excellent action platformer based on the Tim Burton Batman film."},
+  {"id":70,"title":"Battle Chess","publisher":"Data East","owned":false,"year":1990,"genre":"Puzzle","description":"Classic chess game with animated battle sequences when pieces capture."},
+  {"id":71,"title":"Battle of Olympus, The","publisher":"Broderbund","owned":false,"year":1989,"genre":"Action","description":"Greek mythology adventure where Orpheus battles gods to rescue his love."},
+  {"id":72,"title":"Battleship","publisher":"Mindscape","owned":false,"year":1993,"genre":"Strategy","description":"Classic naval strategy board game adapted for the NES."},
+  {"id":73,"title":"Battletoads","publisher":"Tradewest","owned":false,"year":1991,"genre":"Action","description":"Brutal beat-em-up with three warriors battling the Dark Queen's forces."},
+  {"id":74,"title":"Battletoads Double Dragon","publisher":"Tradewest","owned":false,"year":1993,"genre":"Action","description":"Rare crossover team-up between the Battletoads and Double Dragon crews."},
+  {"id":75,"title":"Beetlejuice","publisher":"Acclaim (LJN)","owned":false,"year":1991,"genre":"Action","description":"Beetlejuice platformer based on the animated cartoon series."},
+  {"id":76,"title":"Best of the Best: Championship Karate","publisher":"Electro-Brain","owned":false,"year":1992,"genre":"Fighting","description":"One-on-one karate tournament game with multiple fighters and moves."},
+  {"id":77,"title":"Bigfoot","publisher":"Acclaim","owned":false,"year":1990,"genre":"Racing","description":"Monster truck racing and jumping competition game."},
+  {"id":78,"title":"Bill & Ted's: Excellent Video Game Adventure","publisher":"Acclaim (LJN)","owned":false,"year":1991,"genre":"Adventure","description":"Text adventure and platformer hybrid based on the cult film."},
+  {"id":79,"title":"Bill Elliot's: NASCAR Challenge","publisher":"Konami","owned":false,"year":1991,"genre":"Racing","description":"NASCAR racing simulation endorsed by champion Bill Elliott."},
+  {"id":80,"title":"Bionic Commando","publisher":"Capcom","owned":false,"year":1988,"genre":"Action","description":"Elite commando swings through enemy territory to defeat the villain Groeder."},
+  {"id":81,"title":"Black Bass, The","publisher":"Hot-B","owned":false,"year":1989,"genre":"Sports","description":"Bass fishing simulation where you choose lures and locations."},
+  {"id":82,"title":"Blades of Steel","publisher":"Konami","owned":false,"year":1988,"genre":"Sports","description":"Classic ice hockey game with excellent arcade-style gameplay."},
+  {"id":83,"title":"Blaster Master","publisher":"Sunsoft","owned":false,"year":1988,"genre":"Action","description":"Hybrid shooter-platformer where you explore a massive multi-vehicle world."},
+  {"id":84,"title":"Blue Marlin","publisher":"Hot-B","owned":false,"year":1991,"genre":"Sports","description":"Deep-sea marlin fishing simulation with various tackle options."},
+  {"id":85,"title":"Blues Brothers, The","publisher":"Titus","owned":false,"year":1993,"genre":"Platformer","description":"Licensed game following the Blues Brothers through music venue stages."},
+  {"id":86,"title":"Bo Jackson Baseball","publisher":"Data East","owned":false,"year":1991,"genre":"Sports","description":"Arcade baseball game endorsed by the legendary boxer and athlete."},
+  {"id":87,"title":"Bomberman","publisher":"Hudson","owned":false,"year":1989,"genre":"Action","description":"Classic maze bomber game where Bomberman plants bombs to defeat enemies."},
+  {"id":88,"title":"Bomberman II","publisher":"Hudson","owned":false,"year":1993,"genre":"Action","description":"Sequel to Bomberman with enhanced stages and enemy variety."},
+  {"id":89,"title":"Bonk's Adventure","publisher":"Hudson","owned":false,"year":1993,"genre":"Platformer","description":"Bonk the caveman platformer ported from the TurboGrafx-16."},
+  {"id":90,"title":"Boulder Dash","publisher":"JVC","owned":false,"year":1990,"genre":"Puzzle","description":"Puzzle game where you dig for gems while avoiding underground hazards."},
+  {"id":91,"title":"Bram Stoker's: Dracula","publisher":"Sony Imagesoft","owned":false,"year":1993,"genre":"Action","description":"Side-scrolling action game based on the Bram Stoker Dracula film."},
+  {"id":92,"title":"Break Time: The National Pool Tour","publisher":"FCI","owned":false,"year":1993,"genre":"Sports","description":"Billiards simulation with pool and snooker variations."},
+  {"id":93,"title":"Breakthru","publisher":"Data East","owned":false,"year":1990,"genre":"Action","description":"Drive through enemy lines in this top-down military vehicle shooter."},
+  {"id":94,"title":"Bubble Bobble","publisher":"Taito","owned":false,"year":1988,"genre":"Platformer","description":"Two dragons collect bubbles to trap enemies in this charming co-op game."},
+  {"id":95,"title":"Bubble Bobble Part 2","publisher":"Taito","owned":false,"year":1993,"genre":"Platformer","description":"Sequel adds a second playable dragon and new bubble mechanics."},
+  {"id":96,"title":"Bucky O'Hare","publisher":"Konami","owned":false,"year":1992,"genre":"Platformer","description":"Space rabbit hero battles alien forces in this underrated Konami gem."},
+  {"id":97,"title":"Bugs Bunny Birthday Blowout, The","publisher":"Kemco","owned":false,"year":1990,"genre":"Platformer","description":"Bugs Bunny celebrates his birthday by platforming through cartoon worlds."},
+  {"id":98,"title":"Bugs Bunny Crazy Castle, The","publisher":"Kemco","owned":false,"year":1989,"genre":"Puzzle","description":"Bugs Bunny puzzle platformer where you avoid enemies in a castle."},
+  {"id":99,"title":"Bump 'n' Jump","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Racing","description":"Top-down bumper car racing game ported from the arcade original."},
+  {"id":100,"title":"Burai Fighter","publisher":"Taxan","owned":false,"year":1990,"genre":"Shooter","description":"Side-scrolling shooter aboard a spacecraft battling alien invaders."},
+  {"id":101,"title":"BurgerTime","publisher":"Data East","owned":false,"year":1987,"genre":"Puzzle","description":"Classic arcade game where a chef makes burgers while avoiding enemies."},
+  {"id":102,"title":"Cabal","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Shooter","description":"Run-and-gun shooter based on the classic arcade overhead game."},
+  {"id":103,"title":"Caesar's Palace","publisher":"Virgin","owned":false,"year":1992,"genre":"Simulation","description":"Casino simulation featuring slots, blackjack, and other table games."},
+  {"id":104,"title":"California Games","publisher":"Milton Bradley","owned":false,"year":1989,"genre":"Sports","description":"Multi-sport compilation with surfing, BMX, skating, and more events."},
+  {"id":105,"title":"Captain America and the Avengers","publisher":"Data East","owned":false,"year":1991,"genre":"Action","description":"Avengers beat-em-up with Captain America, Iron Man, and Hawkeye."},
+  {"id":106,"title":"Captain Planet and the Planeteers","publisher":"Mindscape","owned":false,"year":1991,"genre":"Action","description":"Side-scrolling action game based on the environmental animated series."},
+  {"id":107,"title":"Captain Skyhawk","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Shooter","description":"Vertical space shooter where you pilot a military aircraft on missions."},
+  {"id":108,"title":"Casino Kid","publisher":"SOFEL","owned":false,"year":1989,"genre":"Simulation","description":"Casino card game simulation featuring blackjack and other games."},
+  {"id":109,"title":"Casino Kid II","publisher":"SOFEL","owned":false,"year":1993,"genre":"Simulation","description":"Sequel casino simulation with more games and improved mechanics."},
+  {"id":110,"title":"Castelian","publisher":"Triffix","owned":false,"year":1991,"genre":"Puzzle","description":"Isometric puzzle game where you roll a ball to the top of a tower."},
+  {"id":111,"title":"Castle of Dragon","publisher":"SETA","owned":false,"year":1990,"genre":"Action","description":"Medieval knight battles monsters in a side-scrolling action game."},
+  {"id":112,"title":"Castlequest","publisher":"ASCII / NEXOFT","owned":false,"year":1989,"genre":"Puzzle","description":"Sokoban-style puzzle game set in a castle with monsters to avoid."},
+  {"id":113,"title":"Castlevania","publisher":"Konami","owned":false,"year":1987,"genre":"Action","description":"Simon Belmont whips his way through Dracula's castle in this iconic game."},
+  {"id":114,"title":"Castlevania II: Simon's Quest","publisher":"Konami","owned":false,"year":1988,"genre":"Action","description":"Simon's nephew searches for Dracula's remains in a non-linear adventure."},
+  {"id":115,"title":"Castlevania III: Dracula's Curse","publisher":"Konami","owned":false,"year":1990,"genre":"Action","description":"Three-path adventure prequel featuring multiple Belmont family members."},
+  {"id":116,"title":"Caveman Games","publisher":"Data East","owned":false,"year":1988,"genre":"Sports","description":"Caveman Olympics with events like dino racing and club throwing."},
+  {"id":117,"title":"Championship Bowling","publisher":"Romstar","owned":false,"year":1989,"genre":"Sports","description":"Ten-pin bowling simulation with realistic lane and ball physics."},
+  {"id":118,"title":"Championship Pool","publisher":"Mindscape","owned":false,"year":1991,"genre":"Sports","description":"Realistic billiards simulation with multiple pool game variations."},
+  {"id":119,"title":"Chessmaster, The","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Puzzle","description":"Full chess program with multiple difficulty levels and tutorials."},
+  {"id":120,"title":"Chip 'n Dale: Rescue Rangers","publisher":"Capcom","owned":false,"year":1990,"genre":"Platformer","description":"The Rescue Rangers jump and throw crates through five cartoon worlds."},
+  {"id":121,"title":"Chip 'n Dale: Rescue Rangers 2","publisher":"Capcom","owned":false,"year":1994,"genre":"Platformer","description":"Chip and Dale return with new gadgets in a longer and harder sequel."},
+  {"id":122,"title":"Chris Evert & Ivan Lendl In: Top Players’ Tennis","publisher":"Asmik","owned":false,"year":1989,"genre":"Sports","description":"Tennis simulation featuring the real-world champions of the era."},
+  {"id":123,"title":"Chubby Cherub","publisher":"Bandai","owned":false,"year":1986,"genre":"Action","description":"A flying baby angel shoots hearts at enemies in this early Famicom game."},
+  {"id":124,"title":"Circus Caper","publisher":"Toho","owned":false,"year":1990,"genre":"Platformer","description":"A boy escapes a circus with a clown companion in this action game."},
+  {"id":125,"title":"City Connection","publisher":"Jaleco","owned":false,"year":1988,"genre":"Racing","description":"Arcade racing game where you drive through cities filling up with gas."},
+  {"id":126,"title":"Clash at Demonhead","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Action","description":"A soldier battles the evil Clash organization with a time bomb ticking."},
+  {"id":127,"title":"Classic Concentration","publisher":"GameTek","owned":false,"year":1988,"genre":"Puzzle","description":"NES adaptation of the concentration card-matching TV game show."},
+  {"id":128,"title":"Cliffhanger","publisher":"Sony Imagesoft","owned":false,"year":1993,"genre":"Action","description":"Side-scrolling action game based on the Sylvester Stallone film."},
+  {"id":129,"title":"Clu Clu Land","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Early NES game where you swim through mazes opening and closing gates."},
+  {"id":130,"title":"Cobra Command","publisher":"Data East","owned":false,"year":1990,"genre":"Shooter","description":"Helicopter shooter based on the arcade game with rescue missions."},
+  {"id":131,"title":"Cobra Triangle","publisher":"Nintendo","owned":false,"year":1989,"genre":"Shooter","description":"Top-down water shooter where you pilot a boat and battle river enemies."},
+  {"id":132,"title":"Code Name: Viper","publisher":"Capcom","owned":false,"year":1990,"genre":"Action","description":"DEA agent infiltrates a drug cartel in this side-scrolling action game."},
+  {"id":133,"title":"Color a Dinosaur","publisher":"Virgin","owned":false,"year":1993,"genre":"Educational","description":"Art and coloring game for young children featuring dinosaur characters."},
+  {"id":134,"title":"Commando","publisher":"Capcom","owned":false,"year":1986,"genre":"Shooter","description":"Classic Capcom military run-and-gun where you battle enemy soldiers."},
+  {"id":135,"title":"Conan","publisher":"Mindscape","owned":false,"year":1991,"genre":"Action","description":"Conan the Barbarian fights demons and soldiers in this action game."},
+  {"id":136,"title":"Conflict","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Strategy","description":"Military strategy game based on the real-world Cold War conflict."},
+  {"id":137,"title":"Conquest of the Crystal Palace","publisher":"Asmik","owned":false,"year":1990,"genre":"Action","description":"A young adventurer quests to restore a shattered crystal palace."},
+  {"id":138,"title":"Contra","publisher":"Konami","owned":false,"year":1988,"genre":"Action","description":"Run-and-gun classic where two soldiers battle aliens with heavy firepower."},
+  {"id":139,"title":"Contra Force","publisher":"Konami","owned":false,"year":1992,"genre":"Action","description":"Contra spinoff set in a city under alien occupation without Bill and Lance."},
+  {"id":140,"title":"Cool World","publisher":"Ocean","owned":false,"year":1992,"genre":"Action","description":"Licensed game based on the adult animated film set in a cartoon city."},
+  {"id":141,"title":"Cowboy Kid","publisher":"Romstar","owned":false,"year":1992,"genre":"Action","description":"Western-themed action game with a cowboy hero and humorous tone."},
+  {"id":142,"title":"Crash 'n' the Boys: Street Challenge","publisher":"American Technos","owned":false,"year":1992,"genre":"Sports","description":"Street athletic competition game based on the real-world franchise."},
+  {"id":143,"title":"Crystalis","publisher":"SNK","owned":false,"year":1990,"genre":"Action","description":"Post-apocalyptic action RPG featuring a telepathic hero battling mutants."},
+  {"id":144,"title":"Cyberball","publisher":"Jaleco","owned":false,"year":1992,"genre":"Sports","description":"Futuristic football game played by androids in a sci-fi setting."},
+  {"id":145,"title":"Cybernoid: The Fighting Machine","publisher":"Acclaim","owned":false,"year":1989,"genre":"Shooter","description":"Side-scrolling shooter ported from the European computer game."},
+  {"id":146,"title":"Dance Aerobics","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"Power Pad aerobics game with on-screen instructor workouts."},
+  {"id":147,"title":"Danny Sullivan's: Indy Heat","publisher":"Tradewest","owned":false,"year":1992,"genre":"Racing","description":"Indy 500 racing game with a top-down perspective and lap racing."},
+  {"id":148,"title":"Darkman","publisher":"Ocean","owned":false,"year":1992,"genre":"Action","description":"Action game based on the Sam Raimi horror superhero film."},
+  {"id":149,"title":"Darkwing Duck","publisher":"Capcom","owned":false,"year":1992,"genre":"Platformer","description":"Darkwing Duck fights crime in a side-scrolling action platformer."},
+  {"id":150,"title":"Dash Galaxy: in the Alien Asylum","publisher":"Data East","owned":false,"year":1990,"genre":"Puzzle","description":"Astronaut Dash Galaxy escapes an alien asylum in this maze adventure."},
+  {"id":151,"title":"David Crane’s: A Boy and His Blob – Trouble on Blobolonia","publisher":"Absolute","owned":false,"year":1989,"genre":"Adventure","description":"Boy and his blob adventure where you feed jellybean flavors to solve puzzles."},
+  {"id":152,"title":"Day Dreamin' Davey","publisher":"HAL","owned":false,"year":1992,"genre":"Adventure","description":"A daydreaming boy explores fantasy historical worlds in this adventure."},
+  {"id":153,"title":"Days of Thunder","publisher":"Mindscape","owned":false,"year":1990,"genre":"Racing","description":"NASCAR racing game based on the Tom Cruise film of the same name."},
+  {"id":154,"title":"Deadly Towers","publisher":"Broderbund","owned":false,"year":1986,"genre":"Action","description":"Notoriously brutal tower exploration game with a forgotten dungeon hero."},
+  {"id":155,"title":"Defender II","publisher":"HAL","owned":false,"year":1990,"genre":"Shooter","description":"Classic Williams arcade shooter ported to the NES with wave enemies."},
+  {"id":156,"title":"Defender of the Crown","publisher":"Konami (Ultra)","owned":false,"year":1991,"genre":"Strategy","description":"Medieval conquest strategy game with resource management elements."},
+  {"id":157,"title":"Defenders of Dynatron City","publisher":"JVC","owned":false,"year":1992,"genre":"Action","description":"Heroes from a Saturday morning cartoon battle robot villains."},
+  {"id":158,"title":"Déjà Vu","publisher":"Kemco","owned":false,"year":1990,"genre":"Adventure","description":"Point-and-click mystery adventure game adapted from the classic PC title."},
+  {"id":159,"title":"Demon Sword","publisher":"Taito","owned":false,"year":1990,"genre":"Action","description":"A samurai fights through side-scrolling stages with a powerful sword."},
+  {"id":160,"title":"Desert Commander","publisher":"Kemco","owned":false,"year":1989,"genre":"Strategy","description":"WWII strategy game where you command desert military forces."},
+  {"id":161,"title":"Destination Earthstar","publisher":"Acclaim","owned":false,"year":1990,"genre":"Shooter","description":"Vertical space shooter where you pilot the Starfly combat spacecraft."},
+  {"id":162,"title":"Destiny of an Emperor","publisher":"Capcom","owned":false,"year":1990,"genre":"Strategy","description":"Historical strategy RPG based on the Three Kingdoms era of China."},
+  {"id":163,"title":"Dick Tracy","publisher":"Bandai","owned":false,"year":1991,"genre":"Action","description":"Side-scrolling action game based on the Dick Tracy film and comics."},
+  {"id":164,"title":"Die Hard","publisher":"Activision","owned":false,"year":1990,"genre":"Action","description":"John McClane battles terrorists through Nakatomi Plaza in this action game."},
+  {"id":165,"title":"Dig Dug II: Trouble In Paradise","publisher":"Bandai","owned":false,"year":1989,"genre":"Puzzle","description":"Dig Dug sequel set on an island with pump-and-pop enemy gameplay."},
+  {"id":166,"title":"Digger T. Rock: The Legend of the Lost City","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Action","description":"An adventurer explores an ancient temple using digging and puzzle mechanics."},
+  {"id":167,"title":"Dirty Harry: The War Against Drugs","publisher":"Mindscape","owned":false,"year":1990,"genre":"Action","description":"Harry Callahan battles drug lords in side-scrolling action stages."},
+  {"id":168,"title":"Donkey Kong","publisher":"Nintendo","owned":false,"year":1986,"genre":"Platformer","description":"Classic arcade port of Nintendo's original platform game with Mario and Kong."},
+  {"id":169,"title":"Donkey Kong 3","publisher":"Nintendo","owned":false,"year":1986,"genre":"Shooter","description":"Mario battles Donkey Kong in this side-scrolling bug sprayer game."},
+  {"id":170,"title":"Donkey Kong Classics","publisher":"Nintendo","owned":false,"year":1988,"genre":"Platformer","description":"Two-in-one cartridge containing Donkey Kong and Donkey Kong Jr."},
+  {"id":171,"title":"Donkey Kong Jr.","publisher":"Nintendo","owned":false,"year":1986,"genre":"Platformer","description":"DK Jr. rescues his father from Mario across climbing and jumping stages."},
+  {"id":172,"title":"Donkey Kong Jr. Math","publisher":"Nintendo","owned":false,"year":1986,"genre":"Educational","description":"Educational game teaching basic arithmetic through Donkey Kong Jr. gameplay."},
+  {"id":173,"title":"Double Dare","publisher":"GameTek","owned":false,"year":1990,"genre":"Game Show","description":"NES adaptation of the classic Nickelodeon slime game show."},
+  {"id":174,"title":"Double Dragon","publisher":"Tradewest","owned":false,"year":1988,"genre":"Fighting","description":"Classic two-player brawler featuring the Lee brothers fighting the Black Warriors."},
+  {"id":175,"title":"Double Dragon II: The Revenge","publisher":"Acclaim","owned":false,"year":1990,"genre":"Fighting","description":"The Lee brothers return to rescue Marian from a time-traveling enemy."},
+  {"id":176,"title":"Double Dragon II: The Sacred Stones","publisher":"Acclaim","owned":false,"year":1993,"genre":"Fighting","description":"Third entry in the series with enhanced moves and enemy variety."},
+  {"id":177,"title":"Double Dribble","publisher":"Konami","owned":false,"year":1987,"genre":"Sports","description":"Five-on-five basketball with simple controls and competitive AI."},
+  {"id":178,"title":"Dr. Chaos","publisher":"FCI","owned":false,"year":1988,"genre":"Action","description":"Explorer battles monsters in a mysterious haunted house adventure."},
+  {"id":179,"title":"Dr. Jekyll and Mr. Hyde","publisher":"Bandai","owned":false,"year":1988,"genre":"Action","description":"Adventure based on the R.L. Stevenson story with unforgiving gameplay."},
+  {"id":180,"title":"Dr. Mario","publisher":"Nintendo","owned":false,"year":1990,"genre":"Puzzle","description":"Dr. Mario tosses color-coded pills to eliminate virus capsules."},
+  {"id":181,"title":"Dragon Fighter","publisher":"SOFEL","owned":false,"year":1992,"genre":"Action","description":"A dragon warrior battles evil forces through side-scrolling stages."},
+  {"id":182,"title":"Dragon Power","publisher":"Bandai","owned":false,"year":1988,"genre":"Fighting","description":"Dragon Ball Z-inspired fighting game with ki blasts and martial arts."},
+  {"id":183,"title":"Dragon Spirit: The New Legend","publisher":"Bandai","owned":false,"year":1989,"genre":"Shooter","description":"Vertical shooter sequel to Dragon Spirit with elemental dragon powers."},
+  {"id":184,"title":"Dragon Warrior","publisher":"Nintendo","owned":false,"year":1989,"genre":"RPG","description":"The foundational JRPG that launched the Dragon Quest franchise in America."},
+  {"id":185,"title":"Dragon Warrior II","publisher":"Enix","owned":false,"year":1990,"genre":"RPG","description":"Dragon Warrior sequel with a larger world and multiple main characters."},
+  {"id":186,"title":"Dragon Warrior III","publisher":"Enix","owned":false,"year":1992,"genre":"RPG","description":"Third entry lets you create a custom adventuring party for epic quests."},
+  {"id":187,"title":"Dragon Warrior IV","publisher":"Enix","owned":false,"year":1992,"genre":"RPG","description":"Fourth Dragon Warrior features five chapters with rotating protagonists."},
+  {"id":188,"title":"Duck Hunt","publisher":"Nintendo","owned":false,"year":1985,"genre":"Shooter","description":"Classic NES Zapper game where you shoot ducks out of the sky."},
+  {"id":189,"title":"Duck Tales","publisher":"Capcom","owned":false,"year":1990,"genre":"Platformer","description":"Scrooge McDuck pogo-sticks through treasure-filled platforming stages."},
+  {"id":190,"title":"Duck Tales 2","publisher":"Capcom","owned":false,"year":1993,"genre":"Platformer","description":"DuckTales sequel adds new moves and even more treasure-hunting adventure."},
+  {"id":191,"title":"Dungeon Magic: Sword of the Elements","publisher":"Taito","owned":false,"year":1990,"genre":"RPG","description":"Fantasy dungeon RPG with magic sword upgrades and elemental dungeon floors."},
+  {"id":192,"title":"Dusty Diamond's: All-Star Softball","publisher":"Broderbund","owned":false,"year":1991,"genre":"Sports","description":"Softball simulation featuring customizable all-star teams."},
+  {"id":193,"title":"Dynowarz: The Destruction of Spondylus","publisher":"Bandai","owned":false,"year":1990,"genre":"Action","description":"A scientist pilots a dinosaur mech robot to defeat an alien warlord."},
+  {"id":194,"title":"Elevator Action","publisher":"Taito","owned":false,"year":1987,"genre":"Action","description":"Classic Taito arcade game where you ride elevators shooting enemies."},
+  {"id":195,"title":"Eliminator Boat Duel","publisher":"Electro-Brain","owned":false,"year":1991,"genre":"Sports","description":"Boat racing game with various waterway courses and competition."},
+  {"id":196,"title":"Excitebike","publisher":"Nintendo","owned":false,"year":1985,"genre":"Racing","description":"Classic motocross racing game with design-your-own track features."},
+  {"id":197,"title":"F-117A Stealth Fighter","publisher":"MicroProse","owned":false,"year":1992,"genre":"Simulation","description":"Stealth fighter flight simulation with mission-based gameplay."},
+  {"id":198,"title":"F-15 Strike Eagle","publisher":"MicroProse","owned":false,"year":1992,"genre":"Simulation","description":"Military flight simulator based on the real McDonnell Douglas fighter jet."},
+  {"id":199,"title":"Family Feud","publisher":"GameTek","owned":false,"year":1991,"genre":"Game Show","description":"NES adaptation of the classic television family game show."},
+  {"id":200,"title":"Faria: A World of Mystery & Danger!","publisher":"ASCII / NEXOFT","owned":false,"year":1991,"genre":"RPG","description":"Fantasy RPG with exploration, puzzles, and turn-based combat."},
+  {"id":201,"title":"Faxanadu","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Norse-inspired side-scroller where you climb a magical World Tree."},
+  {"id":202,"title":"Felix the Cat","publisher":"Hudson","owned":false,"year":1992,"genre":"Platformer","description":"Felix the Cat uses his magic bag of tricks in colorful platforming stages."},
+  {"id":203,"title":"Ferrari Grand Prix Challenge","publisher":"Acclaim","owned":false,"year":1992,"genre":"Racing","description":"Formula One racing simulation based on the real European championship."},
+  {"id":204,"title":"Fester's Quest","publisher":"Sunsoft","owned":false,"year":1989,"genre":"Action","description":"Uncle Fester searches a haunted mansion for the kidnapped Addams Family."},
+  {"id":205,"title":"Final Fantasy","publisher":"Nintendo","owned":false,"year":1990,"genre":"RPG","description":"The original Final Fantasy — four Light Warriors begin the legendary series."},
+  {"id":206,"title":"Fire 'n Ice","publisher":"Tecmo","owned":false,"year":1993,"genre":"Puzzle","description":"Puzzle game where you flip ice blocks to create paths and trap enemies."},
+  {"id":207,"title":"Fisher-Price: Firehouse Rescue","publisher":"GameTek","owned":false,"year":1992,"genre":"Educational","description":"Firehouse rescue game teaching young children about fire safety."},
+  {"id":208,"title":"Fisher-Price: I Can Remember","publisher":"GameTek","owned":false,"year":1990,"genre":"Educational","description":"Memory matching card game designed for young children."},
+  {"id":209,"title":"Fisher-Price: Perfect Fit","publisher":"GameTek","owned":false,"year":1990,"genre":"Educational","description":"Shape-sorting educational game for toddlers and young children."},
+  {"id":210,"title":"Fist of the North Star","publisher":"Taxan","owned":false,"year":1989,"genre":"Action","description":"Anime-based brawler featuring the powerful warrior Kenshiro."},
+  {"id":211,"title":"Flight of the Intruder","publisher":"Mindscape","owned":false,"year":1991,"genre":"Simulation","description":"Naval combat flight simulator with carrier-based jet missions."},
+  {"id":212,"title":"Flintstones, The: Rescue of Dino & Hoppy","publisher":"Taito","owned":false,"year":1991,"genre":"Platformer","description":"Fred and Barney rescue their dinosaur pets from the evil Great Gazoo."},
+  {"id":213,"title":"Flintstones, The: The Surprise at Dinosaur Peak","publisher":"Taito","owned":false,"year":1994,"genre":"Platformer","description":"Rare late-release Flintstones platformer with prehistoric adventure."},
+  {"id":214,"title":"Flying Dragon: The Secret Scroll","publisher":"Culture Brain","owned":false,"year":1990,"genre":"Action","description":"Martial arts action game where a ninja battles enemies across multiple worlds."},
+  {"id":215,"title":"Flying Warriors","publisher":"Culture Brain","owned":false,"year":1991,"genre":"Action","description":"Culture Brain martial arts game with RPG elements and kung fu battles."},
+  {"id":216,"title":"Formula One: Built to Win","publisher":"SETA","owned":false,"year":1991,"genre":"Racing","description":"Formula One racing game with full season mode and pit stop strategy."},
+  {"id":217,"title":"Fox's: Peter Pan & The Pirates – The Revenge of Captain Hook","publisher":"THQ","owned":false,"year":1991,"genre":"Platformer","description":"Peter Pan and the Lost Boys battle Captain Hook in cartoon stages."},
+  {"id":218,"title":"Frankenstein: The Monster Returns","publisher":"Bandai","owned":false,"year":1991,"genre":"Action","description":"Horror-themed action game where you battle Frankenstein's monster."},
+  {"id":219,"title":"Freedom Force","publisher":"Sunsoft","owned":false,"year":1988,"genre":"Shooter","description":"A freedom fighter battles hostile forces in vertical scrolling stages."},
+  {"id":220,"title":"Friday the 13th","publisher":"Acclaim (LJN)","owned":false,"year":1989,"genre":"Action","description":"Horror-licensed game based on Jason Voorhees and Camp Crystal Lake."},
+  {"id":221,"title":"Fun House","publisher":"Hi-Tech","owned":false,"year":1991,"genre":"Platformer","description":"Fun House obstacle platformer based on the Nickelodeon game show."},
+  {"id":222,"title":"G.I. Joe: A Real American Hero","publisher":"Taxan","owned":false,"year":1991,"genre":"Action","description":"Side-scrolling action game featuring the popular 80s toy soldier franchise."},
+  {"id":223,"title":"G.I. Joe: The Atlantis Factor","publisher":"Capcom","owned":false,"year":1992,"genre":"Action","description":"G.I. Joe sequel with new commandos battling COBRA underwater."},
+  {"id":224,"title":"Galaga: Demons of Death","publisher":"Bandai","owned":false,"year":1988,"genre":"Shooter","description":"Classic Namco arcade space shooter with iconic enemy formations."},
+  {"id":225,"title":"Galaxy 5000: Racing in the 51st Century","publisher":"Activision","owned":false,"year":1991,"genre":"Racing","description":"Futuristic racing game set in the year 5000 with jet-powered vehicles."},
+  {"id":226,"title":"Gargoyle's Quest II","publisher":"Capcom","owned":false,"year":1992,"genre":"Action","description":"Firebrand the gargoyle fights through demon realms in a challenging platformer."},
+  {"id":227,"title":"Garry Kitchen’s: Battle Tank","publisher":"Absolute","owned":false,"year":1990,"genre":"Action","description":"Tank combat game with overhead view and strategic mission objectives."},
+  {"id":228,"title":"Gauntlet","publisher":"Tengen","owned":false,"year":1988,"genre":"Action","description":"Tengen's unlicensed dungeon crawler for up to four cooperative players."},
+  {"id":229,"title":"Gauntlet II","publisher":"Mindscape","owned":false,"year":1990,"genre":"Action","description":"Four-player dungeon adventure continuing the Gauntlet fantasy arcade series."},
+  {"id":230,"title":"Gemfire","publisher":"KOEI","owned":false,"year":1992,"genre":"Strategy","description":"KOEI strategy game based on medieval Japanese warlord conflicts."},
+  {"id":231,"title":"Genghis Khan","publisher":"KOEI","owned":false,"year":1990,"genre":"Strategy","description":"Command the armies of Genghis Khan across massive historical campaigns."},
+  {"id":232,"title":"George Foreman’s: KO Boxing","publisher":"Acclaim","owned":false,"year":1992,"genre":"Sports","description":"Boxing game endorsed by the legendary heavyweight champion."},
+  {"id":233,"title":"Ghost Lion","publisher":"Kemco","owned":false,"year":1992,"genre":"RPG","description":"Fantasy RPG where a boy and his lion companion quest through magical lands."},
+  {"id":234,"title":"Ghostbusters","publisher":"Activision","owned":false,"year":1988,"genre":"Action","description":"Peter Venkman and the gang bust ghosts across a massive city grid."},
+  {"id":235,"title":"Ghostbusters II","publisher":"Activision","owned":false,"year":1991,"genre":"Action","description":"Ghostbusters II game loosely based on the sequel film's events."},
+  {"id":236,"title":"Ghosts 'n Goblins","publisher":"Capcom","owned":false,"year":1986,"genre":"Action","description":"Classic Capcom arcade port where a knight battles demons and zombies."},
+  {"id":237,"title":"Ghoul School","publisher":"Electro-Brain","owned":false,"year":1990,"genre":"Action","description":"A student battles monsters that have invaded his high school."},
+  {"id":238,"title":"Goal!","publisher":"Jaleco","owned":false,"year":1988,"genre":"Sports","description":"Simple soccer simulation with top-down gameplay and tournament mode."},
+  {"id":239,"title":"Goal! 2","publisher":"Jaleco","owned":false,"year":1993,"genre":"Sports","description":"Soccer sequel with improved gameplay and updated international teams."},
+  {"id":240,"title":"Godzilla 2: War of the Monsters","publisher":"Toho","owned":false,"year":1992,"genre":"Strategy","description":"Godzilla sequel strategy game with monster battles across Japan."},
+  {"id":241,"title":"Godzilla: Monster of Monsters!","publisher":"Toho","owned":false,"year":1989,"genre":"Action","description":"Godzilla battles other famous kaiju across a massive world map."},
+  {"id":242,"title":"Gold Medal Challenge '92","publisher":"Capcom","owned":false,"year":1992,"genre":"Sports","description":"Olympic track and field game with timing-based athletic events."},
+  {"id":243,"title":"Golf","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Simple NES launch title golf with basic course play."},
+  {"id":244,"title":"Golf Grand Slam","publisher":"Atlus","owned":false,"year":1991,"genre":"Sports","description":"Golf simulation featuring international tournament play."},
+  {"id":245,"title":"Golgo 13: Top Secret Episode","publisher":"Vic Tokai","owned":false,"year":1988,"genre":"Action","description":"Spy thriller action game where Agent 13 infiltrates enemy headquarters."},
+  {"id":246,"title":"Goonies II, The","publisher":"Konami","owned":false,"year":1987,"genre":"Action","description":"Mikey Waltch explores a massive interconnected world looking for treasure."},
+  {"id":247,"title":"Gotcha!: The Sport!","publisher":"Acclaim (LJN)","owned":false,"year":1987,"genre":"Sports","description":"Paintball sports game with capture-the-flag style competitive play."},
+  {"id":248,"title":"Gradius","publisher":"Konami","owned":false,"year":1986,"genre":"Shooter","description":"Classic Konami space shooter with iconic Vic Viper spacecraft upgrades."},
+  {"id":249,"title":"Great Waldo Search, The","publisher":"THQ","owned":false,"year":1992,"genre":"Puzzle","description":"Search-and-find puzzle game based on the popular Where's Waldo books."},
+  {"id":250,"title":"Greg Norman's: Golf Power","publisher":"Virgin","owned":false,"year":1992,"genre":"Sports","description":"Golf simulation with arcade physics and international course selection."},
+  {"id":251,"title":"Gremlins 2: The New Batch","publisher":"Sunsoft","owned":false,"year":1991,"genre":"Platformer","description":"Billy Peltzer fights the Gremlins through a skyscraper and city."},
+  {"id":252,"title":"Guardian Legend, The","publisher":"Broderbund","owned":false,"year":1988,"genre":"Shooter","description":"Hybrid top-down shooter RPG where you pilot a ship and explore dungeons."},
+  {"id":253,"title":"Guerrilla War","publisher":"SNK","owned":false,"year":1988,"genre":"Shooter","description":"Top-down military shooter based on real-world guerrilla warfare."},
+  {"id":254,"title":"Gumshoe","publisher":"Nintendo","owned":false,"year":1986,"genre":"Shooter","description":"Zapper game where a detective drives around shooting criminals."},
+  {"id":255,"title":"Gun.Smoke","publisher":"Capcom","owned":false,"year":1988,"genre":"Shooter","description":"Western-themed vertical shooter where a cowboy battles outlaws."},
+  {"id":256,"title":"Gun+Nac","publisher":"ASCII / NEXOFT","owned":false,"year":1991,"genre":"Shooter","description":"Twin-stick style shooter with powered-up weapons and robot enemies."},
+  {"id":257,"title":"Gyromite","publisher":"Nintendo","owned":false,"year":1985,"genre":"Action","description":"R.O.B. the robot accessory game requiring the peripheral to play."},
+  {"id":258,"title":"Gyruss","publisher":"Konami (Ultra)","owned":false,"year":1989,"genre":"Shooter","description":"Classic arcade space shooter ported to the NES with power-up ships."},
+  {"id":259,"title":"Harlem Globetrotters","publisher":"GameTek","owned":false,"year":1991,"genre":"Sports","description":"Licensed basketball game featuring the famous Harlem exhibition team."},
+  {"id":260,"title":"Hatris","publisher":"Bullet-Proof","owned":false,"year":1990,"genre":"Puzzle","description":"Tetris-inspired puzzle game from the creator of the original Tetris."},
+  {"id":261,"title":"Heavy Barrel","publisher":"Data East","owned":false,"year":1990,"genre":"Shooter","description":"Run-and-gun arcade game with a helicopter rescuing POW hostages."},
+  {"id":262,"title":"Heavy Shreddin'","publisher":"Parker Brothers","owned":false,"year":1990,"genre":"Sports","description":"Snowboarding trick and race game using the Power Pad controller."},
+  {"id":263,"title":"High Speed","publisher":"Tradewest","owned":false,"year":1991,"genre":"Simulation","description":"Pinball simulation based on the real-world Speed pinball machine."},
+  {"id":264,"title":"Hogan's Alley","publisher":"Nintendo","owned":false,"year":1985,"genre":"Shooter","description":"Classic NES Zapper light gun game with criminals at a shooting gallery."},
+  {"id":265,"title":"Hollywood Squares","publisher":"GameTek","owned":false,"year":1991,"genre":"Game Show","description":"NES game based on the celebrity tic-tac-toe game show."},
+  {"id":266,"title":"Home Alone","publisher":"THQ","owned":false,"year":1991,"genre":"Action","description":"Kevin McCallister sets traps to defend his house from burglars."},
+  {"id":267,"title":"Home Alone 2: Lost in New York","publisher":"THQ","owned":false,"year":1993,"genre":"Action","description":"Kevin returns for more booby trap action in the sequel game."},
+  {"id":268,"title":"Hook","publisher":"Sony Imagesoft","owned":false,"year":1992,"genre":"Action","description":"Peter Banning battles Captain Hook to rescue his children."},
+  {"id":269,"title":"Hoops","publisher":"Jaleco","owned":false,"year":1989,"genre":"Sports","description":"Simple one-on-one basketball game with arcade-style gameplay."},
+  {"id":270,"title":"Hudson Hawk","publisher":"Sony Imagesoft","owned":false,"year":1991,"genre":"Action","description":"Side-scrolling action game based on the Bruce Willis film."},
+  {"id":271,"title":"Hunt for Red October, The","publisher":"Hi-Tech","owned":false,"year":1987,"genre":"Action","description":"Submarine combat game based on the Cold War thriller film."},
+  {"id":272,"title":"Hydlide","publisher":"FCI","owned":false,"year":1990,"genre":"RPG","description":"Notoriously difficult action RPG port from the Japanese PC original."},
+  {"id":273,"title":"Ice Climber","publisher":"Nintendo","owned":false,"year":1985,"genre":"Platformer","description":"Two Eskimo climbers scale icy mountains using hammers and ropes."},
+  {"id":274,"title":"Ice Hockey","publisher":"Nintendo","owned":false,"year":1988,"genre":"Sports","description":"Simple ice hockey game with two-on-two and full team options."},
+  {"id":275,"title":"Ikari Warriors","publisher":"SNK","owned":false,"year":1987,"genre":"Shooter","description":"Top-down run-and-gun where you battle through the fictional Zara nation."},
+  {"id":276,"title":"Ikari Warriors II: Victory Road","publisher":"SNK","owned":false,"year":1988,"genre":"Shooter","description":"Ikari Warriors sequel with sci-fi settings replacing the jungle theme."},
+  {"id":277,"title":"Ikari Warriors III: The Rescue","publisher":"SNK","owned":false,"year":1991,"genre":"Shooter","description":"Third Ikari game with superhero powers and a city rescue mission."},
+  {"id":278,"title":"Image Fight","publisher":"IREM","owned":false,"year":1990,"genre":"Shooter","description":"Vertical space shooter with powerful forward and backward firing capability."},
+  {"id":279,"title":"Incredible Crash Dummies, The","publisher":"Acclaim (LJN)","owned":false,"year":1993,"genre":"Action","description":"Crash test dummy heroes battle villains in this licensed action game."},
+  {"id":280,"title":"Indiana Jones and the Last Crusade","publisher":"Taito","owned":false,"year":1993,"genre":"Action","description":"Indy searches for the Holy Grail across Taito's action platformer version."},
+  {"id":281,"title":"Indiana Jones and the Last Crusade","publisher":"Ubisoft","owned":false,"year":1993,"genre":"Action","description":"Ubisoft's alternate take on the Last Crusade film adaptation."},
+  {"id":282,"title":"Indiana Jones and the Temple of Doom","publisher":"Mindscape","owned":false,"year":1987,"genre":"Action","description":"Indiana Jones battles cultists in the Pankot Palace and mines."},
+  {"id":283,"title":"Infiltrator","publisher":"Mindscape","owned":false,"year":1990,"genre":"Simulation","description":"Helicopter pilot infiltration game with stealth and combat missions."},
+  {"id":284,"title":"Iron Tank: The Invasion of Normandy","publisher":"SNK","owned":false,"year":1988,"genre":"Action","description":"Top-down tank battle game set in World War II Normandy."},
+  {"id":285,"title":"Isolated Warrior","publisher":"NTVIC","owned":false,"year":1991,"genre":"Shooter","description":"Overhead shooter where a soldier fights enemy forces from above."},
+  {"id":286,"title":"Ivan \"Ironman\" Stewart's: Super Off Road","publisher":"Tradewest","owned":false,"year":1990,"genre":"Racing","description":"Off-road truck racing with jumps and power-up upgrades."},
+  {"id":287,"title":"Jack Nicklaus': Greatest 18 Holes of Major Championship Golf","publisher":"Konami","owned":false,"year":1990,"genre":"Sports","description":"Golf simulation featuring Jack Nicklaus' famous major tournament holes."},
+  {"id":288,"title":"Jackal","publisher":"Konami","owned":false,"year":1988,"genre":"Shooter","description":"Top-down military game where you drive a jeep and rescue soldiers."},
+  {"id":289,"title":"Jackie Chan's: Action Kung Fu","publisher":"Hudson","owned":false,"year":1990,"genre":"Platformer","description":"Jackie Chan martial arts platformer with kicks and punches."},
+  {"id":290,"title":"James Bond Jr.","publisher":"THQ","owned":false,"year":1992,"genre":"Action","description":"Bond Jr. platformer based on the animated James Bond spin-off series."},
+  {"id":291,"title":"Jaws","publisher":"Acclaim (LJN)","owned":false,"year":1987,"genre":"Action","description":"Underwater shooter based on the iconic Spielberg shark film."},
+  {"id":292,"title":"Jeopardy!","publisher":"GameTek","owned":false,"year":1988,"genre":"Game Show","description":"NES version of the classic television quiz answer game show."},
+  {"id":293,"title":"Jeopardy!: 25th Anniversary Edition","publisher":"GameTek","owned":false,"year":1990,"genre":"Game Show","description":"25th anniversary version of the classic Jeopardy television game show."},
+  {"id":294,"title":"Jeopardy!: Jr. Edition","publisher":"GameTek","owned":false,"year":1990,"genre":"Game Show","description":"Children's edition of the Jeopardy game show with age-appropriate trivia."},
+  {"id":295,"title":"Jetsons, The: Cogswell's Caper","publisher":"Taito","owned":false,"year":1992,"genre":"Platformer","description":"The Jetson family races through futuristic stages to stop Cogswell."},
+  {"id":296,"title":"Jimmy Connors Tennis","publisher":"Ubisoft","owned":false,"year":1993,"genre":"Sports","description":"Tennis simulation endorsed by the legendary player Jimmy Connors."},
+  {"id":297,"title":"Joe & Mac","publisher":"Data East","owned":false,"year":1991,"genre":"Platformer","description":"Caveman duo battles dinosaurs and enemies across prehistoric worlds."},
+  {"id":298,"title":"John Elway's: Quarterback","publisher":"Tradewest","owned":false,"year":1987,"genre":"Sports","description":"Basic American football game endorsed by the Denver Broncos star."},
+  {"id":299,"title":"Jordan vs. Bird: One on One","publisher":"Milton Bradley","owned":false,"year":1988,"genre":"Sports","description":"One-on-one basketball featuring Michael Jordan and Larry Bird."},
+  {"id":300,"title":"Journey to Silius","publisher":"Sunsoft","owned":false,"year":1990,"genre":"Shooter","description":"Side-scrolling shooter with cinematic cutscenes and an underground base."},
+  {"id":301,"title":"Joust","publisher":"HAL","owned":false,"year":1988,"genre":"Action","description":"Classic Williams arcade game where you joust on flying ostriches."},
+  {"id":302,"title":"Jungle Book, The","publisher":"Virgin","owned":false,"year":1993,"genre":"Platformer","description":"The Jungle Book's Mowgli platformer based on the Disney animated film."},
+  {"id":303,"title":"Jurassic Park","publisher":"Ocean","owned":false,"year":1993,"genre":"Action","description":"Side-scrolling action game based on the Steven Spielberg dinosaur film."},
+  {"id":304,"title":"Kabuki: Quantum Fighter","publisher":"HAL","owned":false,"year":1990,"genre":"Action","description":"A Kabuki actor-turned-hero battles aliens in this stylish action game."},
+  {"id":305,"title":"Karate Champ","publisher":"Data East","owned":false,"year":1986,"genre":"Fighting","description":"Classic arcade martial arts fighting game ported from Data East's original."},
+  {"id":306,"title":"Karate Kid, The","publisher":"Acclaim (LJN)","owned":false,"year":1987,"genre":"Action","description":"Daniel LaRusso battles his way through the All-Valley Tournament."},
+  {"id":307,"title":"Karnov","publisher":"Data East","owned":false,"year":1987,"genre":"Action","description":"Middle Eastern strongman platformer with a fire-breathing move."},
+  {"id":308,"title":"Kickle Cubicle","publisher":"IREM","owned":false,"year":1990,"genre":"Puzzle","description":"Ice block kicking puzzle game where you trap enemies with frozen cubes."},
+  {"id":309,"title":"Kickmaster","publisher":"Taito","owned":false,"year":1991,"genre":"Action","description":"Martial artist battles demons to rescue the kingdom from evil."},
+  {"id":310,"title":"Kid Icarus","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Angel Pit fights his way up and down through a hostile underworld."},
+  {"id":311,"title":"Kid Klown in Night Mayor World","publisher":"Kemco","owned":false,"year":1993,"genre":"Platformer","description":"Kid Klown escapes Night Mayor's nightmare world using music-themed items."},
+  {"id":312,"title":"Kid Kool: and the Quest for the Seven Wonder Herbs","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Platformer","description":"Kid Kool runs and tumbles through treacherous stages to find magic herbs."},
+  {"id":313,"title":"Kid Niki: Radical Ninja","publisher":"Data East","owned":false,"year":1987,"genre":"Action","description":"Young ninja battles enemies through feudal Japan in this Data East game."},
+  {"id":314,"title":"King's Knight","publisher":"Squaresoft","owned":false,"year":1989,"genre":"RPG","description":"Square's early fantasy action RPG with a party of four adventurers."},
+  {"id":315,"title":"King's Quest V","publisher":"Konami","owned":false,"year":1992,"genre":"Adventure","description":"Classic Sierra adventure game adapted for the NES console."},
+  {"id":316,"title":"Kings of the Beach: Professional Beach Volleyball","publisher":"Konami (Ultra)","owned":false,"year":1989,"genre":"Sports","description":"Beach volleyball simulation with two-on-two sand court competition."},
+  {"id":317,"title":"Kirby's Adventure","publisher":"Nintendo","owned":false,"year":1993,"genre":"Platformer","description":"Kirby's NES debut features copy abilities and a vast Dream Land adventure."},
+  {"id":318,"title":"Kiwi Kraze: A Bird-Brained Adventure!","publisher":"Taito","owned":false,"year":1991,"genre":"Platformer","description":"A kiwi bird bounces through stages in this New Zealand-themed platformer."},
+  {"id":319,"title":"Klash Ball","publisher":"SOFEL","owned":false,"year":1992,"genre":"Sports","description":"Indoor soccer game with futuristic rules and bouncing wall play."},
+  {"id":320,"title":"Knight Rider","publisher":"Acclaim","owned":false,"year":1990,"genre":"Racing","description":"Knight Rider KITT racing game based on the TV show."},
+  {"id":321,"title":"Krion Conquest, The","publisher":"Vic Tokai","owned":false,"year":1991,"genre":"Action","description":"Magical girl platformer known for its difficult gameplay and unique style."},
+  {"id":322,"title":"Krusty’s Fun House","publisher":"Acclaim","owned":false,"year":1992,"genre":"Platformer","description":"Krusty the Clown stages a show comeback by cleaning up his fun house."},
+  {"id":323,"title":"Kung Fu","publisher":"Nintendo","owned":false,"year":1985,"genre":"Action","description":"Classic NES launch game where Thomas fights karate opponents in a dojo."},
+  {"id":324,"title":"Kung Fu Heroes","publisher":"Culture Brain","owned":false,"year":1989,"genre":"Action","description":"Two warriors battle through medieval dungeons in co-op arcade action."},
+  {"id":325,"title":"L'Empereur","publisher":"KOEI","owned":false,"year":1991,"genre":"Strategy","description":"KOEI strategy game where you play as Napoleon Bonaparte."},
+  {"id":326,"title":"Laser Invasion","publisher":"Konami","owned":false,"year":1991,"genre":"Shooter","description":"Side-scrolling shooter where you pilot an advanced military fighter jet."},
+  {"id":327,"title":"Last Action Hero","publisher":"Sony Imagesoft","owned":false,"year":1993,"genre":"Action","description":"Arnold Schwarzenegger action game based on the Last Action Hero film."},
+  {"id":328,"title":"Last Ninja, The","publisher":"Jaleco","owned":false,"year":1991,"genre":"Action","description":"A ninja defeats enemies in ancient Japan with stealth and weapons."},
+  {"id":329,"title":"Last Starfighter, The","publisher":"Mindscape","owned":false,"year":1990,"genre":"Shooter","description":"Space shooter very loosely based on the 1984 sci-fi film."},
+  {"id":330,"title":"Lee Trevino's: Fighting Golf","publisher":"SNK","owned":false,"year":1989,"genre":"Sports","description":"Golf simulation endorsed by the professional golfer Lee Trevino."},
+  {"id":331,"title":"Legacy of the Wizard","publisher":"Broderbund","owned":false,"year":1989,"genre":"Action","description":"A warrior explores a vast dungeon map to collect Dragon Crystals."},
+  {"id":332,"title":"Legend of Kage, The","publisher":"Taito","owned":false,"year":1986,"genre":"Action","description":"A ninja rescues the princess by climbing through enemy-filled stages."},
+  {"id":333,"title":"Legend of Zelda, The","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Link explores Hyrule to gather Triforce fragments and defeat Ganon."},
+  {"id":334,"title":"Legendary Wings, The","publisher":"Capcom","owned":false,"year":1987,"genre":"Shooter","description":"Side-scrolling military shooter where you battle through enemy territory."},
+  {"id":335,"title":"Legends of the Diamond: The Baseball Championship Game","publisher":"Bandai","owned":false,"year":1991,"genre":"Sports","description":"Baseball simulation featuring legendary players from baseball history."},
+  {"id":336,"title":"Lemmings","publisher":"Sunsoft","owned":false,"year":1992,"genre":"Puzzle","description":"Classic Amiga puzzle game where you guide Lemmings safely to an exit."},
+  {"id":337,"title":"Lethal Weapon","publisher":"Ocean","owned":false,"year":1992,"genre":"Action","description":"Side-scrolling action game based on the Lethal Weapon buddy cop films."},
+  {"id":338,"title":"Life Force","publisher":"Konami","owned":false,"year":1988,"genre":"Shooter","description":"Gradius sequel with enhanced weapons and spectacular level designs."},
+  {"id":339,"title":"Little League Baseball: Championship Series","publisher":"SNK","owned":false,"year":1990,"genre":"Sports","description":"Little League baseball simulation with youth team management."},
+  {"id":340,"title":"Little Mermaid, The","publisher":"Capcom","owned":false,"year":1991,"genre":"Platformer","description":"Ariel the mermaid searches for her music box in undersea adventure."},
+  {"id":341,"title":"Little Nemo: The Dream Master","publisher":"Capcom","owned":false,"year":1990,"genre":"Platformer","description":"Nemo explores dreamland while collecting keys to rescue the Slumberland king."},
+  {"id":342,"title":"Little Ninja Brothers","publisher":"Culture Brain","owned":false,"year":1990,"genre":"Action","description":"Culture Brain martial arts RPG with Little Samson and Great Kung Fu."},
+  {"id":343,"title":"Little Samson","publisher":"Taito","owned":false,"year":1992,"genre":"Action","description":"Underrated action game featuring a bell-wielding hero against demons."},
+  {"id":344,"title":"Lode Runner","publisher":"Broderbund","owned":false,"year":1987,"genre":"Puzzle","description":"Classic computer puzzle game where you dig tunnels to reach gold."},
+  {"id":345,"title":"Lone Ranger, The","publisher":"Konami","owned":false,"year":1991,"genre":"Action","description":"Lone Ranger battles Butch Cavendish through Western stages."},
+  {"id":346,"title":"Loopz","publisher":"Mindscape","owned":false,"year":1990,"genre":"Puzzle","description":"Complete each loop pattern before time runs out in this puzzle game."},
+  {"id":347,"title":"Low G Man: The Low Gravity Man","publisher":"Taxan","owned":false,"year":1990,"genre":"Shooter","description":"Side-scrolling shooter where a soldier uses low gravity to his advantage."},
+  {"id":348,"title":"Lunar Pool","publisher":"FCI","owned":false,"year":1987,"genre":"Sports","description":"Billiards simulation with straight pool and pocket billiards modes."},
+  {"id":349,"title":"M.C. Kids","publisher":"Virgin","owned":false,"year":1992,"genre":"Platformer","description":"McDonald's characters star in this platformer with colorful stages."},
+  {"id":350,"title":"M.U.L.E.","publisher":"Mindscape","owned":false,"year":1990,"genre":"Strategy","description":"Classic computer economic strategy game with alien trading worlds."},
+  {"id":351,"title":"M.U.S.C.L.E.: Tag Team Match","publisher":"Bandai","owned":false,"year":1986,"genre":"Sports","description":"Miniature wrestling game based on the M.U.S.C.L.E. toy line."},
+  {"id":352,"title":"Mach Rider","publisher":"Nintendo","owned":false,"year":1985,"genre":"Racing","description":"Early NES racing game with a futuristic motorbike theme."},
+  {"id":353,"title":"Mad Max","publisher":"Mindscape","owned":false,"year":1992,"genre":"Action","description":"Post-apocalyptic action game very loosely based on the Mad Max films."},
+  {"id":354,"title":"Mafat Conspiracy, The","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Action","description":"Golgo 13 sequel with action platforming and first-person shooting segments."},
+  {"id":355,"title":"Magic Darts","publisher":"Romstar","owned":false,"year":1991,"genre":"Sports","description":"Dart throwing simulation with multiple game modes and difficulties."},
+  {"id":356,"title":"Magic Johnson's: Fast Break","publisher":"Tradewest","owned":false,"year":1990,"genre":"Sports","description":"Fast-break basketball game endorsed by Magic Johnson."},
+  {"id":357,"title":"Magic of Scheherazade, The","publisher":"Culture Brain","owned":false,"year":1989,"genre":"RPG","description":"Arabian Nights RPG with time travel and a shape-shifting protagonist."},
+  {"id":358,"title":"Magician","publisher":"Taxan","owned":false,"year":1991,"genre":"Action","description":"A magician hero battles monsters using card-based magic attacks."},
+  {"id":359,"title":"Magmax","publisher":"FCI","owned":false,"year":1986,"genre":"Shooter","description":"Vertical space shooter with simple gameplay and power-up mechanics."},
+  {"id":360,"title":"Major League Baseball","publisher":"Acclaim (LJN)","owned":false,"year":1988,"genre":"Sports","description":"Baseball simulation licensed by Major League Baseball."},
+  {"id":361,"title":"Maniac Mansion","publisher":"Jaleco","owned":false,"year":1990,"genre":"Adventure","description":"Classic LucasArts point-and-click adventure ported to the NES."},
+  {"id":362,"title":"Mappy-Land","publisher":"Taxan","owned":false,"year":1989,"genre":"Platformer","description":"Mappy the mouse returns in a holiday-themed platforming adventure."},
+  {"id":363,"title":"Marble Madness","publisher":"Milton Bradley","owned":false,"year":1989,"genre":"Puzzle","description":"Classic Atari isometric marble-rolling maze arcade game ported to NES."},
+  {"id":364,"title":"Mario Is Missing!","publisher":"Mindscape (The Software Toolworks)","owned":false,"year":1993,"genre":"Educational","description":"Mario explores world geography to find Bowser in educational adventure."},
+  {"id":365,"title":"Mario's Time Machine","publisher":"Mindscape (The Software Toolworks)","owned":false,"year":1993,"genre":"Educational","description":"Mario travels through history to teach children about past events."},
+  {"id":366,"title":"Mechanized Attack","publisher":"SNK","owned":false,"year":1990,"genre":"Shooter","description":"Military action game with hand-to-hand combat and weapon variety."},
+  {"id":367,"title":"Mega Man","publisher":"Capcom","owned":false,"year":1987,"genre":"Action","description":"Mega Man battles six Robot Masters in the debut of the iconic series."},
+  {"id":368,"title":"Mega Man 2","publisher":"Capcom","owned":false,"year":1988,"genre":"Action","description":"Widely considered the best in the series with eight new Robot Masters."},
+  {"id":369,"title":"Mega Man 3","publisher":"Capcom","owned":false,"year":1990,"genre":"Action","description":"Mega Man battles eight new bosses and gains the Rush robot dog."},
+  {"id":370,"title":"Mega Man 4","publisher":"Capcom","owned":false,"year":1991,"genre":"Action","description":"Fourth entry introduces the Mega Buster charge shot mechanic."},
+  {"id":371,"title":"Mega Man 5","publisher":"Capcom","owned":false,"year":1992,"genre":"Action","description":"Fifth game adds the Beat bird ally and Power Stone weapon system."},
+  {"id":372,"title":"Mega Man 6","publisher":"Nintendo","owned":false,"year":1993,"genre":"Action","description":"Final NES entry features six new Robot Masters and a global adventure."},
+  {"id":373,"title":"Mendel Palace","publisher":"Hudson","owned":false,"year":1990,"genre":"Puzzle","description":"Puzzle-action game where you flip palace panels to defeat enemies."},
+  {"id":374,"title":"Metal Gear","publisher":"Konami (Ultra)","owned":false,"year":1988,"genre":"Action","description":"Solid Snake infiltrates Outer Heaven to destroy a nuclear-armed mech."},
+  {"id":375,"title":"Metal Mech: Man & Machine","publisher":"Jaleco","owned":false,"year":1991,"genre":"Action","description":"A man in a mech suit battles through city streets and buildings."},
+  {"id":376,"title":"Metal Storm","publisher":"IREM","owned":false,"year":1991,"genre":"Action","description":"Futuristic shooter where your robot suit changes gravity to fight enemies."},
+  {"id":377,"title":"Metroid","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Samus Aran explores planet Zebes to stop the Space Pirates and Metroids."},
+  {"id":378,"title":"Michael Andretti's: World GP","publisher":"Sammy","owned":false,"year":1991,"genre":"Racing","description":"Formula One racing game with world championship circuit tournaments."},
+  {"id":379,"title":"Mickey Mousecapade","publisher":"Capcom","owned":false,"year":1987,"genre":"Platformer","description":"Mickey Mouse rescues Minnie from Pete in this early Disney NES game."},
+  {"id":380,"title":"Mickey's Adventure in Numberland","publisher":"Hi-Tech","owned":false,"year":1991,"genre":"Educational","description":"Mickey teaches children numbers in this Hi-Tech educational title."},
+  {"id":381,"title":"Mickey's Safari in Letterland","publisher":"Hi-Tech","owned":false,"year":1991,"genre":"Educational","description":"Mickey teaches alphabet letters in this Hi-Tech educational companion."},
+  {"id":382,"title":"Might & Magic: Secret of the Inner Sanctum","publisher":"Sammy","owned":false,"year":1992,"genre":"RPG","description":"Classic Might & Magic computer RPG adapted for the NES console."},
+  {"id":383,"title":"Mighty Bombjack","publisher":"Tecmo","owned":false,"year":1987,"genre":"Platformer","description":"Bombjack leaps between platforms collecting bombs across famous landmarks."},
+  {"id":384,"title":"Mighty Final Fight","publisher":"Capcom","owned":false,"year":1993,"genre":"Fighting","description":"Final Fight-style brawler with smaller, faster characters than the SNES version."},
+  {"id":385,"title":"Mike Tyson's: Punch-Out!!","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"The legendary boxing game with iconic opponents and Glass Joe."},
+  {"id":386,"title":"Millipede","publisher":"HAL","owned":false,"year":1988,"genre":"Shooter","description":"Classic Atari arcade game where you shoot a scrolling millipede."},
+  {"id":387,"title":"Milon's Secret Castle","publisher":"Hudson","owned":false,"year":1989,"genre":"Puzzle","description":"Milon uses bubbles to reveal hidden blocks and defeat monsters."},
+  {"id":388,"title":"Miracle Piano Teaching System, The","publisher":"Mindscape (The Software Toolworks)","owned":false,"year":1990,"genre":"Educational","description":"Music teaching peripheral game that works with a real piano keyboard."},
+  {"id":389,"title":"Mission: Impossible","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Action","description":"Ethan Hunt infiltrates a European organization in side-scrolling stages."},
+  {"id":390,"title":"Monopoly","publisher":"Parker Brothers","owned":false,"year":1991,"genre":"Board Game","description":"Classic Atlantic City property trading board game for NES."},
+  {"id":391,"title":"Monster in My Pocket","publisher":"Konami","owned":false,"year":1992,"genre":"Platformer","description":"Monster pocket creatures battle Warlock in this platforming adventure."},
+  {"id":392,"title":"Monster Party","publisher":"Bandai","owned":false,"year":1989,"genre":"Action","description":"A boy stumbles into a monster bash and fights through horror parody stages."},
+  {"id":393,"title":"Monster Truck Rally","publisher":"INTV","owned":false,"year":1991,"genre":"Racing","description":"Monster truck rally racing with trick and competition modes."},
+  {"id":394,"title":"Motor City Patrol","publisher":"Matchbox","owned":false,"year":1992,"genre":"Action","description":"A police officer patrols city streets in this top-down action game."},
+  {"id":395,"title":"Ms. Pac-Man","publisher":"Namco","owned":false,"year":1993,"genre":"Puzzle","description":"Classic Ms. Pac-Man arcade maze game with enhanced mazes and movement."},
+  {"id":396,"title":"MTV: Remote Control","publisher":"Hi-Tech","owned":false,"year":1989,"genre":"Game Show","description":"NES adaptation of the MTV music trivia game show."},
+  {"id":397,"title":"Muppet Adventure: Chaos at the Carnival","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Platformer","description":"Kermit and friends navigate the carnival in this Muppet platformer."},
+  {"id":398,"title":"Mutant Virus, The","publisher":"ASC","owned":false,"year":1992,"genre":"Puzzle","description":"A scientist fights computer viruses in a maze-based puzzle game."},
+  {"id":399,"title":"Mystery Quest","publisher":"Taxan","owned":false,"year":1989,"genre":"Action","description":"A detective explores a mysterious dungeon solving the mystery quest."},
+  {"id":400,"title":"NARC","publisher":"Acclaim","owned":false,"year":1990,"genre":"Action","description":"Arcade port of the violent overhead twin-stick drug enforcement shooter."},
+  {"id":401,"title":"NES Open: Tournament Golf","publisher":"Nintendo","owned":false,"year":1991,"genre":"Sports","description":"Nintendo's official golf game with the Mario crew as caddies."},
+  {"id":402,"title":"NES Play Action Football","publisher":"Nintendo","owned":false,"year":1990,"genre":"Sports","description":"Nintendo's enhanced American football game with multiple play options."},
+  {"id":403,"title":"NFL Football","publisher":"Acclaim (LJN)","owned":false,"year":1989,"genre":"Sports","description":"NFL-licensed football simulation with real team names and rosters."},
+  {"id":404,"title":"Nigel Mansell's: World Championship Racing","publisher":"GameTek","owned":false,"year":1993,"genre":"Racing","description":"Formula One racing game endorsed by the 1992 world champion."},
+  {"id":405,"title":"Nightshade","publisher":"Konami (Ultra)","owned":false,"year":1992,"genre":"Adventure","description":"Batman-like hero solves a mystery in a dark city adventure game."},
+  {"id":406,"title":"Ninja Crusaders","publisher":"Sammy","owned":false,"year":1990,"genre":"Action","description":"Twin ninja warriors fight their way through enemy territory."},
+  {"id":407,"title":"Ninja Gaiden","publisher":"Tecmo","owned":false,"year":1988,"genre":"Action","description":"Ryu Hayabusa battles demonic forces in this cinematic action platformer."},
+  {"id":408,"title":"Ninja Gaiden II: The Dark Sword of Chaos","publisher":"Tecmo","owned":false,"year":1990,"genre":"Action","description":"Ryu faces the Brotherhood of Shadow in this acclaimed sequel."},
+  {"id":409,"title":"Ninja Gaiden III: The Ancient Ship of Doom","publisher":"Tecmo","owned":false,"year":1991,"genre":"Action","description":"Third and final NES Ninja Gaiden with ancient ship and doom sword plot."},
+  {"id":410,"title":"Ninja Kid","publisher":"Bandai","owned":false,"year":1986,"genre":"Action","description":"A young ninja battles enemies using transformation techniques."},
+  {"id":411,"title":"Nintendo World Cup","publisher":"Nintendo","owned":false,"year":1991,"genre":"Sports","description":"International soccer competition game with regional team selection."},
+  {"id":412,"title":"Nobunaga's Ambition","publisher":"KOEI","owned":false,"year":1989,"genre":"Strategy","description":"Historical strategy game set during Japan's warring states period."},
+  {"id":413,"title":"Nobunaga's Ambition II","publisher":"KOEI","owned":false,"year":1991,"genre":"Strategy","description":"Sequel to Nobunaga's Ambition with enhanced diplomacy mechanics."},
+  {"id":414,"title":"North and South","publisher":"Kemco","owned":false,"year":1990,"genre":"Strategy","description":"American Civil War strategy game with real historical battle scenarios."},
+  {"id":415,"title":"Operation Wolf: Take No Prisoners","publisher":"Taito","owned":false,"year":1989,"genre":"Shooter","description":"Light gun arcade game where you shoot terrorists as a SWAT officer."},
+  {"id":416,"title":"ORB 3-D","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Puzzle","description":"3D isometric puzzle game with orb-collecting challenges."},
+  {"id":417,"title":"Original Mario Bros., The","publisher":"Nintendo","owned":false,"year":1989,"genre":"Action","description":"The original Mario Bros. arcade game with Luigi co-op gameplay."},
+  {"id":418,"title":"Othello","publisher":"Acclaim","owned":false,"year":1988,"genre":"Board Game","description":"Classic black-and-white reversi strategy board game for NES."},
+  {"id":419,"title":"Overlord","publisher":"Virgin","owned":false,"year":1993,"genre":"Strategy","description":"Command historical armies in battles of conquest and territory."},
+  {"id":420,"title":"P.O.W.: Prisoners of War","publisher":"SNK","owned":false,"year":1992,"genre":"Action","description":"Prisoners escape and fight military guards in this arcade beat-em-up."},
+  {"id":421,"title":"Pac-Man","publisher":"Namco","owned":false,"year":1993,"genre":"Puzzle","description":"Classic Namco maze chase game with official Nintendo licensing."},
+  {"id":422,"title":"Pac-Man","publisher":"Tengen","owned":false,"year":1990,"genre":"Puzzle","description":"Tengen's unlicensed version of the classic Pac-Man arcade game."},
+  {"id":423,"title":"Palamedes","publisher":"Hot-B","owned":false,"year":1990,"genre":"Puzzle","description":"Dice-rolling puzzle game where you match numbers to defeat enemies."},
+  {"id":424,"title":"Panic Restaurant","publisher":"Taito","owned":false,"year":1992,"genre":"Platformer","description":"A chef battles evil food in a restaurant full of monster ingredients."},
+  {"id":425,"title":"Paperboy","publisher":"Mindscape","owned":false,"year":1988,"genre":"Action","description":"Deliver newspapers on a bicycle while avoiding obstacles and hazards."},
+  {"id":426,"title":"Paperboy 2","publisher":"Mindscape","owned":false,"year":1991,"genre":"Action","description":"Paperboy sequel with new routes and improved obstacle variety."},
+  {"id":427,"title":"Phantom Fighter","publisher":"FCI","owned":false,"year":1990,"genre":"Action","description":"A martial artist exorcist battles hopping vampires in Chinese villages."},
+  {"id":428,"title":"Pictionary","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Puzzle","description":"NES adaptation of the classic drawing and guessing party board game."},
+  {"id":429,"title":"Pin-Bot","publisher":"Nintendo","owned":false,"year":1990,"genre":"Simulation","description":"Nintendo pinball simulation based on the real-world Pin-Bot machine."},
+  {"id":430,"title":"Pinball","publisher":"Nintendo","owned":false,"year":1985,"genre":"Simulation","description":"Simple NES launch pinball game with basic table mechanics."},
+  {"id":431,"title":"Pinball Quest","publisher":"Jaleco","owned":false,"year":1990,"genre":"Simulation","description":"Pinball RPG hybrid where you battle monsters in fantasy table stages."},
+  {"id":432,"title":"Pipe Dream","publisher":"Bullet-Proof","owned":false,"year":1990,"genre":"Puzzle","description":"Plumber simulation game where you connect pipe sections across grids."},
+  {"id":433,"title":"Pirates!","publisher":"Konami (Ultra)","owned":false,"year":1991,"genre":"Strategy","description":"Sail and trade in the Caribbean managing a pirate ship and crew."},
+  {"id":434,"title":"Platoon","publisher":"Sunsoft","owned":false,"year":1988,"genre":"Action","description":"Vietnam War game where a soldier survives the brutal jungle conflict."},
+  {"id":435,"title":"Popeye","publisher":"Nintendo","owned":false,"year":1986,"genre":"Action","description":"Classic arcade port of the Bluto-fighting spinach-powered sailor."},
+  {"id":436,"title":"Power Blade","publisher":"Taito","owned":false,"year":1991,"genre":"Action","description":"Hero fights a robot army using a boomerang-style blade weapon."},
+  {"id":437,"title":"Power Blade 2","publisher":"Taito","owned":false,"year":1992,"genre":"Action","description":"Power Blade sequel with new missions and enhanced action sequences."},
+  {"id":438,"title":"Power Punch II","publisher":"ASC","owned":false,"year":1992,"genre":"Sports","description":"Boxing game featuring fictional fighters and tournament play."},
+  {"id":439,"title":"Predator","publisher":"Activision","owned":false,"year":1990,"genre":"Action","description":"Side-scrolling action game based on the Arnold Schwarzenegger film."},
+  {"id":440,"title":"Prince of Persia","publisher":"Virgin","owned":false,"year":1992,"genre":"Platformer","description":"Classic Jordan Mechner platformer with fluid animation and time pressure."},
+  {"id":441,"title":"Princess Tomato in the Salad Kingdom","publisher":"Hudson","owned":false,"year":1991,"genre":"Adventure","description":"Text adventure where Princess Tomato fights the evil Minister Pumpkin."},
+  {"id":442,"title":"Pro Sport Hockey","publisher":"Jaleco","owned":false,"year":1993,"genre":"Sports","description":"Ice hockey simulation with simplified arcade-style gameplay."},
+  {"id":443,"title":"Pro Wrestling","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"Professional wrestling with unique moves for each of six wrestlers."},
+  {"id":444,"title":"Punch-Out!!","publisher":"Nintendo","owned":false,"year":1990,"genre":"Sports","description":"Updated version of Mike Tyson's Punch-Out with Mr. Dream as champion."},
+  {"id":445,"title":"Punisher, The","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"The Punisher battles street gangs and organized crime families."},
+  {"id":446,"title":"Puss N' Boots: Pero's Great Adventure","publisher":"Electro-Brain","owned":false,"year":1990,"genre":"Platformer","description":"Puss in Boots embarks on a globe-trotting adventure to rescue a princess."},
+  {"id":447,"title":"Puzznic","publisher":"Taito","owned":false,"year":1990,"genre":"Puzzle","description":"Slide and combine numbered tiles to clear the puzzle stages."},
+  {"id":448,"title":"Q*Bert","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Platformer","description":"Classic arcade Q*Bert hops on cubes while avoiding colorful enemies."},
+  {"id":449,"title":"Qix","publisher":"Taito","owned":false,"year":1991,"genre":"Puzzle","description":"Classic Taito arcade game where you draw lines to fill screen areas."},
+  {"id":450,"title":"R.B.I. Baseball","publisher":"Tengen","owned":false,"year":1988,"genre":"Sports","description":"Tengen's baseball game featuring real Major League player rosters."},
+  {"id":451,"title":"R.C. Pro-Am","publisher":"Nintendo","owned":false,"year":1988,"genre":"Racing","description":"Top-down RC car racing with power-up items on short circuits."},
+  {"id":452,"title":"R.C. Pro-Am II","publisher":"Tradewest","owned":false,"year":1992,"genre":"Racing","description":"RC Pro-Am sequel with new tracks and enhanced two-player competition."},
+  {"id":453,"title":"Racket Attack","publisher":"Jaleco","owned":false,"year":1988,"genre":"Sports","description":"Realistic tennis simulation with player stats and tournament brackets."},
+  {"id":454,"title":"Rad Racer","publisher":"Nintendo","owned":false,"year":1987,"genre":"Racing","description":"Ahead-of-the-car racing game with day-night transitions and traffic."},
+  {"id":455,"title":"Rad Racer II","publisher":"Squaresoft","owned":false,"year":1990,"genre":"Racing","description":"Rad Racer sequel with enhanced visuals and more challenging tracks."},
+  {"id":456,"title":"Raid on Bungeling Bay","publisher":"Broderbund","owned":false,"year":1987,"genre":"Shooter","description":"Helicopter bombing simulation where you must destroy specific buildings."},
+  {"id":457,"title":"Rainbow Islands","publisher":"Taito","owned":false,"year":1991,"genre":"Platformer","description":"Bubble Bobble spin-off where you walk on rainbow platforms to defeat foes."},
+  {"id":458,"title":"Rally Bike","publisher":"Romstar","owned":false,"year":1988,"genre":"Racing","description":"Motorcycle racing game with top-down perspective and challenge modes."},
+  {"id":459,"title":"Rambo","publisher":"Acclaim","owned":false,"year":1987,"genre":"Action","description":"Rambo battles through enemy territory in this side-scrolling action game."},
+  {"id":460,"title":"Rampage","publisher":"Data East","owned":false,"year":1988,"genre":"Action","description":"Classic arcade monster stomper where you demolish buildings as a giant."},
+  {"id":461,"title":"Rampart","publisher":"Jaleco","owned":false,"year":1992,"genre":"Strategy","description":"Medieval siege strategy game where you command armies and build defenses."},
+  {"id":462,"title":"Ren & Stimpy Show, The: Buckeroo$!","publisher":"THQ","owned":false,"year":1993,"genre":"Platformer","description":"Ren and Stimpy platform game based on the Nickelodeon animated show."},
+  {"id":463,"title":"Renegade","publisher":"Taito","owned":false,"year":1987,"genre":"Action","description":"Street brawler based on the Technos Japan arcade fighter."},
+  {"id":464,"title":"Rescue: The Embassy Mission","publisher":"Kemco","owned":false,"year":1990,"genre":"Action","description":"Special forces rescue hostages from a fortified embassy compound."},
+  {"id":465,"title":"Ring King","publisher":"Data East","owned":false,"year":1987,"genre":"Sports","description":"Arcade boxing game with comical fighters and over-the-top moves."},
+  {"id":466,"title":"River City Ransom","publisher":"American Technos","owned":false,"year":1990,"genre":"Action","description":"Alex and Ryan battle street gangs to rescue friends in a beat-em-up RPG."},
+  {"id":467,"title":"RoadBlasters","publisher":"Mindscape","owned":false,"year":1987,"genre":"Racing","description":"Futuristic road warrior racing game with weapon-equipped cars."},
+  {"id":468,"title":"Robin Hood: Prince of Thieves","publisher":"Virgin","owned":false,"year":1992,"genre":"Action","description":"Robin Hood fights the Sheriff of Nottingham across the English countryside."},
+  {"id":469,"title":"RoboCop","publisher":"Data East","owned":false,"year":1989,"genre":"Action","description":"RoboCop battles Detroit criminals in this side-scrolling action game."},
+  {"id":470,"title":"RoboCop 2","publisher":"Data East","owned":false,"year":1991,"genre":"Action","description":"RoboCop faces a new criminal organization in this darker sequel."},
+  {"id":471,"title":"RoboCop 3","publisher":"Ocean","owned":false,"year":1992,"genre":"Action","description":"Third RoboCop NES game with enhanced mission variety."},
+  {"id":472,"title":"RoboWarrior","publisher":"Jaleco","owned":false,"year":1990,"genre":"Shooter","description":"Vertical shooter where you destroy enemy bases across seven stages."},
+  {"id":473,"title":"Rock 'n Ball","publisher":"NTVIC","owned":false,"year":1990,"genre":"Sports","description":"Pinball-style soccer game with bumpers and ball physics."},
+  {"id":474,"title":"Rocket Ranger","publisher":"Kemco","owned":false,"year":1990,"genre":"Action","description":"A ranger pilots a rocket-powered aircraft to defeat an alien invasion."},
+  {"id":475,"title":"Rocketeer, The","publisher":"Bandai","owned":false,"year":1992,"genre":"Action","description":"Cliff Secord pilots his rocket pack in this action game based on the film."},
+  {"id":476,"title":"Rockin' Kats","publisher":"Atlus","owned":false,"year":1991,"genre":"Platformer","description":"A boxing cat battles anthropomorphic enemies through colorful urban stages."},
+  {"id":477,"title":"Roger Clemens': MVP Baseball","publisher":"Acclaim (LJN)","owned":false,"year":1991,"genre":"Sports","description":"Baseball simulation endorsed by the famous Red Sox pitcher."},
+  {"id":478,"title":"Rollerball","publisher":"HAL","owned":false,"year":1990,"genre":"Simulation","description":"Pinball simulation on a vertical table with realistic physics."},
+  {"id":479,"title":"Rollerblade Racer","publisher":"Hi-Tech","owned":false,"year":1993,"genre":"Sports","description":"Rollerblade racing game through city streets and obstacle courses."},
+  {"id":480,"title":"Rollergames","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Sports","description":"Competitive rollerskating game based on the real-world sports entertainment."},
+  {"id":481,"title":"Romance of the Three Kingdoms","publisher":"KOEI","owned":false,"year":1989,"genre":"Strategy","description":"Epic historical strategy game set during China's Three Kingdoms era."},
+  {"id":482,"title":"Romance of the Three Kingdoms II","publisher":"KOEI","owned":false,"year":1991,"genre":"Strategy","description":"Sequel with enhanced political and military strategy options."},
+  {"id":483,"title":"Roundball 2-on-2 Challenge","publisher":"Mindscape","owned":false,"year":1992,"genre":"Sports","description":"Two-on-two half-court basketball with exaggerated moves."},
+  {"id":484,"title":"Rush'n Attack","publisher":"Konami","owned":false,"year":1987,"genre":"Action","description":"Infiltrate a Soviet base using knives and grenades in this Konami classic."},
+  {"id":485,"title":"Rygar","publisher":"Tecmo","owned":false,"year":1987,"genre":"Action","description":"Legendary warrior climbs mountains battling enemies on his way to the top."},
+  {"id":486,"title":"S.C.A.T.","publisher":"Natsume","owned":false,"year":1991,"genre":"Shooter","description":"Side-scrolling shooter with two-player co-op and intense boss battles."},
+  {"id":487,"title":"Section-Z","publisher":"Capcom","owned":false,"year":1987,"genre":"Shooter","description":"Capcom horizontal shooter set in a futuristic underground fortress."},
+  {"id":488,"title":"Seicross","publisher":"FCI","owned":false,"year":1986,"genre":"Racing","description":"Motorcycle racing game with a focus on lap time optimization."},
+  {"id":489,"title":"Sesame Street: 123","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Educational","description":"Sesame Street number learning game for young children."},
+  {"id":490,"title":"Sesame Street: ABC","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Educational","description":"Sesame Street alphabet learning game for young children."},
+  {"id":491,"title":"Sesame Street: ABC & 123","publisher":"Hi-Tech","owned":false,"year":1991,"genre":"Educational","description":"Combined ABC and 123 Sesame Street educational package for children."},
+  {"id":492,"title":"Sesame Street: Big Bird's Hide & Speak","publisher":"Hi-Tech","owned":false,"year":1992,"genre":"Educational","description":"Big Bird teaches young children language through hide and speak."},
+  {"id":493,"title":"Sesame Street: Countdown","publisher":"Hi-Tech","owned":false,"year":1992,"genre":"Educational","description":"Sesame Street counting game with familiar characters for children."},
+  {"id":494,"title":"Shadow of the Ninja","publisher":"Natsume","owned":false,"year":1990,"genre":"Action","description":"Silent ninja battles enemies through side-scrolling nighttime stages."},
+  {"id":495,"title":"Shadowgate","publisher":"Kemco","owned":false,"year":1989,"genre":"Adventure","description":"First-person point-and-click adventure in a haunted castle dungeon."},
+  {"id":496,"title":"Shatterhand","publisher":"Jaleco","owned":false,"year":1991,"genre":"Action","description":"John Slade uses his powered exo-suit to battle cyborg enemies."},
+  {"id":497,"title":"Shingen the Ruler","publisher":"Hot-B","owned":false,"year":1989,"genre":"Strategy","description":"Historical simulation of 16th century Japanese warlord Shingen."},
+  {"id":498,"title":"Shooting Range","publisher":"Bandai","owned":false,"year":1989,"genre":"Shooter","description":"Zapper light gun game with clay shooting at various moving targets."},
+  {"id":499,"title":"Short Order / Eggsplode","publisher":"Nintendo","owned":false,"year":1989,"genre":"Puzzle","description":"Two-game pack featuring cooking puzzles and a frying pan challenge."},
+  {"id":500,"title":"Side Pocket","publisher":"Data East","owned":false,"year":1993,"genre":"Sports","description":"Realistic pool simulation with 8-ball, 9-ball, and trick shot modes."},
+  {"id":501,"title":"Silent Service","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Simulation","description":"Submarine simulation where you command a WWII underwater battle vessel."},
+  {"id":502,"title":"Silk Worm","publisher":"Sammy","owned":false,"year":1991,"genre":"Shooter","description":"Vertical helicopter shooter with co-op gameplay and power-up weapons."},
+  {"id":503,"title":"Silver Surfer","publisher":"Arcadia","owned":false,"year":1990,"genre":"Shooter","description":"Licensed Silver Surfer shooter known for its punishing difficulty."},
+  {"id":504,"title":"Simpsons, The: Barman Meets Radioactive Man","publisher":"Acclaim","owned":false,"year":1992,"genre":"Action","description":"Bart Simpson battles Radioactive Man in this comic book adventure."},
+  {"id":505,"title":"Simpsons, The: Bart vs. the Space Mutants","publisher":"Acclaim","owned":false,"year":1991,"genre":"Platformer","description":"Bart battles space aliens who are disguised as famous landmarks."},
+  {"id":506,"title":"Simpsons, The: Bart vs. the World","publisher":"Acclaim","owned":false,"year":1992,"genre":"Platformer","description":"Bart travels around the world collecting items from famous locations."},
+  {"id":507,"title":"Skate or Die","publisher":"Konami (Ultra)","owned":false,"year":1988,"genre":"Sports","description":"Skateboard trick and racing game with multiple modes and courses."},
+  {"id":508,"title":"Skate or Die 2: The Search for Double Trouble","publisher":"EA","owned":false,"year":1990,"genre":"Sports","description":"Skate or Die sequel with a story mode and new skating events."},
+  {"id":509,"title":"Ski or Die","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Sports","description":"Multi-event winter sports game with skiing, snowboarding, and more."},
+  {"id":510,"title":"Sky Kid","publisher":"Sunsoft","owned":false,"year":1990,"genre":"Shooter","description":"Vertical shooter featuring a biplane with loop-de-loop mechanics."},
+  {"id":511,"title":"Sky Shark","publisher":"Taito","owned":false,"year":1987,"genre":"Shooter","description":"Vertical airplane shooter with tight formations of enemy aircraft."},
+  {"id":512,"title":"Slalom","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"Downhill skiing slalom game from Nintendo's early NES lineup."},
+  {"id":513,"title":"Smash T.V.","publisher":"Acclaim","owned":false,"year":1991,"genre":"Shooter","description":"Brutally difficult twin-stick arena shooter ported from the arcade."},
+  {"id":514,"title":"Snake Rattle n Roll","publisher":"Nintendo","owned":false,"year":1990,"genre":"Action","description":"A snake and a roll battle through wacky obstacle courses in co-op."},
+  {"id":515,"title":"Snake's Revenge","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Action","description":"Solid Snake's non-canonical sequel mission in a different conflict."},
+  {"id":516,"title":"Snoopy's Silly Sports Spectacular","publisher":"Kemco","owned":false,"year":1990,"genre":"Sports","description":"Snoopy hosts a collection of silly mini-game sporting events."},
+  {"id":517,"title":"Snow Brothers","publisher":"Capcom","owned":false,"year":1991,"genre":"Platformer","description":"Two brothers throw snowballs to freeze and defeat enemies together."},
+  {"id":518,"title":"Soccer","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Simple NES launch title soccer with basic rules and gameplay."},
+  {"id":519,"title":"Solar Jetman: Hunt for the Golden Warpship","publisher":"Tradewest","owned":false,"year":1990,"genre":"Adventure","description":"Scavenger hunt space exploration game with jetpack mechanics."},
+  {"id":520,"title":"Solomon's Key","publisher":"Tecmo","owned":false,"year":1986,"genre":"Puzzle","description":"Time-limited puzzle game where you release trapped characters from tiles."},
+  {"id":521,"title":"Solstice: The Quest for the Staff of Demnos","publisher":"Sony Imagesoft","owned":false,"year":1990,"genre":"Action","description":"Isometric adventure game with a staff-wielding hero in a 3D world."},
+  {"id":522,"title":"Space Shuttle Project","publisher":"Absolute","owned":false,"year":1992,"genre":"Simulation","description":"Space shuttle mission simulation with NASA-inspired gameplay."},
+  {"id":523,"title":"Spelunker","publisher":"Broderbund","owned":false,"year":1987,"genre":"Platformer","description":"Classic explorer descends into underground caverns collecting treasure."},
+  {"id":524,"title":"Spider-Man: Return of the Sinister Six","publisher":"Acclaim (LJN)","owned":false,"year":1992,"genre":"Action","description":"Spider-Man battles his greatest villains in side-scrolling action stages."},
+  {"id":525,"title":"Spot: The Videogame!","publisher":"Arcadia","owned":false,"year":1991,"genre":"Puzzle","description":"7-Up promotional puzzle game featuring the Spot mascot character."},
+  {"id":526,"title":"Spy Hunter","publisher":"Sunsoft","owned":false,"year":1987,"genre":"Racing","description":"Spy Hunter road racer with oil slicks and weapon-equipped car."},
+  {"id":527,"title":"Spy vs. Spy","publisher":"Kemco","owned":false,"year":1988,"genre":"Action","description":"Two spies battle each other in split-screen competitive stages."},
+  {"id":528,"title":"Sqoon","publisher":"IREM","owned":false,"year":1986,"genre":"Shooter","description":"Undersea vertical shooter with a submarine and unusual enemy designs."},
+  {"id":529,"title":"Stack-Up","publisher":"Nintendo","owned":false,"year":1985,"genre":"Puzzle","description":"R.O.B. the robot accessory stacking game requiring the peripheral."},
+  {"id":530,"title":"Stadium Events","publisher":"Bandai","owned":false,"year":1987,"genre":"Sports","description":"Extremely rare sports game that preceded Stadium Events in Japan."},
+  {"id":531,"title":"Stanley: The Search for Dr. Livingston","publisher":"Electro-Brain","owned":false,"year":1992,"genre":"Adventure","description":"An explorer searches for Dr. Livingston through an African jungle."},
+  {"id":532,"title":"Star Force","publisher":"Tecmo","owned":false,"year":1987,"genre":"Shooter","description":"Military vertical shooter with upgradable planes and tight formations."},
+  {"id":533,"title":"Star Soldier","publisher":"Taxan","owned":false,"year":1989,"genre":"Shooter","description":"Classic Hudson vertical shooter with 16-stage progressive difficulty."},
+  {"id":534,"title":"Star Trek 25th Anniversary","publisher":"Konami (Ultra)","owned":false,"year":1992,"genre":"Adventure","description":"Captain Kirk and crew solve a mystery in this 25th anniversary game."},
+  {"id":535,"title":"Star Trek: The Next Generation","publisher":"Absolute","owned":false,"year":1993,"genre":"Adventure","description":"The Next Generation crew explores space in this NES adventure game."},
+  {"id":536,"title":"Star Tropics","publisher":"Nintendo","owned":false,"year":1990,"genre":"Action","description":"Mike Jones explores islands and uncovers a dangerous alien conspiracy."},
+  {"id":537,"title":"Star Tropics II: Zoda's Revenge","publisher":"Nintendo","owned":false,"year":1994,"genre":"Action","description":"Zoda returns and Mike Jones embarks on a new island adventure."},
+  {"id":538,"title":"Star Voyager","publisher":"Acclaim","owned":false,"year":1987,"genre":"Shooter","description":"Space shooter with a unique ship that changes formation for defense."},
+  {"id":539,"title":"Star Wars","publisher":"JVC","owned":false,"year":1991,"genre":"Action","description":"Luke Skywalker and friends battle the Empire in this film adaptation."},
+  {"id":540,"title":"Star Wars: The Empire Strikes Back","publisher":"JVC","owned":false,"year":1992,"genre":"Action","description":"The Empire Strikes Back film adapted into NES platforming action."},
+  {"id":541,"title":"Starship Hector","publisher":"Hudson","owned":false,"year":1990,"genre":"Shooter","description":"Hudson's vertical space shooter with a powerful homing missile system."},
+  {"id":542,"title":"Stealth ATF","publisher":"Activision","owned":false,"year":1990,"genre":"Shooter","description":"Pilot a stealth aircraft on bombing runs through enemy territory."},
+  {"id":543,"title":"Stinger","publisher":"Konami","owned":false,"year":1989,"genre":"Shooter","description":"Early Konami shooter featuring twin-plane formation flying."},
+  {"id":544,"title":"Street Cop","publisher":"Bandai","owned":false,"year":1990,"genre":"Action","description":"A police officer patrols city streets preventing crime and catching criminals."},
+  {"id":545,"title":"Street Fighter 2010: The Final Fight","publisher":"Capcom","owned":false,"year":1990,"genre":"Action","description":"Ken Street battles mutants in 2010 in this strange Capcom action game."},
+  {"id":546,"title":"Strider","publisher":"Capcom","owned":false,"year":1989,"genre":"Action","description":"Ninja hero slides and runs through enemy facilities in this Capcom port."},
+  {"id":547,"title":"Sullivan Bluth Presents: Dragon's Lair","publisher":"Sony Imagesoft","owned":false,"year":1990,"genre":"Action","description":"Dirk the Daring fights through Dragon's Lair in this NES adaptation."},
+  {"id":548,"title":"Super C","publisher":"Konami","owned":false,"year":1990,"genre":"Action","description":"Super Contra enhanced port with new stages and improved graphics."},
+  {"id":549,"title":"Super Cars","publisher":"Electro-Brain","owned":false,"year":1991,"genre":"Racing","description":"Futuristic miniature car racing game with dangerous track hazards."},
+  {"id":550,"title":"Super Dodge Ball","publisher":"Sony Imagesoft","owned":false,"year":1990,"genre":"Sports","description":"Two-player beach volleyball game with team management elements."},
+  {"id":551,"title":"Super Glove Ball","publisher":"Mattel","owned":false,"year":1990,"genre":"Sports","description":"Racquetball simulation designed to use the Nintendo Power Glove accessory."},
+  {"id":552,"title":"Super Jeopardy!","publisher":"GameTek","owned":false,"year":1991,"genre":"Game Show","description":"Super version of Jeopardy with enhanced questions and presentation."},
+  {"id":553,"title":"Super Mario Bros.","publisher":"Nintendo","owned":false,"year":1985,"genre":"Platformer","description":"Mario's iconic debut jump and run adventure through the Mushroom Kingdom."},
+  {"id":554,"title":"Super Mario Bros. / Duck Hunt","publisher":"Nintendo","owned":false,"year":1988,"genre":"Platformer","description":"Two-game combination cartridge with Super Mario Bros. and Duck Hunt."},
+  {"id":555,"title":"Super Mario Bros. / Duck Hunt / World Class Track Meet","publisher":"Nintendo","owned":false,"year":1990,"genre":"Platformer","description":"Three-game pack combining Super Mario Bros., Duck Hunt, and track meet."},
+  {"id":556,"title":"Super Mario Bros. 2","publisher":"Nintendo","owned":false,"year":1988,"genre":"Platformer","description":"Mario explores Subcon dream world battling Wart and his veggie enemies."},
+  {"id":557,"title":"Super Mario Bros. 3","publisher":"Nintendo","owned":false,"year":1990,"genre":"Platformer","description":"The greatest NES game with raccoon suit, Tanooki, and world map exploration."},
+  {"id":558,"title":"Super Pitfall","publisher":"Activision","owned":false,"year":1986,"genre":"Platformer","description":"Licensed Atari game with poor controls and unfair difficulty."},
+  {"id":559,"title":"Super Spike V'Ball","publisher":"Nintendo","owned":false,"year":1990,"genre":"Sports","description":"Two-player beach volleyball with simple spike and serve mechanics."},
+  {"id":560,"title":"Super Spike V'Ball / Nintendo World Cup","publisher":"Nintendo","owned":false,"year":1990,"genre":"Sports","description":"Combo cartridge featuring Super Spike V'Ball and Nintendo World Cup soccer."},
+  {"id":561,"title":"Super Spy Hunter","publisher":"Sunsoft","owned":false,"year":1992,"genre":"Shooter","description":"Spy Hunter sequel with land, water, and air vehicle stages."},
+  {"id":562,"title":"Super Team Games","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"Power Pad multi-event athletic game with team competition."},
+  {"id":563,"title":"Superman","publisher":"Kemco","owned":false,"year":1992,"genre":"Action","description":"Superman battles Lex Luthor in Metropolis but has awkward controls."},
+  {"id":564,"title":"Swamp Thing","publisher":"THQ","owned":false,"year":1992,"genre":"Action","description":"The DC Comics swamp creature stars in a side-scrolling action game."},
+  {"id":565,"title":"Sword Master","publisher":"Activision","owned":false,"year":1992,"genre":"Action","description":"A swordsman battles demons in a dark side-scrolling action game."},
+  {"id":566,"title":"Swords and Serpents","publisher":"Acclaim","owned":false,"year":1990,"genre":"RPG","description":"RPG dungeon crawler in a snake-infested underground world."},
+  {"id":567,"title":"T2 Terminator 2: Judgment Day","publisher":"Acclaim (LJN)","owned":false,"year":1992,"genre":"Action","description":"Terminator 2 action game based on the Arnold Schwarzenegger blockbuster."},
+  {"id":568,"title":"Taboo: The Sixth Sense","publisher":"Tradewest","owned":false,"year":1989,"genre":"Simulation","description":"Tarot card fortune telling simulation with mystery and intrigue."},
+  {"id":569,"title":"Tag Team Wrestling","publisher":"Data East","owned":false,"year":1986,"genre":"Sports","description":"Two-on-two tag team wrestling with arcade action and big moves."},
+  {"id":570,"title":"Talespin","publisher":"Capcom","owned":false,"year":1992,"genre":"Platformer","description":"Baloo pilots his Sea Duck delivering cargo through dangerous Disney stages."},
+  {"id":571,"title":"Target: Renegade","publisher":"Taito","owned":false,"year":1989,"genre":"Action","description":"Street brawler featuring the Renegade character from the arcade game."},
+  {"id":572,"title":"Tecmo Baseball","publisher":"Tecmo","owned":false,"year":1989,"genre":"Sports","description":"Tecmo baseball with simple batting and pitching mechanics."},
+  {"id":573,"title":"Tecmo Bowl","publisher":"Tecmo","owned":false,"year":1989,"genre":"Sports","description":"Classic football game with simple but deep playcalling strategy."},
+  {"id":574,"title":"Tecmo Cup: Soccer Game","publisher":"Tecmo","owned":false,"year":1992,"genre":"Sports","description":"Soccer RPG hybrid where Tecmo Cup meets tournament management."},
+  {"id":575,"title":"Tecmo NBA Basketball","publisher":"Tecmo","owned":false,"year":1992,"genre":"Sports","description":"NBA-licensed basketball with real teams and player statistics."},
+  {"id":576,"title":"Tecmo Super Bowl","publisher":"Tecmo","owned":false,"year":1991,"genre":"Sports","description":"Enhanced Tecmo Bowl with all 28 NFL teams and improved gameplay."},
+  {"id":577,"title":"Tecmo World Wrestling","publisher":"Tecmo","owned":false,"year":1990,"genre":"Sports","description":"Tecmo pro wrestling simulation with tournament and league modes."},
+  {"id":578,"title":"Teenage Mutant Ninja Turtles","publisher":"Konami (Ultra)","owned":false,"year":1989,"genre":"Action","description":"Turtles in a half shell fight Shredder's Foot Clan across New York."},
+  {"id":579,"title":"Teenage Mutant Ninja Turtles II: The Arcade Game","publisher":"Konami (Ultra)","owned":false,"year":1990,"genre":"Action","description":"Excellent arcade port with pizza power-ups and co-op brawling."},
+  {"id":580,"title":"Teenage Mutant Ninja Turtles III: The Manhattan Project","publisher":"Konami","owned":false,"year":1992,"genre":"Action","description":"Turtles battle Shredder's forces invading Manhattan in this sequel."},
+  {"id":581,"title":"Teenage Mutant Ninja Turtles: Tournament Fighters","publisher":"Konami","owned":false,"year":1994,"genre":"Fighting","description":"One-on-one fighting game featuring the four turtles and their rivals."},
+  {"id":582,"title":"Tennis","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Simple NES launch title tennis with basic serve and volley."},
+  {"id":583,"title":"Terminator, The","publisher":"Mindscape","owned":false,"year":1993,"genre":"Action","description":"Kyle Reese fights Terminators in a dystopian future action game."},
+  {"id":584,"title":"Terra Cresta","publisher":"Vic Tokai","owned":false,"year":1990,"genre":"Shooter","description":"Vertical military shooter with tank and helicopter combat stages."},
+  {"id":585,"title":"Tetris","publisher":"Nintendo","owned":false,"year":1989,"genre":"Puzzle","description":"The official Nintendo Tetris with Mode A and Mode B endless play."},
+  {"id":586,"title":"Tetris 2","publisher":"Nintendo","owned":false,"year":1993,"genre":"Puzzle","description":"Tetris sequel with a two-player competitive mode and new shapes."},
+  {"id":587,"title":"Three Stooges, The","publisher":"Activision","owned":false,"year":1987,"genre":"Action","description":"Classic comedy trio stars in a varied mini-game collection."},
+  {"id":588,"title":"Thunder and Lightning","publisher":"Romstar","owned":false,"year":1990,"genre":"Puzzle","description":"Arkanoid-style ball bouncing game with electric fences and lightning."},
+  {"id":589,"title":"Thunderbirds","publisher":"Activision","owned":false,"year":1990,"genre":"Action","description":"International rescue organization action game based on the TV show."},
+  {"id":590,"title":"Thundercade","publisher":"Sammy","owned":false,"year":1987,"genre":"Shooter","description":"Dual-direction tank shooter with overhead perspective and power-ups."},
+  {"id":591,"title":"Tiger-Heli","publisher":"Acclaim","owned":false,"year":1987,"genre":"Shooter","description":"Classic Tiger helicopter vertical shooter with ground and air enemies."},
+  {"id":592,"title":"Time Lord","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Action","description":"A time-traveling warrior battles creatures across different historical eras."},
+  {"id":593,"title":"Times of Lore","publisher":"Toho","owned":false,"year":1991,"genre":"RPG","description":"Fantasy RPG adapted from the Steve Jackson game book series."},
+  {"id":594,"title":"Tiny Toon Adventures","publisher":"Konami","owned":false,"year":1992,"genre":"Platformer","description":"Buster Bunny and friends from the Looney Tunes spin-off series."},
+  {"id":595,"title":"Tiny Toon Adventures 2: Trouble in Wackyland","publisher":"Konami","owned":false,"year":1994,"genre":"Platformer","description":"Second Tiny Toons game with new stages and characters in Wackyland."},
+  {"id":596,"title":"Tiny Toon Adventures: Cartoon Workshop","publisher":"Konami","owned":false,"year":1992,"genre":"Educational","description":"Tiny Toons art workshop lets kids create their own animated cartoons."},
+  {"id":597,"title":"To The Earth","publisher":"Nintendo","owned":false,"year":1989,"genre":"Shooter","description":"Zapper light gun game where you shoot meteors threatening Earth."},
+  {"id":598,"title":"Toki","publisher":"Taito","owned":false,"year":1991,"genre":"Platformer","description":"A chimp escapes the lab and embarks on a jungle adventure."},
+  {"id":599,"title":"Tom & Jerry: The Ultimate Game of Cat and Mouse!","publisher":"Hi-Tech","owned":false,"year":1992,"genre":"Platformer","description":"Tom chases Jerry across household stages in this licensed game."},
+  {"id":600,"title":"Tombs & Treasure","publisher":"Activision (Infocom)","owned":false,"year":1991,"genre":"Adventure","description":"Text adventure exploring Mexican ruins with item collection and puzzles."},
+  {"id":601,"title":"Top Gun","publisher":"Konami","owned":false,"year":1987,"genre":"Shooter","description":"Konami's Top Gun game requires landing on aircraft carrier to refuel."},
+  {"id":602,"title":"Top Gun: The Second Mission","publisher":"Konami","owned":false,"year":1990,"genre":"Shooter","description":"Top Gun sequel with enhanced mission variety and aircraft options."},
+  {"id":603,"title":"Total Recall","publisher":"Acclaim","owned":false,"year":1990,"genre":"Action","description":"Arnold Schwarzenegger Total Recall game based on the Mars sci-fi film."},
+  {"id":604,"title":"Totally Rad","publisher":"Jaleco","owned":false,"year":1991,"genre":"Action","description":"A magician hero battles enemies using magical transformation powers."},
+  {"id":605,"title":"Touchdown Fever","publisher":"SNK","owned":false,"year":1991,"genre":"Sports","description":"American football game based on real NFL plays and formations."},
+  {"id":606,"title":"Town & Country Surf Designs","publisher":"Acclaim (LJN)","owned":false,"year":1988,"genre":"Sports","description":"Surf and skateboard challenge game based on the clothing brand."},
+  {"id":607,"title":"Town & Country Surf Designs II: Thrilla’s Surfari","publisher":"Acclaim (LJN)","owned":false,"year":1992,"genre":"Sports","description":"Town & Country sequel focused on surfing and skateboarding events."},
+  {"id":608,"title":"Toxic Crusaders","publisher":"Bandai","owned":false,"year":1992,"genre":"Action","description":"The Toxic Avenger fights mutant villains in Tromaville action stages."},
+  {"id":609,"title":"Track & Field","publisher":"Konami","owned":false,"year":1987,"genre":"Sports","description":"Classic Konami Olympic track and field multi-event button masher."},
+  {"id":610,"title":"Track & Field II","publisher":"Konami","owned":false,"year":1989,"genre":"Sports","description":"Track and Field sequel with new events and enhanced multiplayer."},
+  {"id":611,"title":"Treasure Master","publisher":"ASC","owned":false,"year":1992,"genre":"Action","description":"Treasure hunting action game with a final tournament broadcast live."},
+  {"id":612,"title":"Trog!","publisher":"Acclaim","owned":false,"year":1991,"genre":"Action","description":"A caveman digs up enemies and throws them at others to defeat them."},
+  {"id":613,"title":"Trojan","publisher":"Capcom","owned":false,"year":1986,"genre":"Action","description":"A warrior fights through enemy-filled stages in ancient Rome."},
+  {"id":614,"title":"Twin Cobra","publisher":"Sammy","owned":false,"year":1990,"genre":"Shooter","description":"Dual-helicopter vertical shooter with intense boss battles."},
+  {"id":615,"title":"Twin Eagle","publisher":"Romstar","owned":false,"year":1990,"genre":"Shooter","description":"Vertical helicopter shooter with a two-player cooperative mode."},
+  {"id":616,"title":"Ultima: Exodus","publisher":"FCI","owned":false,"year":1990,"genre":"RPG","description":"Third Ultima game adapted for the NES with dungeon exploration."},
+  {"id":617,"title":"Ultima: Quest of the Avatar","publisher":"FCI","owned":false,"year":1991,"genre":"RPG","description":"Fourth Ultima game focused on becoming a spiritual Avatar hero."},
+  {"id":618,"title":"Ultima: Warriors of Destiny","publisher":"FCI","owned":false,"year":1993,"genre":"RPG","description":"Fifth Ultima NES adaptation with a dark corruption of the Avatar theme."},
+  {"id":619,"title":"Ultimate Air Combat","publisher":"Activision","owned":false,"year":1992,"genre":"Simulation","description":"Air combat flight simulation with dogfighting and bombing missions."},
+  {"id":620,"title":"Ultimate Basketball","publisher":"Sammy","owned":false,"year":1990,"genre":"Sports","description":"Five-on-five basketball with simplified arcade-style play."},
+  {"id":621,"title":"Uncanny X-Men, The","publisher":"Acclaim (LJN)","owned":false,"year":1989,"genre":"Action","description":"X-Men team battle game with overhead perspective and power attacks."},
+  {"id":622,"title":"Uncharted Waters","publisher":"KOEI","owned":false,"year":1993,"genre":"Strategy","description":"KOEI sailing and trading simulation set in the Age of Exploration."},
+  {"id":623,"title":"Uninvited","publisher":"Kemco","owned":false,"year":1991,"genre":"Adventure","description":"Point-and-click horror adventure set in a haunted mansion."},
+  {"id":624,"title":"Untouchables, The","publisher":"Ocean","owned":false,"year":1991,"genre":"Action","description":"Eliot Ness battles gangsters in prohibition-era Chicago."},
+  {"id":625,"title":"Urban Champion","publisher":"Nintendo","owned":false,"year":1986,"genre":"Fighting","description":"One-on-one street fighting game where you punch to the top ranking."},
+  {"id":626,"title":"Vegas Dream","publisher":"HAL","owned":false,"year":1991,"genre":"Simulation","description":"Las Vegas casino simulation with blackjack, slots, and roulette."},
+  {"id":627,"title":"Vice: Project Doom","publisher":"Sammy","owned":false,"year":1991,"genre":"Action","description":"A police officer battles a criminal syndicate in this action platformer."},
+  {"id":628,"title":"Videomation","publisher":"THQ","owned":false,"year":1991,"genre":"Educational","description":"Creative art program teaching children about color and drawing."},
+  {"id":629,"title":"Volleyball","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Simple NES launch volleyball game with basic serve and spike."},
+  {"id":630,"title":"Wacky Races","publisher":"Atlus","owned":false,"year":1992,"genre":"Racing","description":"Wacky Races cartoon adaptation with car combat and racing."},
+  {"id":631,"title":"Wall Street Kid","publisher":"SOFEL","owned":false,"year":1990,"genre":"Simulation","description":"Stock market investment simulation set in the 1980s Manhattan scene."},
+  {"id":632,"title":"Wario's Woods","publisher":"Nintendo","owned":false,"year":1994,"genre":"Puzzle","description":"Wario destroys trees in this late NES puzzler featuring Mario's nemesis."},
+  {"id":633,"title":"Wayne Gretzky Hockey","publisher":"THQ","owned":false,"year":1991,"genre":"Sports","description":"Ice hockey simulation endorsed by the legendary Wayne Gretzky."},
+  {"id":634,"title":"Wayne's World","publisher":"THQ","owned":false,"year":1993,"genre":"Action","description":"Mike and Wayne battle rock music villains based on the film."},
+  {"id":635,"title":"WCW: World Championship Wrestling","publisher":"FCI","owned":false,"year":1990,"genre":"Sports","description":"Professional wrestling game based on the WCW promotion."},
+  {"id":636,"title":"Werewolf: The Last Warrior","publisher":"Data East","owned":false,"year":1990,"genre":"Action","description":"A warrior transforms into a werewolf to gain power and fight enemies."},
+  {"id":637,"title":"Wheel of Fortune","publisher":"GameTek","owned":false,"year":1987,"genre":"Game Show","description":"NES adaptation of the classic letter-spinning game show."},
+  {"id":638,"title":"Wheel of Fortune: Family Edition","publisher":"GameTek","owned":false,"year":1990,"genre":"Game Show","description":"Family edition of Wheel of Fortune with easier word categories."},
+  {"id":639,"title":"Wheel of Fortune: Featuring Vanna White","publisher":"GameTek","owned":false,"year":1992,"genre":"Game Show","description":"Wheel of Fortune featuring the show's famous hostess Vanna White."},
+  {"id":640,"title":"Wheel of Fortune: Junior Edition","publisher":"GameTek","owned":false,"year":1989,"genre":"Game Show","description":"Junior edition of Wheel of Fortune for younger players."},
+  {"id":641,"title":"Where in Time Is Carmen Sandiego?","publisher":"Konami","owned":false,"year":1991,"genre":"Educational","description":"Carmen Sandiego historical time travel educational adventure."},
+  {"id":642,"title":"Where's Waldo?","publisher":"THQ","owned":false,"year":1991,"genre":"Puzzle","description":"Find Waldo hidden in crowded scenes based on the book series."},
+  {"id":643,"title":"Who Framed Roger Rabbit?","publisher":"Acclaim (LJN)","owned":false,"year":1991,"genre":"Action","description":"Eddie Valiant investigates the murder of a cartoon character."},
+  {"id":644,"title":"Whomp 'Em","publisher":"Jaleco","owned":false,"year":1991,"genre":"Platformer","description":"Native American warrior battles enemies with a staff weapon."},
+  {"id":645,"title":"Widget","publisher":"Atlus","owned":false,"year":1992,"genre":"Platformer","description":"Widget the alien shape-shifts through stages to battle pollution."},
+  {"id":646,"title":"Wild Gunman","publisher":"Nintendo","owned":false,"year":1985,"genre":"Shooter","description":"Wild West Zapper light gun game shooting cowboys and outlaws."},
+  {"id":647,"title":"Will Harvey Presents: The Immortal","publisher":"EA","owned":false,"year":1991,"genre":"Action","description":"A wizard explores a deadly dungeon in this isometric action RPG."},
+  {"id":648,"title":"Willow","publisher":"Capcom","owned":false,"year":1990,"genre":"Action","description":"Elora and Willow adventure through a fantasy world based on the film."},
+  {"id":649,"title":"Win, Lose or Draw","publisher":"Hi-Tech","owned":false,"year":1990,"genre":"Game Show","description":"NES adaptation of the Pictionary-inspired drawing game show."},
+  {"id":650,"title":"Winter Games","publisher":"Acclaim","owned":false,"year":1988,"genre":"Sports","description":"Multi-event winter Olympic sports competition game."},
+  {"id":651,"title":"Wizardry Master Series II: Knight of Diamonds","publisher":"ASCII / NEXOFT","owned":false,"year":1992,"genre":"RPG","description":"Second Wizardry NES port with enhanced dungeons and party building."},
+  {"id":652,"title":"Wizardry Master Series: Proving Grounds of the Mad Overlord","publisher":"ASCII / NEXOFT","owned":false,"year":1990,"genre":"RPG","description":"Classic Wizardry computer RPG adapted for the NES console."},
+  {"id":653,"title":"Wizards & Warriors","publisher":"Acclaim","owned":false,"year":1990,"genre":"Action","description":"A knight battles through castle dungeons to rescue the princess."},
+  {"id":654,"title":"Wizards & Warriors II: Iron Sword","publisher":"Acclaim","owned":false,"year":1989,"genre":"Action","description":"Kuros the knight battles Malkil through new castle dungeons."},
+  {"id":655,"title":"Wizards & Warriors III: Kuros...Visions of Power","publisher":"Acclaim","owned":false,"year":1992,"genre":"Action","description":"Third Wizards and Warriors with magical power-up visions of destiny."},
+  {"id":656,"title":"Wolverine","publisher":"Acclaim (LJN)","owned":false,"year":1991,"genre":"Action","description":"Wolverine slashes through enemies in this Marvel Comics action game."},
+  {"id":657,"title":"World Champ","publisher":"Romstar","owned":false,"year":1990,"genre":"Sports","description":"World boxing championship game with international fighter roster."},
+  {"id":658,"title":"World Class Track Meet","publisher":"Nintendo","owned":false,"year":1987,"genre":"Sports","description":"Power Pad running game with competitive track meet events."},
+  {"id":659,"title":"World Games","publisher":"Milton Bradley","owned":false,"year":1987,"genre":"Sports","description":"Multi-event international sports game with various athletic competitions."},
+  {"id":660,"title":"Wrath of the Black Manta","publisher":"Taito","owned":false,"year":1990,"genre":"Action","description":"A young ninja fights the Black Mantis criminal organization."},
+  {"id":661,"title":"Wrecking Crew","publisher":"Nintendo","owned":false,"year":1985,"genre":"Puzzle","description":"Mario uses a hammer to destroy brick walls and save captured workers."},
+  {"id":662,"title":"Wurm: Journey to the Center of the Earth","publisher":"Asmik","owned":false,"year":1991,"genre":"Action","description":"A spaceship crew descends into the earth's interior on a rescue mission."},
+  {"id":663,"title":"WWF WrestleMania","publisher":"Acclaim","owned":false,"year":1989,"genre":"Sports","description":"WWF professional wrestling with real superstars and signature moves."},
+  {"id":664,"title":"WWF: King of the Ring","publisher":"Acclaim (LJN)","owned":false,"year":1993,"genre":"Sports","description":"WWF tournament bracket game based on the famous pay-per-view event."},
+  {"id":665,"title":"WWF: WrestleMania Challenge","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Sports","description":"Updated WWF wrestling game with additional superstars and moves."},
+  {"id":666,"title":"WWF: Wrestlemania Steel Cage Challenge","publisher":"Acclaim (LJN)","owned":false,"year":1992,"genre":"Sports","description":"WWF steel cage match wrestling with escape and pinfall victory options."},
+  {"id":667,"title":"Xenophobe","publisher":"Sunsoft","owned":false,"year":1988,"genre":"Action","description":"Aliens take over an amusement park and three humans fight them off."},
+  {"id":668,"title":"Xevious: The Avenger","publisher":"Bandai","owned":false,"year":1988,"genre":"Shooter","description":"Classic Namco vertical shooter set in the mythical land of Xevious."},
+  {"id":669,"title":"Xexyz","publisher":"Hudson","owned":false,"year":1990,"genre":"Action","description":"A spaceman battles across ocean and sky stages with transformation powers."},
+  {"id":670,"title":"Yo! Noid","publisher":"Capcom","owned":false,"year":1990,"genre":"Platformer","description":"Domino's Pizza mascot Yo Noid delivers pizza and battles enemies."},
+  {"id":671,"title":"Yoshi","publisher":"Nintendo","owned":false,"year":1991,"genre":"Puzzle","description":"Yoshi the dinosaur egg catches falling enemies to complete combos."},
+  {"id":672,"title":"Yoshi's Cookie","publisher":"Nintendo","owned":false,"year":1993,"genre":"Puzzle","description":"Cookie matching puzzle game featuring Yoshi and Mario characters."},
+  {"id":673,"title":"Young Indiana Jones Chronicles, The","publisher":"Jaleco","owned":false,"year":1992,"genre":"Action","description":"Licensed game based on the Young Indiana Jones Chronicles TV series."},
+  {"id":674,"title":"Zanac","publisher":"FCI","owned":false,"year":1987,"genre":"Shooter","description":"Vertical space shooter with rapid auto-fire and field generator weapon."},
+  {"id":675,"title":"Zelda II: The Adventure of Link","publisher":"Nintendo","owned":false,"year":1987,"genre":"Action","description":"Link battles through side-scrolling stages and palaces in Hyrule."},
+  {"id":676,"title":"Zen: Intergalactic Ninja","publisher":"Konami","owned":false,"year":1993,"genre":"Action","description":"An eco-warrior ninja battles pollution-spreading enemies across stages."},
+  {"id":677,"title":"Zombie Nation","publisher":"Meldac","owned":false,"year":1990,"genre":"Shooter","description":"A severed samurai head flies through feudal Japan destroying enemy armies."}
 ];
