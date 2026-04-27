@@ -2034,6 +2034,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Gargoyle's Quest II - The Demon Darkness (USA).mp4"
   },
   "Garry Kitchen’s: Battle Tank": {
+    "boxfront": "boxfronts/Battletank (USA).png",
+    "boxback": "boxbacks/Battletank (USA).png",
+    "cartridge": "cartridges/Battletank (USA).png",
+    "clearlogo": "clearlogos/Battletank (USA).png",
+    "snap": "snaps/Battletank (USA).png",
+    "title": "titles/Battletank (USA).png",
     "trailer": "trailers/Battle Tank (USA).mp4"
   },
   "Gauntlet": {
@@ -2622,12 +2628,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Jeopardy! 25th Anniversary Edition (USA).mp4"
   },
   "Jeopardy!: Jr. Edition": {
-    "boxfront": "boxfronts/Jeopardy! (USA) (Rev A).png",
-    "boxback": "boxbacks/Jeopardy! (USA) (Rev A).png",
-    "cartridge": "cartridges/Jeopardy! (USA).png",
-    "clearlogo": "clearlogos/Jeopardy! (USA).png",
-    "snap": "snaps/Jeopardy! (USA) (Rev A).png",
-    "title": "titles/Jeopardy! (USA) (Rev A).png",
+    "boxfront": "boxfronts/Jeopardy! Junior Edition (USA).png",
+    "boxback": "boxbacks/Jeopardy! Junior Edition (USA).png",
+    "cartridge": "Jeopardy! Junior Edition (USA).png",
+    "clearlogo": "clearlogos/Jeopardy! Junior Edition (USA).png",
+    "snap": "snaps/Jeopardy! Junior Edition (USA).png",
+    "title": "titles/Jeopardy! Junior Edition (USA).png",
     "trailer": "trailers/Jeopardy! (USA).mp4"
   },
   "Jetsons, The: Cogswell's Caper": {
