@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
+<script src="asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -890,6 +891,24 @@ function toImageName(title) {
 }
 
 function imgUrl(folder, title) {
+  const manifest = window.nesAssetManifest || {};
+  const entry = manifest[title];
+
+  const folderKeyMap = {
+    boxfronts: 'boxfront',
+    boxbacks: 'boxback',
+    cartridges: 'cartridge',
+    clearlogos: 'clearlogo',
+    snaps: 'snap',
+    titles: 'title'
+  };
+
+  const key = folderKeyMap[folder];
+
+  if (entry && entry[key]) {
+    return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
+  }
+
   return BASE + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 }
 
@@ -1434,7 +1453,9 @@ function openTrailer(filename) {
   const errEl   = document.getElementById('trailerError');
   const titleEl = document.getElementById('trailerTitle');
 
-  const src = TRAILER_BASE_URL + encodeURIComponent(filename);
+  const src = filename.includes('/')
+    ? BASE + filename.split('/').map(encodeURIComponent).join('/')
+    : TRAILER_BASE_URL + encodeURIComponent(filename);
   errEl.style.display  = 'none';
   video.style.display  = 'block';
   video.src = src;
