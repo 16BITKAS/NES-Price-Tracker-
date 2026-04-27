@@ -1105,13 +1105,9 @@ function openModal(gameId) {
         </div>
       </div>
 
-      <!-- TOP RIGHT: Cartridge focused, description below -->
+      <!-- TOP RIGHT: Description only -->
       <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;justify-content:center;">
-          <img src="${cart}" alt="Cartridge" style="max-height:180px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
-            onerror="this.style.display='none'">
-        </div>
-        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
+        <div style="flex:1;overflow-y:auto;">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
           <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
         </div>
@@ -1128,22 +1124,33 @@ function openModal(gameId) {
           <div style="display:none;font-family:'Press Start 2P',monospace;font-size:13px;color:var(--ink);text-align:center;line-height:1.6;">${esc(g.title)}</div>
         </div>
 
-        <!-- Metadata -->
-        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:14px;">
+        <!-- Cartridge + Metadata side by side -->
+        <div style="display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px;">
 
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Year</span>
-            <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);">${esc(yearOf(g))}</span>
+          <!-- Cartridge image -->
+          <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="${cart}" alt="Cartridge" style="max-height:130px;max-width:90px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
+              onerror="this.style.display='none'">
           </div>
 
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Developer</span>
-            <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);text-align:right;max-width:60%;word-break:break-word;">${esc(developerOf(g) || '—')}</span>
-          </div>
+          <!-- Metadata -->
+          <div style="display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;">
 
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">eBay Est.</span>
-            <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:${valueOf(g) ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}${g.resultCount ? ' <span style="font-size:9px;color:var(--muted);">(' + g.resultCount + ' listings)</span>' : ''}</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Year</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);">${esc(yearOf(g))}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Developer</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);text-align:right;max-width:60%;word-break:break-word;">${esc(developerOf(g) || '—')}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">eBay Est.</span>
+              <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:${valueOf(g) ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}${g.resultCount ? ' <span style="font-size:9px;color:var(--muted);">(' + g.resultCount + ' listings)</span>' : ''}</span>
+            </div>
+
           </div>
 
         </div>
