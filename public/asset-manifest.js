@@ -1396,7 +1396,15 @@ window.nesAssetManifest = {
     "title": "titles/Defenders of Dynatron City (USA).png",
     "trailer": "trailers/Defenders of Dynatron City (USA).mp4"
   },
-  "Déjà Vu": {},
+  "Déjà Vu": {
+    "boxfront": "boxfronts/Deja Vu (USA).png",
+    "boxback": "boxbacks/Deja Vu (USA).png",
+    "cartridge": "cartridges/Deja Vu (USA).png",
+    "clearlogo": "clearlogos/Deja Vu (USA).png",
+    "snap": "snaps/Deja Vu (Japan).png",
+    "title": "titles/Deja Vu (Japan).png",
+    "trailer": "trailers/Deja Vu (USA).mp4"
+  },
   "Demon Sword": {
     "boxfront": "boxfronts/Demon Sword - Release the Power (USA).png",
     "boxback": "boxbacks/Demon Sword - Release the Power (USA).png",
@@ -2080,7 +2088,15 @@ window.nesAssetManifest = {
     "title": "titles/Ghostbusters II (Europe).png",
     "trailer": "trailers/Ghostbusters II (USA).mp4"
   },
-  "Ghosts 'n Goblins": {},
+  "Ghosts 'n Goblins": {
+    "boxfront": "boxfronts/Ghosts'n Goblins (USA).png",
+    "boxback": "boxbacks/Ghosts'n Goblins (USA).png",
+    "cartridge": "cartridges/Ghosts'n Goblins (USA).png",
+    "clearlogo": "clearlogos/Ghosts'n Goblins (USA).png",
+    "snap": "snaps/Ghosts'n Goblins (USA).png",
+    "title": "titles/Ghosts'n Goblins (USA).png",
+    "trailer": "trailers/Ghosts'n Goblins (USA).mp4"
+  },
   "Ghoul School": {
     "boxfront": "boxfronts/Ghoul School (USA).png",
     "boxback": "boxbacks/Ghoul School (USA).png",
@@ -3370,7 +3386,15 @@ window.nesAssetManifest = {
     "title": "titles/Might & Magic - Secret of the Inner Sanctum (USA).png",
     "trailer": "trailers/Might & Magic - Secret of the Inner Sanctum (USA).mp4"
   },
-  "Mighty Bombjack": {},
+  "Mighty Bombjack": {
+    "boxfront": "boxfronts/Mighty Bomb Jack (USA).png",
+    "boxback": "boxbacks/Mighty Bomb Jack (USA).png",
+    "cartridge": "cartridges/Mighty Bomb Jack (USA).png",
+    "clearlogo": "clearlogos/Mighty Bomb Jack (USA).png",
+    "snap": "snaps/Mighty Bomb Jack (USA).png",
+    "title": "titles/Mighty Bomb Jack (USA).png",
+    "trailer": "trailers/Mighty Bomb Jack (USA).mp4"
+  },
   "Mighty Final Fight": {
     "boxfront": "boxfronts/Mighty Final Fight (USA).png",
     "boxback": "boxbacks/Mighty Final Fight (USA).png",
@@ -3654,7 +3678,15 @@ window.nesAssetManifest = {
     "title": "titles/Operation Wolf (Europe).png",
     "trailer": "trailers/Operation Wolf (USA).mp4"
   },
-  "ORB 3-D": {},
+  "ORB 3-D": {
+    "boxfront": "boxfronts/Orb 3D (USA).png",
+    "boxback": "boxbacks/Orb 3D (USA).png",
+    "cartridge": "cartridges/Orb 3D (USA).png",
+    "clearlogo": "clearlogos/Orb 3D (USA).png",
+    "snap": "snaps/Orb 3D (USA).png",
+    "title": "titles/Orb 3D (USA).png",
+    "trailer": "trailers/Orb 3D (USA).mp4"
+  },
   "Original Mario Bros., The": {
     "boxfront": "boxfronts/Mario Bros. (World).png",
     "boxback": "boxbacks/Mario Bros. (World).png",
@@ -4141,7 +4173,15 @@ window.nesAssetManifest = {
     "title": "titles/RoboCop 3 (Europe).png",
     "trailer": "trailers/RoboCop 3 (USA).mp4"
   },
-  "RoboWarrior": {},
+  "RoboWarrior": {
+    "boxfront": "boxfronts/Robo Warrior (USA).png",
+    "boxback": "boxbacks/Robo Warrior (USA).png",
+    "cartridge": "cartridges/Robo Warrior (USA).png",
+    "clearlogo": "clearlogos/Robo Warrior (USA).png",
+    "snap": "snaps/Robo Warrior (USA).png",
+    "title": "titles/Robo Warrior (USA).png",
+    "trailer": "trailers/Robo Warrior (USA).mp4"
+  },
   "Rock 'n Ball": {
     "boxfront": "boxfronts/Rock 'n' Ball (USA).png",
     "boxback": "boxbacks/Rock 'n' Ball (USA).png",
@@ -4413,7 +4453,15 @@ window.nesAssetManifest = {
     "title": "titles/Silver Surfer (USA).png",
     "trailer": "trailers/Silver Surfer (USA).mp4"
   },
-  "Simpsons, The: Barman Meets Radioactive Man": {},
+  "Simpsons, The: Barman Meets Radioactive Man": {
+    "boxfront": "boxfronts/Simpsons, The - Bartman Meets Radioactive Man (USA).png",
+    "boxback": "boxbacks/Simpsons, The - Bartman Meets Radioactive Man (USA).png",
+    "cartridge": "cartridges/Simpsons, The - Bartman Meets Radioactive Man (USA).png",
+    "clearlogo": "clearlogos/Simpsons, The - Bartman Meets Radioactive Man (USA).png",
+    "snap": "snaps/Simpsons, The - Bartman Meets Radioactive Man (Europe).png",
+    "title": "titles/Simpsons, The - Bartman Meets Radioactive Man (Europe).png",
+    "trailer": "trailers/Simpsons, The - Bartman Meets Radioactive Man (USA).mp4"
+  },
   "Simpsons, The: Bart vs. the Space Mutants": {
     "boxfront": "boxfronts/Simpsons, The - Bart vs. the Space Mutants (USA) (Rev A).png",
     "boxback": "boxbacks/Simpsons, The - Bart vs. the Space Mutants (USA) (Rev A).png",
@@ -4594,7 +4642,15 @@ window.nesAssetManifest = {
     "title": "titles/Spider-Man - Return of the Sinister Six (Europe).png",
     "trailer": "trailers/Spider-Man - Return of the Sinister Six (USA).mp4"
   },
-  "Spot: The Videogame!": {},
+  "Spot: The Videogame!": {
+    "boxfront": "boxfronts/Spot - The Video Game (USA).png",
+    "boxback": "boxbacks/Spot - The Video Game (USA).png",
+    "cartridge": "cartridges/Spot - The Video Game (USA).png",
+    "clearlogo": "clearlogos/Spot - The Video Game (USA).png",
+    "snap": "snaps/Spot - The Video Game (Japan).png",
+    "title": "titles/Spot - The Video Game (Japan).png",
+    "trailer": "trailers/Spot - The Video Game (USA).mp4"
+  },
   "Spy Hunter": {
     "boxfront": "boxfronts/Spy Hunter (USA).png",
     "boxback": "boxbacks/Spy Hunter (USA).png",
@@ -4684,8 +4740,24 @@ window.nesAssetManifest = {
     "title": "titles/Star Trek - The Next Generation (USA).png",
     "trailer": "trailers/Star Trek - The Next Generation (USA).mp4"
   },
-  "Star Tropics": {},
-  "Star Tropics II: Zoda's Revenge": {},
+  "Star Tropics": {
+    "boxfront": "boxfronts/StarTropics (USA).png",
+    "boxback": "boxbacks/StarTropics (USA).png",
+    "cartridge": "cartridges/StarTropics (USA).png",
+    "clearlogo": "clearlogos/StarTropics (USA).png",
+    "snap": "snaps/StarTropics (Europe).png",
+    "title": "titles/StarTropics (Europe).png",
+    "trailer": "trailers/StarTropics (USA).mp4"
+  },
+  "Star Tropics II: Zoda's Revenge": {
+    "boxfront": "boxfronts/StarTropics (USA).png",
+    "boxback": "boxbacks/StarTropics (USA).png",
+    "cartridge": "cartridges/StarTropics (USA).png",
+    "clearlogo": "clearlogos/StarTropics (USA).png",
+    "snap": "snaps/StarTropics (Europe).png",
+    "title": "titles/StarTropics (Europe).png",
+    "trailer": "trailers/StarTropics (USA).mp4"
+  },
   "Star Voyager": {
     "boxfront": "boxfronts/Star Voyager (USA).png",
     "boxback": "boxbacks/Star Voyager (USA).png",
