@@ -35,7 +35,15 @@ window.nesAssetManifest = {
     "title": "titles/1943 - The Battle of Midway (USA).png",
     "trailer": "trailers/1943 - The Battle of Midway (USA).mp4"
   },
-  "3-D Battles of World Runner, The": {},
+  "3-D Battles of World Runner, The": {
+    "boxfront": "boxfronts/3-D WorldRunner (USA).png",
+    "boxback": "boxbacks/3-D WorldRunner (USA).png",
+    "cartridge": "cartridges/3-D WorldRunner (USA).png",
+    "clearlogo": "clearlogos/3-D WorldRunner (USA).png",
+    "snap": "snaps/3-D WorldRunner (USA).png",
+    "title": "titles/3-D WorldRunner (USA).png",
+    "trailer": "trailers/3-D WorldRunner (USA).mp4"
+  },
   "8 Eyes": {
     "boxfront": "boxfronts/8 Eyes (USA).png",
     "boxback": "boxbacks/8 Eyes (USA).png",
@@ -81,7 +89,15 @@ window.nesAssetManifest = {
     "title": "titles/Addams Family, The - Pugsley's Scavenger Hunt (Europe) (Beta).png",
     "trailer": "trailers/Addams Family, The - Pugsley's Scavenger Hunt (USA).mp4"
   },
-  "Advanced Dungeons & Dragons: Dragon Strike": {},
+  "Advanced Dungeons & Dragons: Dragon Strike": {
+    "boxfront": "boxfronts/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "boxback": "boxbacks/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "cartridge": "cartridges/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "clearlogo": "clearlogos/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "snap": "snaps/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "title": "titles/Advanced Dungeons & Dragons - DragonStrike (USA).png",
+    "trailer": "trailers/Advanced Dungeons & Dragons - DragonStrike (USA).mp4"
+  },
   "Advanced Dungeons & Dragons: Heroes of the Lance": {
     "boxfront": "boxfronts/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
     "boxback": "boxbacks/Advanced Dungeons & Dragons - Heroes of the Lance (USA).png",
@@ -119,8 +135,8 @@ window.nesAssetManifest = {
     "trailer": "trailers/Adventure Island 3 (USA).mp4"
   },
   "Adventure Island 3": {
-    "boxfront": "boxfronts/Adventure Island (USA).png",
-    "boxback": "boxbacks/Adventure Island (USA).png",
+    "boxfront": "boxfronts/Adventure Island III (USA).png",
+    "boxback": "boxbacks/Adventure Island III (USA).png",
     "cartridge": "cartridges/Adventure Island 3 (USA).png",
     "clearlogo": "clearlogos/Adventure Island 3 (USA).png",
     "snap": "snaps/Adventure Island 3 (USA).png",
@@ -533,13 +549,13 @@ window.nesAssetManifest = {
     "trailer": "trailers/Baseball Stars (USA).mp4"
   },
   "Baseball Stars 2": {
-    "boxfront": "boxfronts/Baseball (USA, Europe).png",
-    "boxback": "boxbacks/Baseball (USA, Europe).png",
-    "cartridge": "cartridges/Baseball (USA, Europe).png",
-    "clearlogo": "clearlogos/Baseball (USA, Europe).png",
-    "snap": "snaps/Baseball (Japan).png",
-    "title": "titles/Baseball (Japan).png",
-    "trailer": "trailers/Baseball (USA, Europe).mp4"
+    "boxfront": "boxfronts/Baseball Stars II (USA).png",
+    "boxback": "boxbacks/Baseball Stars II (USA).png",
+    "cartridge": "cartridges/Baseball Stars II (USA).png",
+    "clearlogo": "clearlogos/Baseball Stars II (USA).png",
+    "snap": "snaps/Baseball Stars II (USA).png",
+    "title": "titles/Baseball Stars II (USA).png",
+    "trailer": "trailers/Baseball Stars II (USA).mp4"
   },
   "Bases Loaded": {
     "boxfront": "boxfronts/Bases Loaded (USA) (Rev B).png",
@@ -551,13 +567,13 @@ window.nesAssetManifest = {
     "trailer": "trailers/Bases Loaded (USA).mp4"
   },
   "Bases Loaded 2: Second Season": {
-    "boxfront": "boxfronts/Bases Loaded (USA) (Rev B).png",
-    "boxback": "boxbacks/Bases Loaded (USA) (Rev B).png",
-    "cartridge": "cartridges/Bases Loaded (USA).png",
-    "clearlogo": "clearlogos/Bases Loaded (USA).png",
-    "snap": "snaps/Bases Loaded (USA) (Rev A).png",
-    "title": "titles/Bases Loaded (USA) (Rev A).png",
-    "trailer": "trailers/Bases Loaded (USA).mp4"
+    "boxfront": "boxfronts/Bases Loaded II - Second Season (USA).png",
+    "boxback": "boxbacks/Bases Loaded II - Second Season (USA).png",
+    "cartridge": "cartridges/Bases Loaded II - Second Season (USA).png",
+    "clearlogo": "clearlogos/Bases Loaded II - Second Season (USA).png",
+    "snap": "snaps/Bases Loaded II - Second Season (USA).png",
+    "title": "titles/Bases Loaded II - Second Season (USA).png",
+    "trailer": "trailers/Bases Loaded II - Second Season (USA).mp4"
   },
   "Bases Loaded 3": {
     "boxfront": "boxfronts/Bases Loaded 3 (USA).png",
@@ -865,15 +881,7 @@ window.nesAssetManifest = {
     "title": "titles/Bugs Bunny Crazy Castle, The (USA).png",
     "trailer": "trailers/Bugs Bunny Crazy Castle, The (USA).mp4"
   },
-  "Bump 'n' Jump": {
-    "boxfront": "boxfronts/Bump'n'Jump (USA).png",
-    "boxback": "boxbacks/Bump'n'Jump (USA).png",
-    "cartridge": "cartridges/Bump'n'Jump (USA).png",
-    "clearlogo": "clearlogos/Bump'n'Jump (USA).png",
-    "snap": "snaps/Bump'n'Jump (USA).png",
-    "title": "titles/Bump'n'Jump (USA).png",
-    "trailer": "trailers/Bump'n'Jump (USA).mp4"
-  },
+  "Bump 'n' Jump": {},
   "Burai Fighter": {
     "boxfront": "boxfronts/Burai Fighter (USA).png",
     "boxback": "boxbacks/Burai Fighter (USA).png",
@@ -1671,24 +1679,8 @@ window.nesAssetManifest = {
     "title": "titles/Duck Hunt (World).png",
     "trailer": "trailers/Duck Hunt (World).mp4"
   },
-  "Duck Tales": {
-    "boxfront": "boxfronts/DuckTales (USA).png",
-    "boxback": "boxbacks/DuckTales (USA).png",
-    "cartridge": "cartridges/DuckTales (USA).png",
-    "clearlogo": "clearlogos/DuckTales (USA).png",
-    "snap": "snaps/DuckTales (Europe).png",
-    "title": "titles/DuckTales (Europe).png",
-    "trailer": "trailers/Disney's DuckTales (USA).mp4"
-  },
-  "Duck Tales 2": {
-    "boxfront": "boxfronts/DuckTales 2 (USA).png",
-    "boxback": "boxbacks/DuckTales 2 (USA).png",
-    "cartridge": "cartridges/DuckTales 2 (USA).png",
-    "clearlogo": "clearlogos/DuckTales 2 (USA).png",
-    "snap": "snaps/DuckTales 2 (Europe) (Beta).png",
-    "title": "titles/DuckTales 2 (Europe) (Beta).png",
-    "trailer": "trailers/Disney's DuckTales 2 (USA).mp4"
-  },
+  "Duck Tales": {},
+  "Duck Tales 2": {},
   "Dungeon Magic: Sword of the Elements": {
     "boxfront": "boxfronts/Dungeon Magic - Sword of the Elements (USA).png",
     "boxback": "boxbacks/Dungeon Magic - Sword of the Elements (USA).png",
@@ -2014,6 +2006,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Gargoyle's Quest II - The Demon Darkness (USA).mp4"
   },
   "Garry Kitchen’s: Battle Tank": {
+    "boxfront": "boxfronts/Battletank (USA).png",
+    "boxback": "boxbacks/Battletank (USA).png",
+    "cartridge": "cartridges/Battletank (USA).png",
+    "clearlogo": "clearlogos/Battletank (USA).png",
+    "snap": "snaps/Battletank (USA).png",
+    "title": "titles/Battletank (USA).png",
     "trailer": "trailers/Battle Tank (USA).mp4"
   },
   "Gauntlet": {
@@ -2736,7 +2734,15 @@ window.nesAssetManifest = {
     "title": "titles/Kickle Cubicle (Europe).png",
     "trailer": "trailers/Kickle Cubicle (USA).mp4"
   },
-  "Kickmaster": {},
+  "Kickmaster": {
+    "boxfront": "boxfronts/Kick Master (USA).png",
+    "boxback": "boxbacks/Kick Master (USA).png",
+    "cartridge": "cartridges/Kick Master (USA).png",
+    "clearlogo": "clearlogos/Kick Master (USA).png",
+    "snap": "snaps/Kick Master (USA).png",
+    "title": "titles/Kick Master (USA).png",
+    "trailer": "trailers/Kick Master (USA).mp4"
+  },
   "Kid Icarus": {
     "boxfront": "boxfronts/Kid Icarus (USA, Europe).png",
     "boxback": "boxbacks/Kid Icarus (USA, Europe).png",
@@ -3575,6 +3581,10 @@ window.nesAssetManifest = {
     "trailer": "trailers/NFL Football (USA).mp4"
   },
   "Nigel Mansell's: World Championship Racing": {
+    "boxfront": "boxfronts/Nigel Mansell's World Championship Challenge (USA).png",
+    "boxback": "boxbacks/Nigel Mansell's World Championship Challenge (USA).png",
+    "cartridge": "cartridges/Nigel Mansell's World Championship Challenge (USA).png",
+    "clearlogo": "clearlogos/Nigel Mansell's World Championship Challenge (USA).png",
     "snap": "snaps/Nigel Mansell's World Championship Racing (Europe) (En,Fr,De,Es,It).png",
     "title": "titles/Nigel Mansell's World Championship Racing (Europe) (En,Fr,De,Es,It).png",
     "trailer": "trailers/Nigel Mansell's World Championship Racing (USA).mp4"
@@ -4415,6 +4425,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Shooting Range (USA).mp4"
   },
   "Short Order / Eggsplode": {
+    "boxfront": "boxfronts/Short Order + Egg-Splode! (USA).png",
+    "boxback": "boxbacks/Short Order + Egg-Splode! (USA).png",
+    "cartridge": "cartridges/Short Order + Egg-Splode! (USA).png",
+    "clearlogo": "clearlogos/Short Order + Egg-Splode! (USA).png",
+    "snap": "snaps/Short Order + Egg-Splode! (USA).png",
+    "title": "titles/Short Order + Egg-Splode! (USA).png",
     "trailer": "trailers/Short Order-Eggsplode! (USA).mp4"
   },
   "Side Pocket": {
@@ -4750,8 +4766,8 @@ window.nesAssetManifest = {
     "trailer": "trailers/StarTropics (USA).mp4"
   },
   "Star Tropics II: Zoda's Revenge": {
-    "boxfront": "boxfronts/StarTropics (USA).png",
-    "boxback": "boxbacks/StarTropics (USA).png",
+    "boxfront": "boxfronts/StarTropics II - Zoda's Revenge (USA).png",
+    "boxback": "boxbacks/StarTropics II - Zoda's Revenge (USA).png",
     "cartridge": "cartridges/StarTropics (USA).png",
     "clearlogo": "clearlogos/StarTropics (USA).png",
     "snap": "snaps/StarTropics (Europe).png",
@@ -5361,7 +5377,15 @@ window.nesAssetManifest = {
     "title": "titles/Totally Rad (Europe).png",
     "trailer": "trailers/Totally Rad (USA).mp4"
   },
-  "Touchdown Fever": {},
+  "Touchdown Fever": {
+    "boxfront": "boxfronts/Touch Down Fever (USA).png",
+    "boxback": "boxbacks/Touch Down Fever (USA).png",
+    "cartridge": "cartridges/Touch Down Fever (USA).png",
+    "clearlogo": "clearlogos/Touch Down Fever (USA).png",
+    "snap": "snaps/Touch Down Fever (Japan).png",
+    "title": "titles/Touch Down Fever (Japan).png",
+    "trailer": "trailers/Touch Down Fever (USA).mp4"
+  },
   "Town & Country Surf Designs": {
     "boxfront": "boxfronts/Town & Country Surf Designs - Thrilla's Surfari (USA).png",
     "boxback": "boxbacks/Town & Country Surf Designs - Thrilla's Surfari (USA).png",
@@ -5762,7 +5786,15 @@ window.nesAssetManifest = {
     "title": "titles/Winter Games (USA) (Rev A).png",
     "trailer": "trailers/Winter Games (USA).mp4"
   },
-  "Wizardry Master Series II: Knight of Diamonds": {},
+  "Wizardry Master Series II: Knight of Diamonds": {
+    "boxfront": "boxfronts/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "boxback": "boxbacks/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "cartridge": "cartridges/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "clearlogo": "clearlogos/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "snap": "snaps/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "title": "titles/Wizardry - Knight of Diamonds - The Second Scenario (USA).png",
+    "trailer": "trailers/Wizardry - Knight of Diamonds - The Second Scenario (USA).mp4"
+  },
   "Wizardry Master Series: Proving Grounds of the Mad Overlord": {
     "boxfront": "boxfronts/Overlord (USA).png",
     "boxback": "boxbacks/Overlord (USA).png",
