@@ -634,7 +634,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   </div>
 
   <div class="footer">
-    Data saves in this browser via localStorage. Cover art fetched lazily from TheGamesDB; cached in sessionStorage per game.
+    Data saves in this browser via localStorage. Cover art served from your GitHub Pages image archive.
   </div>
 
 </main>
@@ -643,6 +643,14 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 <div id="artPopup">
   <img id="artPopupImg" src="" alt="">
   <div class="popup-title" id="artPopupTitle"></div>
+</div>
+
+<!-- Game Detail Modal -->
+<div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
+  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;z-index:10;">✕ Close</button>
+    <div id="modalContent" style="padding:32px;"></div>
+  </div>
 </div>
 
 <script>
@@ -658,118 +666,122 @@ let sortDir = "asc";
 const fmt = n => Number.isFinite(Number(n))
   ? Number(n).toLocaleString(undefined, { style: 'currency', currency: 'USD' })
   : "—";
-const esc = s => String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-const developerOf = g => g.developer || g.developerName || g.publisher || "Unknown";
-const yearOf = g => g.year || g.releaseYear || g.release_year || "Unknown";
+
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const STORAGE_KEY2 = "nesTrackerSaveV2";
 
 function save() {
   const out = {};
   games.forEach(g => {
-    out[g.id] = { owned: !!g.owned, estimate: g.estimate ?? null, resultCount: g.resultCount || 0, updatedAt: g.updatedAt || "" };
+    const { id, owned, estimate, resultCount, updatedAt } = g;
+    if (owned || estimate) out[id] = { owned, estimate, resultCount, updatedAt };
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
 }
 
+// ─── Image URL helper ─────────────────────────────────────────────────────────
+const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
+
+function toImageName(title) {
+  // Convert title to match filename convention:
+  // "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
+  // "720" -> "720 Degrees (USA)"
+  let name = title
+    .replace(/:/g, ' -')   // colon -> space dash
+    .replace(/\s+/g, ' ')  // normalize spaces
+    .trim();
+  return name + ' (USA)';
+}
+
+function imgUrl(folder, title) {
+  return BASE + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+}
+
+// ─── Stats ────────────────────────────────────────────────────────────────────
 function valueOf(g) { return Number(g.estimate) || 0; }
 
 function renderStats() {
-  const owned = games.filter(g => g.owned).length;
-  const missing = games.length - owned;
-  const pct = games.length ? owned / games.length * 100 : 0;
-  const collection = games.filter(g => g.owned).reduce((s, g) => s + valueOf(g), 0);
-  const set = games.reduce((s, g) => s + valueOf(g), 0);
-  document.getElementById('ownedCount').textContent = owned;
-  document.getElementById('missingCount').textContent = missing;
-  document.getElementById('completion').textContent = pct.toFixed(1) + "%";
-  document.getElementById('bar').style.width = pct + "%";
-  document.getElementById('collectionValue').textContent = fmt(collection);
-  document.getElementById('setValue').textContent = fmt(set);
+  const owned = games.filter(g => g.owned);
+  const total = games.length;
+  const pct = (owned.length / total * 100).toFixed(1);
+  document.getElementById('ownedCount').textContent = owned.length;
+  document.getElementById('missingCount').textContent = total - owned.length;
+  document.getElementById('completion').textContent = pct + '%';
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('collectionValue').textContent = fmt(owned.reduce((s,g) => s + valueOf(g), 0));
+  document.getElementById('setValue').textContent = fmt(games.reduce((s,g) => s + valueOf(g), 0));
 }
+
+// ─── Filters ──────────────────────────────────────────────────────────────────
+const developerOf = g => g.developer || g.publisher || '';
+const yearOf = g => g.year || g.releaseYear || g.release_year || 'Unknown';
 
 function populateFilters() {
-  const devs = [...new Set(games.map(developerOf).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-  document.getElementById('developerFilter').innerHTML =
-    '<option value="all">All developers</option>' +
-    devs.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  const devs = [...new Set(games.map(developerOf).filter(Boolean))].sort();
+  const devSel = document.getElementById('developerFilter');
+  devs.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; devSel.appendChild(o); });
 
-  const years = [...new Set(games.map(yearOf).filter(Boolean))]
-    .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
-  document.getElementById('yearFilter').innerHTML =
-    '<option value="all">All years</option>' +
-    years.map(y => `<option value="${esc(y)}">${esc(y)}</option>`).join('');
-}
-
-function sortValue(g, key) {
-  if (key === 'id') return Number(g.id) || 0;
-  if (key === 'title') return String(g.title || '').toLowerCase();
-  if (key === 'year') { const y = Number(yearOf(g)); return Number.isFinite(y) ? y : 9999; }
-  if (key === 'estimate') return valueOf(g);
-  if (key === 'updatedAt') return g.updatedAt ? new Date(g.updatedAt).getTime() : 0;
-  if (key === 'owned') return g.owned ? 1 : 0;
-  return String(g[key] || '').toLowerCase();
+  const years = [...new Set(games.map(yearOf).filter(y => y !== 'Unknown'))].sort();
+  const yrSel = document.getElementById('yearFilter');
+  years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; yrSel.appendChild(o); });
 }
 
 function filtered() {
-  const q = document.getElementById('search').value.toLowerCase().trim();
+  const q = document.getElementById('search').value.toLowerCase();
   const status = document.getElementById('statusFilter').value;
   const dev = document.getElementById('developerFilter').value;
   const yr = document.getElementById('yearFilter').value;
 
-  const list = games.filter(g => {
-    const developer = developerOf(g);
-    const year = String(yearOf(g));
-    const matches = !q || g.title.toLowerCase().includes(q) || developer.toLowerCase().includes(q) || year.toLowerCase().includes(q) || String(g.publisher || "").toLowerCase().includes(q);
-    if (!matches) return false;
-    if (dev !== "all" && developer !== dev) return false;
-    if (yr !== "all" && year !== yr) return false;
-    if (status === 'owned') return g.owned;
-    if (status === 'missing') return !g.owned;
-    if (status === 'priced') return valueOf(g) > 0;
-    if (status === 'unpriced') return valueOf(g) === 0;
+  return games.filter(g => {
+    if (q && !g.title.toLowerCase().includes(q) && !developerOf(g).toLowerCase().includes(q) && !String(yearOf(g)).includes(q)) return false;
+    if (status === 'owned' && !g.owned) return false;
+    if (status === 'missing' && g.owned) return false;
+    if (status === 'priced' && !valueOf(g)) return false;
+    if (status === 'unpriced' && valueOf(g)) return false;
+    if (dev !== 'all' && developerOf(g) !== dev) return false;
+    if (yr !== 'all' && String(yearOf(g)) !== yr) return false;
     return true;
+  }).sort((a, b) => {
+    let av, bv;
+    if (sortKey === 'owned') { av = a.owned ? 1 : 0; bv = b.owned ? 1 : 0; }
+    else if (sortKey === 'year') { av = Number(yearOf(a)) || 9999; bv = Number(yearOf(b)) || 9999; }
+    else if (sortKey === 'estimate') { av = valueOf(a); bv = valueOf(b); }
+    else if (sortKey === 'updatedAt') { av = a.updatedAt || 0; bv = b.updatedAt || 0; }
+    else { av = String(a[sortKey] ?? '').toLowerCase(); bv = String(b[sortKey] ?? '').toLowerCase(); }
+    if (av < bv) return sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return sortDir === 'asc' ? 1 : -1;
+    return 0;
   });
-
-  return list.sort((a, b) => {
-    const av = sortValue(a, sortKey), bv = sortValue(b, sortKey);
-    let cmp = 0;
-    if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
-    else cmp = String(av).localeCompare(String(bv), undefined, { numeric: true });
-    return sortDir === 'asc' ? cmp : -cmp;
-  });
 }
 
-function ebayUrl(title) {
-  return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(title + ' NES cartridge');
-}
-function priceChartingUrl(title) {
-  return 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(title + ' NES') + '&type=prices';
-}
+const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t + ' NES cartridge') + '&_sop=12';
+const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
+// ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   renderStats();
-
-  document.querySelectorAll('th.sortable').forEach(th => {
-    const key = th.dataset.sort;
-    const isActive = key === sortKey;
-    th.classList.toggle('active', isActive);
-    const base = th.textContent.replace(/ [▲▼]$/, '');
-    th.textContent = base + (isActive ? (sortDir === 'asc' ? ' ▲' : ' ▼') : '');
-  });
-
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = filtered().map(g => {
+  const list = filtered();
+  document.getElementById('tbody').innerHTML = list.map(g => {
     const dev = developerOf(g);
-    const pub = g.publisher && g.publisher !== dev ? ` · ${esc(g.publisher)}` : '';
+    const pub = g.publisher && g.publisher !== dev ? ' · ' + esc(g.publisher) : '';
     const hasPrice = valueOf(g) > 0;
+    const coverSrc = imgUrl('boxfronts', g.title);
     return `<tr data-id="${g.id}" data-title="${esc(g.title)}">
       <td><input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}></td>
       <td><span class="game-id">${g.id}</span></td>
-      <td class="cover-cell"><div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}">
-        <div class="cover-loading" id="cover-${g.id}"></div>
-      </div></td>
+      <td class="cover-cell">
+        <div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}" onclick="openModal(${g.id})">
+          <img class="cover-thumb" src="${coverSrc}" alt="${esc(g.title)}" loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="cover-placeholder" style="display:none">🎮</div>
+        </div>
+      </td>
       <td>
         <div class="game-title">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
+        ${g.genre ? `<div class="game-sub" style="margin-top:2px"><span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span></div>` : ''}
+        ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
       </td>
       <td><span class="pill">${esc(yearOf(g))}</span></td>
       <td>
@@ -778,16 +790,85 @@ function render() {
       </td>
       <td><span class="pill">${g.updatedAt ? new Date(g.updatedAt).toLocaleDateString() : 'never'}</span></td>
       <td>
+        <button class="secondary" style="font-size:10px;padding:5px 10px;margin-bottom:4px;" onclick="openModal(${g.id})">Details</button>
         <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
         <a class="link" href="${priceChartingUrl(g.title)}" target="_blank">PriceCharting</a>
       </td>
     </tr>`;
   }).join('');
-
-  // Lazy-load covers for visible rows
-  requestAnimationFrame(lazyLoadVisibleCovers);
 }
 
+// ─── Game Detail Modal ────────────────────────────────────────────────────────
+function openModal(gameId) {
+  const g = games.find(x => x.id === gameId);
+  if (!g) return;
+
+  const imgName = toImageName(g.title);
+  const front = imgUrl('boxfronts', g.title);
+  const back = imgUrl('boxbacks', g.title);
+  const cart = imgUrl('cartridges', g.title);
+  const logo = imgUrl('clearlogos', g.title);
+  const snap = imgUrl('snaps', g.title);
+
+  function imgBlock(src, label) {
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">${label}</div>
+      <img src="${src}" alt="${label}" loading="lazy" style="max-width:100%;max-height:200px;object-fit:contain;border-radius:8px;border:1px solid var(--border);background:var(--surface2);"
+        onerror="this.parentElement.style.opacity='0.2'">
+    </div>`;
+  }
+
+  document.getElementById('modalContent').innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+      <img src="${front}" alt="${esc(g.title)}" style="width:160px;height:auto;object-fit:contain;border-radius:10px;border:2px solid var(--accent);box-shadow:0 0 30px rgba(230,0,18,0.3);flex-shrink:0;"
+        onerror="this.style.display='none'">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">#${g.id}</div>
+        <h2 style="font-size:clamp(18px,3vw,28px);font-weight:800;line-height:1.1;margin-bottom:12px;">${esc(g.title)}</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          ${g.genre ? `<span class="pill">${esc(g.genre)}</span>` : ''}
+          ${g.year ? `<span class="pill">${g.year}</span>` : ''}
+          ${g.publisher ? `<span class="pill">${esc(g.publisher)}</span>` : ''}
+          ${g.owned ? '<span class="pill" style="border-color:var(--accent);color:var(--accent);">✓ Owned</span>' : ''}
+        </div>
+        ${g.description ? `<p style="font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:16px;">${esc(g.description)}</p>` : ''}
+        ${valueOf(g) ? `<div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--accent);">${fmt(g.estimate)}<span style="font-size:12px;color:var(--muted);margin-left:8px;">eBay est.</span></div>` : ''}
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+          <a href="${ebayUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;">eBay</a>
+          <a href="${priceChartingUrl(g.title)}" target="_blank" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;">PriceCharting</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Media</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;">
+        ${imgBlock(back, 'Box Back')}
+        ${imgBlock(cart, 'Cartridge')}
+        ${imgBlock(logo, 'Clear Logo')}
+        ${imgBlock(snap, 'Gameplay')}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('gameModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('gameModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('gameModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('gameModal')) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─── Price refresh ────────────────────────────────────────────────────────────
 async function refreshGame(g) {
   const res = await fetch('/api/price?title=' + encodeURIComponent(g.title));
   if (!res.ok) throw new Error(await res.text());
@@ -799,7 +880,7 @@ async function refreshGame(g) {
   render();
 }
 
-// Sort
+// ─── Sort ─────────────────────────────────────────────────────────────────────
 document.querySelectorAll('th.sortable').forEach(th => {
   th.addEventListener('click', () => {
     const key = th.dataset.sort;
@@ -813,7 +894,7 @@ document.querySelectorAll('th.sortable').forEach(th => {
   });
 });
 
-// Owned toggle
+// ─── Owned toggle ─────────────────────────────────────────────────────────────
 document.getElementById('tbody').addEventListener('change', e => {
   const tr = e.target.closest('tr');
   if (!tr) return;
@@ -823,12 +904,12 @@ document.getElementById('tbody').addEventListener('change', e => {
   renderStats();
 });
 
-// Filter listeners
+// ─── Filter listeners ─────────────────────────────────────────────────────────
 ['search', 'statusFilter', 'developerFilter', 'yearFilter'].forEach(id => {
   document.getElementById(id).addEventListener(id === 'search' ? 'input' : 'change', render);
 });
 
-// Refresh
+// ─── Refresh prices ───────────────────────────────────────────────────────────
 document.getElementById('refreshVisible').addEventListener('click', async () => {
   const btn = document.getElementById('refreshVisible');
   const status = document.getElementById('priceStatus');
@@ -846,7 +927,7 @@ document.getElementById('refreshVisible').addEventListener('click', async () => 
   btn.disabled = false;
 });
 
-// Export
+// ─── Export ───────────────────────────────────────────────────────────────────
 document.getElementById('exportData').addEventListener('click', () => {
   const blob = new Blob([localStorage.getItem(STORAGE_KEY) || '{}'], { type: 'application/json' });
   const a = document.createElement('a');
@@ -855,7 +936,7 @@ document.getElementById('exportData').addEventListener('click', () => {
   a.click();
 });
 
-// Reset
+// ─── Reset ────────────────────────────────────────────────────────────────────
 document.getElementById('resetData').addEventListener('click', () => {
   if (confirm('Clear your owned games and price cache in this browser?')) {
     localStorage.removeItem(STORAGE_KEY);
@@ -863,174 +944,23 @@ document.getElementById('resetData').addEventListener('click', () => {
   }
 });
 
-// ─── Cover Art ───────────────────────────────────────────────────────────────
-const TGDB_KEY = '79771b8d8ce5aac5fbf8e78756749e761291f9335bce5ddbdb8900e2458374d7';
-const TGDB_CDN_THUMB = 'https://cdn.thegamesdb.net/images/thumb/';
-const TGDB_CDN_ORIG  = 'https://cdn.thegamesdb.net/images/original/';
-const NES_PLATFORM_ID = 7;
-const artCache = {}; // gameId -> { thumb, orig, title } | 'none' | 'pending'
-
-// Load from sessionStorage on startup
-try {
-  const stored = JSON.parse(sessionStorage.getItem('nesArtCache') || '{}');
-  Object.assign(artCache, stored);
-} catch(e) {}
-
-function saveArtCache() {
-  try { sessionStorage.setItem('nesArtCache', JSON.stringify(artCache)); } catch(e) {}
-}
-
-// Proxy helper — routes through allorigins to bypass CORS
-async function proxiedJson(url) {
-  const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url));
-  if (!res.ok) throw new Error('proxy failed');
-  const wrapper = await res.json();
-  return JSON.parse(wrapper.contents);
-}
-
-// Fetch art for a single game title from TGDB
-async function fetchArt(gameId, title) {
-  if (artCache[gameId] && artCache[gameId] !== 'pending') return artCache[gameId];
-  artCache[gameId] = 'pending';
-
-  try {
-    // Step 1: search by name, filtered to NES
-    const searchUrl = `https://api.thegamesdb.net/v1/Games/ByGameName?apikey=${TGDB_KEY}&name=${encodeURIComponent(title)}&fields=game_title&filter%5Bplatform%5D=${NES_PLATFORM_ID}`;
-    const searchData = await proxiedJson(searchUrl);
-
-    const gamesList = searchData?.data?.games;
-    if (!gamesList || gamesList.length === 0) {
-      artCache[gameId] = 'none';
-      saveArtCache();
-      return 'none';
-    }
-
-    // Pick the best match: exact title match preferred, else first result
-    const titleLower = title.toLowerCase();
-    const match = gamesList.find(g => g.game_title.toLowerCase() === titleLower) || gamesList[0];
-    const tgdbId = match.id;
-
-    // Step 2: fetch boxart images for that game ID
-    const imgUrl = `https://api.thegamesdb.net/v1/Games/Images?apikey=${TGDB_KEY}&games_id=${tgdbId}&filter%5Btype%5D=boxart`;
-    const imgData = await proxiedJson(imgUrl);
-
-    const baseData = imgData?.data;
-    const images = baseData?.images?.[tgdbId];
-    if (!images || images.length === 0) {
-      artCache[gameId] = 'none';
-      saveArtCache();
-      return 'none';
-    }
-
-    // Find front boxart; fallback to first image
-    const front = images.find(i => i.type === 'boxart' && i.side === 'front') || images[0];
-    const result = {
-      thumb: TGDB_CDN_THUMB + front.filename,
-      orig:  TGDB_CDN_ORIG  + front.filename,
-      title: match.game_title
-    };
-    artCache[gameId] = result;
-    saveArtCache();
-    return result;
-  } catch(err) {
-    console.warn('Art fetch failed for', title, err);
-    artCache[gameId] = 'none';
-    saveArtCache();
-    return 'none';
-  }
-}
-
-// Apply art result to a cover cell
-function applyCover(gameId, art) {
-  const el = document.getElementById(`cover-${gameId}`);
-  if (!el) return;
-  const wrap = el.closest('.cover-wrap');
-  if (!wrap) return;
-
-  if (art === 'none' || art === 'pending') {
-    el.outerHTML = `<div class="cover-placeholder" id="cover-${gameId}">🎮</div>`;
-    return;
-  }
-
-  el.outerHTML = `<img class="cover-thumb" id="cover-${gameId}" src="${art.thumb}" alt="${wrap.dataset.title}" loading="lazy">`;
-}
-
-// Queue for rate-limiting fetches
-let fetchQueue = [];
-let fetchActive = 0;
-const MAX_CONCURRENT = 3;
-
-async function processFetchQueue() {
-  while (fetchQueue.length > 0 && fetchActive < MAX_CONCURRENT) {
-    const { gameId, title } = fetchQueue.shift();
-    fetchActive++;
-    fetchArt(gameId, title).then(art => {
-      fetchActive--;
-      applyCover(gameId, art);
-      processFetchQueue();
-    });
-  }
-}
-
-// Observe visible rows and load their covers lazily
-let observer;
-function lazyLoadVisibleCovers() {
-  if (observer) observer.disconnect();
-
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const wrap = entry.target;
-      const gameId = wrap.dataset.gameId;
-      const title  = wrap.dataset.title;
-      if (!gameId || !title) return;
-
-      observer.unobserve(wrap);
-
-      // Already cached?
-      const cached = artCache[gameId];
-      if (cached && cached !== 'pending') {
-        applyCover(gameId, cached);
-        return;
-      }
-
-      // Queue it
-      if (!fetchQueue.find(q => q.gameId === gameId) && cached !== 'pending') {
-        fetchQueue.push({ gameId, title });
-        processFetchQueue();
-      }
-    });
-  }, { rootMargin: '200px' });
-
-  document.querySelectorAll('.cover-wrap').forEach(wrap => observer.observe(wrap));
-}
-
-// Scroll also triggers lazy load
-window.addEventListener('scroll', () => lazyLoadVisibleCovers(), { passive: true });
-
-// ─── Hover Popup ─────────────────────────────────────────────────────────────
+// ─── Hover popup (box front preview) ─────────────────────────────────────────
 const popup    = document.getElementById('artPopup');
 const popupImg = document.getElementById('artPopupImg');
 const popupTtl = document.getElementById('artPopupTitle');
-let popupTimer;
 
 document.getElementById('tbody').addEventListener('mouseover', e => {
   const wrap = e.target.closest('.cover-wrap');
   if (!wrap) return;
-  const gameId = wrap.dataset.gameId;
-  const art = artCache[gameId];
-  if (!art || art === 'none' || art === 'pending') return;
-
-  clearTimeout(popupTimer);
-  popupImg.src = art.orig;
-  popupTtl.textContent = art.title;
+  const title = wrap.dataset.title;
+  popupImg.src = imgUrl('boxfronts', title);
+  popupTtl.textContent = title;
   popup.classList.add('visible');
 });
 
 document.getElementById('tbody').addEventListener('mousemove', e => {
   const wrap = e.target.closest('.cover-wrap');
   if (!wrap) { popup.classList.remove('visible'); return; }
-
   const margin = 16;
   const pw = 180 + margin;
   let left = e.clientX + margin;
