@@ -892,6 +892,11 @@ function render() {
 }
 
 // ─── Game Detail Modal ────────────────────────────────────────────────────────
+function closeModal() {
+  document.getElementById('gameModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 function openModal(gameId) {
   const g = games.find(x => x.id === gameId);
   if (!g) return;
