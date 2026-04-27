@@ -244,20 +244,111 @@ h1 span { color: var(--accent); }
   margin-top: 12px;
 }
 
-.progress.large {
-  height: 10px;
+/* Milestone bar */
+.milestone-bar-wrap {
   margin-top: 20px;
-  background: rgba(255,255,255,0.06);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  width: 100%;
 }
 
-.bar {
+.milestone-track {
+  position: relative;
+  height: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid var(--border);
+  image-rendering: pixelated;
+  overflow: visible;
+}
+
+.milestone-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #b0000e);
   width: 0%;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 999px;
-  box-shadow: 0 0 8px rgba(230,0,18,0.5);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0px,
+    var(--accent) 6px,
+    #b0000e 6px,
+    #b0000e 12px
+  );
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(230,0,18,0.6), inset 0 1px 0 rgba(255,100,100,0.3);
+  image-rendering: pixelated;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tick marks on the track */
+.milestone-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.milestone-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-50%);
+}
+
+.milestone-tick.reached {
+  background: rgba(255,255,255,0.55);
+  box-shadow: 0 0 4px rgba(255,255,255,0.4);
+}
+
+/* Labels row below bar */
+.milestone-labels {
+  position: relative;
+  height: 28px;
+  margin-top: 6px;
+}
+
+.milestone-lbl {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.3s, text-shadow 0.3s;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.milestone-lbl.reached {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(230,0,18,0.7);
+}
+
+.milestone-lbl .lbl-icon {
+  display: block;
+  font-size: 9px;
+  margin-bottom: 1px;
+}
+
+/* Achievement flash banner */
+.milestone-achieved {
+  min-height: 22px;
+  margin-top: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: transparent;
+  text-align: center;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.milestone-achieved.flash {
+  animation: achieveFlash 2.4s ease-out forwards;
+}
+
+@keyframes achieveFlash {
+  0%   { color: #fff; text-shadow: 0 0 14px rgba(230,0,18,1), 0 0 4px #fff; }
+  30%  { color: var(--accent); text-shadow: 0 0 10px rgba(230,0,18,0.8); }
+  80%  { color: var(--accent); text-shadow: 0 0 6px rgba(230,0,18,0.4); }
+  100% { color: var(--muted); text-shadow: none; }
 }
 
 /* Controls */
@@ -662,7 +753,14 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <div class="stat stat--hero">
       <div class="stat-label">Completion</div>
       <div class="stat-value" id="completion">0%</div>
-      <div class="progress large"><div class="bar" id="bar"></div></div>
+      <div class="milestone-bar-wrap">
+        <div class="milestone-track">
+          <div class="milestone-fill" id="bar"></div>
+          <div class="milestone-markers" id="milestoneMarkers"></div>
+        </div>
+        <div class="milestone-labels" id="milestoneLabels"></div>
+      </div>
+      <div class="milestone-achieved" id="milestoneAchieved"></div>
     </div>
     <div class="stat">
       <div class="stat-label">Collection Value</div>
@@ -777,6 +875,69 @@ function imgUrl(folder, title) {
 // ─── Stats ────────────────────────────────────────────────────────────────────
 function valueOf(g) { return Number(g.estimate) || 0; }
 
+// ─── Milestones ───────────────────────────────────────────────────────────────
+// 7 milestones: 10%, 25%, 50%, 75%, 90% (10% left), last-5, 100%
+// last-5 and 90% positions are computed from total at runtime
+let _prevMilestonesReached = new Set();
+
+function getMilestones(total) {
+  const last5pct = ((total - 5) / total * 100);
+  return [
+    { pct: 10,      icon: '★', label: '10%'    },
+    { pct: 25,      icon: '♦', label: '25%'    },
+    { pct: 50,      icon: '♥', label: '50%'    },
+    { pct: 75,      icon: '♣', label: '75%'    },
+    { pct: 90,      icon: '!', label: '90%'    },
+    { pct: Math.max(last5pct, 91), icon: '5', label: 'LAST 5' },
+    { pct: 100,     icon: '✦', label: '100%'   },
+  ];
+}
+
+function renderMilestoneBar(ownedCount, total) {
+  const pct = ownedCount / total * 100;
+  const milestones = getMilestones(total);
+
+  // Build tick markers
+  const markersEl = document.getElementById('milestoneMarkers');
+  const labelsEl  = document.getElementById('milestoneLabels');
+
+  if (!markersEl._built) {
+    markersEl.innerHTML = milestones.map(m =>
+      `<div class="milestone-tick" id="tick-${m.label.replace(/\s/g,'_')}" style="left:${m.pct}%"></div>`
+    ).join('');
+    labelsEl.innerHTML = milestones.map(m =>
+      `<div class="milestone-lbl" id="lbl-${m.label.replace(/\s/g,'_')}" style="left:${m.pct}%">
+        <span class="lbl-icon">${m.icon}</span>${m.label}
+      </div>`
+    ).join('');
+    markersEl._built = true;
+  }
+
+  // Update reached states & detect newly crossed milestones
+  let newlyReached = null;
+  milestones.forEach(m => {
+    const key = m.label.replace(/\s/g,'_');
+    const reached = pct >= m.pct;
+    document.getElementById('tick-' + key)?.classList.toggle('reached', reached);
+    document.getElementById('lbl-'  + key)?.classList.toggle('reached', reached);
+    if (reached && !_prevMilestonesReached.has(key)) {
+      newlyReached = m;
+      _prevMilestonesReached.add(key);
+    }
+  });
+
+  // Achievement flash
+  if (newlyReached) {
+    const el = document.getElementById('milestoneAchieved');
+    el.textContent = '>> ' + newlyReached.icon + ' ' + newlyReached.label + ' REACHED! <<';
+    el.classList.remove('flash');
+    void el.offsetWidth; // reflow to restart animation
+    el.classList.add('flash');
+    // chiptune celebration
+    playCollectSound && playCollectSound();
+  }
+}
+
 function renderStats() {
   const owned = games.filter(g => g.owned);
   const total = games.length;
@@ -787,6 +948,7 @@ function renderStats() {
   document.getElementById('bar').style.width = pct + '%';
   document.getElementById('collectionValue').textContent = fmt(owned.reduce((s,g) => s + valueOf(g), 0));
   document.getElementById('setValue').textContent = fmt(games.reduce((s,g) => s + valueOf(g), 0));
+  renderMilestoneBar(owned.length, total);
 }
 
 // ─── Filters ──────────────────────────────────────────────────────────────────
@@ -1185,6 +1347,15 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
 });
 
 populateFilters();
+// Pre-seed reached milestones so initial render doesn't trigger achievement flashes
+{
+  const owned = games.filter(g => g.owned).length;
+  const total = games.length;
+  const pct = owned / total * 100;
+  getMilestones(total).forEach(m => {
+    if (pct >= m.pct) _prevMilestonesReached.add(m.label.replace(/\s/g,'_'));
+  });
+}
 render();
 </script>
 </body>
