@@ -152,7 +152,7 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 36px 0 24px;
+  padding: 18px 0 12px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
@@ -237,9 +237,11 @@ h1 span { color: var(--accent); }
 .stats {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  gap: 14px;
-  margin: 0 0 14px;
+  gap: 8px;
+  margin: 0 0 10px;
   align-items: stretch;
+  min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .stats .stat {
@@ -471,11 +473,12 @@ h1 span { color: var(--accent); }
 
 /* Controls */
 .controls {
-  display: grid;
-  grid-template-columns: 1fr repeat(2, minmax(160px, auto)) repeat(2, auto);
-  gap: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
   align-items: center;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+  min-width: 0;
 }
 
 .controls input,
@@ -484,14 +487,18 @@ h1 span { color: var(--accent); }
   color: var(--ink);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 7px 10px;
   font-family: 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   min-width: 0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
+  flex-shrink: 1;
 }
+
+#search { flex: 2 1 120px; }
+#statusFilter, #developerFilter, #yearFilter { flex: 1 1 80px; }
 
 .controls input:focus,
 .controls select:focus {
@@ -504,13 +511,14 @@ h1 span { color: var(--accent); }
 button {
   border: 0;
   border-radius: 10px;
-  padding: 11px 18px;
+  padding: 7px 14px;
   font-family: 'Syne', sans-serif;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 button.primary {
@@ -533,13 +541,14 @@ button.floppy-btn {
   background: transparent;
   border: 2px solid rgba(230,0,18,0.4);
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 4px 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
 }
 
 button.floppy-btn:hover {
@@ -855,12 +864,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 @media (max-width: 640px) {
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { grid-column: 1 / -1; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
-  .controls { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { padding: 20px 16px; }
-  .stat-value { font-size: clamp(11px, 5vw, 18px); }
+  .stat-value { font-size: clamp(8px, 5vw, 18px); }
 }
 </style>
 </head>
@@ -889,12 +894,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
   <div class="sticky-panel">
     <div class="stats">
-      <div class="stat" style="align-items:center;text-align:center;">
+      <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
         <div class="stat-label">Owned</div>
         <div class="stat-value" id="ownedCount">0</div>
         <div class="game-sub" style="margin-top:6px">of 677 titles</div>
       </div>
-      <div class="stat" style="align-items:center;text-align:center;">
+      <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
         <div class="stat-label">Missing</div>
         <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
       </div>
