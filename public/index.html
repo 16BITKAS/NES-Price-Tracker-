@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
-<script src="asset-manifest.js"></script>
+<script src="nes-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -1268,7 +1268,7 @@ function imgUrl(folder, title) {
     return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
   }
 
-  return BASE + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+  return BASE + 'nes/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
