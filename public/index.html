@@ -1904,7 +1904,6 @@ function updateStickyTheadTop() {
   ths.forEach(th => th.style.top = offset);
 }
 window.addEventListener('resize', updateStickyTheadTop);
-requestAnimationFrame(updateStickyTheadTop);
 
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
@@ -1917,6 +1916,8 @@ populateFilters();
   });
 }
 render();
+// Double rAF ensures sticky panel has its final height before calculating thead offset
+requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
 </script>
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
