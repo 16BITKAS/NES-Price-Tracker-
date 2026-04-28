@@ -619,6 +619,9 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 /* Table */
 .tablewrap { overflow-x: auto; }
 
+/* Sticky thead fix: clip overflow on a wrapper that doesn't affect sticky positioning */
+.tablewrap-outer { overflow-x: clip; }
+
 table {
   width: 100%;
   border-collapse: separate;
@@ -1159,7 +1162,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <p id="priceStatus"></p>
   </div>
 
-  <div class="tablewrap">
+  <div class="tablewrap-outer"><div class="tablewrap">
     <table>
       <thead>
         <tr>
@@ -1173,7 +1176,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </thead>
       <tbody id="tbody"></tbody>
     </table>
-  </div>
+  </div></div>
 
   <div class="footer">
     Data saves in this browser via localStorage. Cover art served from your GitHub Pages image archive.
