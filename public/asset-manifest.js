@@ -35,7 +35,7 @@ window.nesAssetManifest = {
     "title": "titles/1943 - The Battle of Midway (USA).png",
     "trailer": "trailers/1943 - The Battle of Midway (USA).mp4"
   },
-  "3-D World Runner": {
+  "3-D WorldRunner": {
     "boxfront": "boxfronts/3-D WorldRunner (USA).png",
     "boxback": "boxbacks/3-D WorldRunner (USA).png",
     "cartridge": "cartridges/3-D WorldRunner (USA).png",
