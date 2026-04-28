@@ -50,9 +50,10 @@ body.light-mode::after {
 
 /* Pixel toggle */
 .pixel-toggle-wrap {
-  position: fixed;
-  top: 18px;
+  position: absolute;
   right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -152,7 +153,7 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 18px 0 12px;
+  padding: 13px 0 8px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
@@ -163,6 +164,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .header-badge {
@@ -510,9 +512,9 @@ button {
   border: 0;
   border-radius: 10px;
   padding: 7px 14px;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
@@ -869,21 +871,19 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 </head>
 <body>
 
-<!-- Pixel art light/dark toggle -->
-<div class="pixel-toggle-wrap">
-  <label class="pixel-toggle" title="Toggle light/dark mode">
-    <input type="checkbox" id="themeToggle">
-    <div class="pixel-track">
-      <div class="pixel-knob" id="toggleKnob">🌙</div>
-    </div>
-  </label>
-</div>
-
+<!-- Pixel art light/dark toggle is now inside header -->
 <header>
   <div class="header-inner">
+    <div class="pixel-toggle-wrap">
+      <label class="pixel-toggle" title="Toggle light/dark mode">
+        <input type="checkbox" id="themeToggle">
+        <div class="pixel-track">
+          <div class="pixel-knob" id="toggleKnob">🌙</div>
+        </div>
+      </label>
+    </div>
     <div>
-      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:8vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-
+      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
     </div>
   </div>
 </header>
@@ -895,14 +895,13 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
         <div class="stat-label">Owned</div>
         <div class="stat-value" id="ownedCount">0</div>
-        <div class="game-sub" style="margin-top:6px">of 677 titles</div>
       </div>
       <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
         <div class="stat-label">Missing</div>
         <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
       </div>
       <div class="stat stat--hero">
-        <div class="stat-label">Completion</div>
+        <div class="stat-label" style="width:100%;text-align:center;">Completion</div>
         <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
         <div class="milestone-bar-wrap">
           <div class="milestone-track">
