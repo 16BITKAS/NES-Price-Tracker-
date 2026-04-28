@@ -1440,7 +1440,7 @@ function render() {
         <div class="game-sub">${esc(dev)}${pub}</div>
         ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
           <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
-          <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}')" title="Play trailer">
+          <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
             <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
               <polygon points="2,1 2,8 9,4.5" fill="white"/>
             </svg>
@@ -1570,7 +1570,7 @@ function openModal(gameId) {
       <!-- BOTTOM RIGHT: Gameplay snap (click to play trailer) -->
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:10px;">
         <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Gameplay</div>
-        <div class="snap-thumb" onclick="openTrailer('${esc(trailerName(g.title))}')" title="Watch gameplay">
+        <div class="snap-thumb" onclick="openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Watch gameplay">
           <img src="${snap}" alt="Gameplay" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;"
             onerror="this.style.opacity='0.25'">
           <div class="snap-play-btn">
@@ -1917,14 +1917,14 @@ render();
         style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
         onerror="showTrailerError()">
       </video>
-      <img id="trailerClearLogo" src="" alt=""
-        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;">
+      <img id="trailerClearLogo" alt=""
+        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
     </div>
   </div>
 </div>
 
 <script>
-function openTrailer(filename) {
+function openTrailer(filename, gameTitle) {
   const overlay  = document.getElementById('trailerOverlay');
   const video    = document.getElementById('trailerVideo');
   const errEl    = document.getElementById('trailerError');
@@ -1937,12 +1937,15 @@ function openTrailer(filename) {
   video.style.display  = 'block';
   video.src = src;
 
-  // Derive game title from filename and show clear logo overlay
-  const gameTitle = filename.replace(/\.mp4$/i, '');
-  logoEl.src = imgUrl('clearlogos', gameTitle);
-  logoEl.alt = gameTitle + ' logo';
-  logoEl.style.display = 'block';
-  logoEl.onerror = () => { logoEl.style.display = 'none'; };
+  // Show clear logo overlay using the exact game title for manifest lookup
+  if (gameTitle) {
+    logoEl.style.display = 'block';
+    logoEl.alt = gameTitle + ' logo';
+    logoEl.onerror = () => { logoEl.style.display = 'none'; };
+    logoEl.src = imgUrl('clearlogos', gameTitle);
+  } else {
+    logoEl.style.display = 'none';
+  }
 
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
