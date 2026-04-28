@@ -907,6 +907,142 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
   .stat-value { font-size: clamp(8px, 5vw, 18px); }
 }
+
+/* ── Image Lightbox ───────────────────────────────────────────────────────── */
+#imageLightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: rgba(0,0,0,0.96);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lb-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 60px 0 16px;
+}
+
+.lb-arrow {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  background: rgba(230,0,18,0.12);
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  margin: 0 20px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+}
+
+.lb-arrow:hover {
+  background: rgba(230,0,18,0.35);
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+.lb-arrow:active { transform: scale(0.95); }
+
+.lb-img-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#lbImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: opacity 0.2s;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  image-rendering: pixelated;
+}
+
+.lb-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 24px;
+  flex-shrink: 0;
+}
+
+#lbLabel {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+#lbCounter {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--accent);
+}
+
+#lbDots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lb-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  image-rendering: pixelated;
+}
+
+.lb-dot:hover { background: rgba(255,255,255,0.45); transform: scale(1.2); }
+.lb-dot--active { background: var(--accent) !important; border-color: var(--accent); box-shadow: 0 0 8px rgba(230,0,18,0.7); }
+
+.lb-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #e60012;
+  border: none;
+  border-radius: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  box-shadow: inset -2px -2px 0 #8b0000, inset 2px 2px 0 #ff4444;
+  transition: transform 0.1s;
+}
+
+.lb-close-btn:hover { transform: scale(1.1); }
+
 </style>
 </head>
 <body>
@@ -1451,18 +1587,90 @@ function openModal(gameId) {
     </div>
   `;
 
+  // Track images available for this game for lightbox navigation
+  window._modalImages = [
+    { src: front,        label: 'Box Front'    },
+    { src: back,         label: 'Box Back'     },
+    { src: cart,         label: 'Cartridge'    },
+    { src: title_screen, label: 'Title Screen' },
+    { src: snap,         label: 'Gameplay'     },
+  ];
+
+  // Wire up click-to-lightbox on every modal image after render
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#modalContent img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        const idx = window._modalImages.findIndex(m => m.src === img.src);
+        openLightbox(idx >= 0 ? idx : 0);
+      });
+    });
+  });
+
   document.getElementById('gameModal').style.display = 'block';
   document.body.style.overflow = 'hidden';
 }
 
+// ─── Lightbox ─────────────────────────────────────────────────────────────────
+let _lbIndex = 0;
 
+function openLightbox(index) {
+  const imgs = window._modalImages || [];
+  if (!imgs.length) return;
+  _lbIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+  _renderLightbox();
+  document.getElementById('imageLightbox').style.display = 'flex';
+}
 
+function closeLightbox() {
+  document.getElementById('imageLightbox').style.display = 'none';
+}
+
+function lbNav(dir) {
+  const imgs = window._modalImages || [];
+  _lbIndex = ((_lbIndex + dir) + imgs.length) % imgs.length;
+  _renderLightbox();
+}
+
+function _renderLightbox() {
+  const imgs = window._modalImages || [];
+  const item = imgs[_lbIndex];
+  const img  = document.getElementById('lbImg');
+  const lbl  = document.getElementById('lbLabel');
+  const ctr  = document.getElementById('lbCounter');
+
+  img.style.opacity = '0';
+  img.src = item.src;
+  img.onload = () => { img.style.opacity = '1'; };
+  img.onerror = () => { img.style.opacity = '0.15'; };
+  lbl.textContent = item.label;
+  ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
+
+  // Update dot indicators
+  document.querySelectorAll('.lb-dot').forEach((d, i) => {
+    d.classList.toggle('lb-dot--active', i === _lbIndex);
+  });
+
+  // Rebuild dots (in case game changed)
+  const dotsEl = document.getElementById('lbDots');
+  if (dotsEl.children.length !== imgs.length) {
+    dotsEl.innerHTML = imgs.map((_, i) =>
+      `<div class="lb-dot${i === _lbIndex ? ' lb-dot--active' : ''}" onclick="openLightbox(${i})"></div>`
+    ).join('');
+  }
+}
 
 document.getElementById('gameModal').addEventListener('click', e => {
   if (e.target === document.getElementById('gameModal')) closeModal();
 });
 
 document.addEventListener('keydown', e => {
+  const lb = document.getElementById('imageLightbox');
+  if (lb && lb.style.display === 'flex') {
+    if (e.key === 'ArrowLeft')  { lbNav(-1); return; }
+    if (e.key === 'ArrowRight') { lbNav(1);  return; }
+    if (e.key === 'Escape')     { closeLightbox(); return; }
+  }
   if (e.key === 'Escape') closeModal();
 });
 
@@ -1756,6 +1964,72 @@ document.getElementById('trailerOverlay').addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.getElementById('trailerOverlay').style.display === 'flex') closeTrailer();
+});
+</script>
+
+
+<!-- Image Lightbox -->
+<div id="imageLightbox">
+  <button class="lb-close-btn" onclick="closeLightbox()" title="Close (Esc)">
+    <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+      <rect x="0" y="0" width="2" height="2" fill="white"/>
+      <rect x="8" y="0" width="2" height="2" fill="white"/>
+      <rect x="2" y="2" width="2" height="2" fill="white"/>
+      <rect x="6" y="2" width="2" height="2" fill="white"/>
+      <rect x="4" y="4" width="2" height="2" fill="white"/>
+      <rect x="2" y="6" width="2" height="2" fill="white"/>
+      <rect x="6" y="6" width="2" height="2" fill="white"/>
+      <rect x="0" y="8" width="2" height="2" fill="white"/>
+      <rect x="8" y="8" width="2" height="2" fill="white"/>
+    </svg>
+  </button>
+
+  <div class="lb-stage">
+    <!-- Left arrow -->
+    <button class="lb-arrow" onclick="lbNav(-1)" title="Previous (←)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="8"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="2"  y="6"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="8"  y="12" width="2" height="2" fill="white"/>
+        <rect x="10" y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+
+    <!-- Image -->
+    <div class="lb-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+
+    <!-- Right arrow -->
+    <button class="lb-arrow" onclick="lbNav(1)" title="Next (→)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="4"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="10" y="6"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="4"  y="12" width="2" height="2" fill="white"/>
+        <rect x="2"  y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="lb-footer">
+    <div id="lbLabel"></div>
+    <div id="lbDots"></div>
+    <div id="lbCounter"></div>
+  </div>
+</div>
+
+
+<script>
+document.getElementById('imageLightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('imageLightbox')) closeLightbox();
 });
 </script>
 
