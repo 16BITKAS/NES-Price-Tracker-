@@ -6,7 +6,7 @@ window.nesGames = [
   {"id":2,"title":"1942","publisher":"Capcom","owned":false,"year":1986,"genre":"Shooter","description":"WWII aerial shooter where you battle waves of Japanese fighter planes."},
   {"id":3,"title":"10-Yard Fight","publisher":"Nintendo","owned":false,"year":1985,"genre":"Sports","description":"Early NES football game with simple field goal and running mechanics."},
   {"id":4,"title":"1943: The Battle of Midway","publisher":"Capcom","owned":false,"year":1988,"genre":"Shooter","description":"WWII aerial sequel with upgraded planes and more intense combat."},
-  {"id":5,"title":"3-D Battles of World Runner, The","publisher":"Acclaim","owned":false,"year":1987,"genre":"Action","description":"3D runner where you dodge obstacles and battle enemies across wild terrain."},
+  {"id":5,"title":"3-D World Runner","publisher":"Acclaim","owned":false,"year":1987,"genre":"Action","description":"3D runner where you dodge obstacles and battle enemies across wild terrain."},
   {"id":6,"title":"8 Eyes","publisher":"Taxan","owned":false,"year":1990,"genre":"Action","description":"Side-scrolling adventure with two heroes battling cultists across eight worlds."},
   {"id":7,"title":"A Nightmare on Elm Street","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"Licensed horror game based on the slasher film franchise."},
   {"id":8,"title":"Abadox: The Deadly Inner War","publisher":"Milton Bradley","owned":false,"year":1990,"genre":"Shooter","description":"Sci-fi shooter where you battle parasites inside a living planet."},
