@@ -48,7 +48,31 @@ body.light-mode::after {
   background: radial-gradient(ellipse, rgba(230,0,18,0.09) 0%, transparent 65%);
 }
 
-/* Pixel toggle */
+/* Tiny row trailer play button */
+.row-play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e60012;
+  border: none;
+  border-radius: 2px;
+  width: 18px;
+  height: 13px;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 1px 1px 0 #8b0000, -1px -1px 0 rgba(255,255,255,0.15) inset;
+  transition: transform 0.1s, box-shadow 0.1s;
+  vertical-align: middle;
+  image-rendering: pixelated;
+}
+.row-play-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(230,0,18,0.7), 1px 1px 0 #8b0000;
+}
+.row-play-btn:active {
+  transform: scale(0.95);
+}
 .pixel-toggle-wrap {
   position: absolute;
   right: 20px;
@@ -1202,6 +1226,15 @@ function filtered() {
 const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t + ' NES cartridge') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
+// ─── Trailer filename helper (global so row render can use it) ────────────────
+function trailerName(title) {
+  let name = title
+    .replace(/:/g, ' -')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return name + ' (USA).mp4';
+}
+
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   renderStats();
@@ -1242,7 +1275,14 @@ function render() {
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
-        ${g.genre ? `<div class="game-sub" style="margin-top:2px"><span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span></div>` : ''}
+        ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
+          <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
+          <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}')" title="Play trailer">
+            <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+              <polygon points="2,1 2,8 9,4.5" fill="white"/>
+            </svg>
+          </button>
+        </div>` : ''}
         ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
         <div style="margin-top:6px;display:flex;gap:10px;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
@@ -1275,15 +1315,6 @@ function openModal(gameId) {
   const logo  = imgUrl('clearlogos', g.title);
   const snap  = imgUrl('snaps',      g.title);
   const title_screen = imgUrl('titles', g.title);
-
-  function trailerName(title) {
-    // Match filename convention: "Title (USA).mp4"
-    let name = title
-      .replace(/:/g, ' -')
-      .replace(/\s+/g, ' ')
-      .trim();
-    return name + ' (USA).mp4';
-  }
 
   document.getElementById('modalContent').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
