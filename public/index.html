@@ -23,6 +23,99 @@
   --glow: rgba(230,0,18,0.15);
 }
 
+/* Light mode overrides */
+body.light-mode {
+  --bg: #f0ece8;
+  --surface: #ffffff;
+  --surface2: #e8e4e0;
+  --border: #d0ccc8;
+  --ink: #1a1a1a;
+  --muted: #888888;
+  --accent: #e60012;
+  --accent2: #ff3333;
+  --gold: #555555;
+  --red: #e60012;
+  --glow: rgba(230,0,18,0.10);
+}
+
+body.light-mode::before {
+  background-image:
+    linear-gradient(rgba(230,0,18,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,0,18,0.06) 1px, transparent 1px);
+}
+
+body.light-mode::after {
+  background: radial-gradient(ellipse, rgba(230,0,18,0.09) 0%, transparent 65%);
+}
+
+/* Pixel toggle */
+.pixel-toggle-wrap {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.pixel-toggle {
+  position: relative;
+  width: 52px;
+  height: 26px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.pixel-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.pixel-track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pixel-toggle input:checked ~ .pixel-track {
+  background: #d4e8f0;
+  border-color: #a0c4d8;
+}
+
+.pixel-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  transition: transform 0.15s, background 0.15s;
+  image-rendering: pixelated;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.pixel-toggle input:checked ~ .pixel-track .pixel-knob {
+  transform: translateX(26px);
+  background: #f5c542;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -739,10 +832,21 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 </head>
 <body>
 
+<!-- Pixel art light/dark toggle -->
+<div class="pixel-toggle-wrap">
+  <span id="toggleLabel">DARK</span>
+  <label class="pixel-toggle" title="Toggle light/dark mode">
+    <input type="checkbox" id="themeToggle">
+    <div class="pixel-track">
+      <div class="pixel-knob" id="toggleKnob">🌙</div>
+    </div>
+  </label>
+</div>
+
 <header>
   <div class="header-inner">
     <div>
-      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:10vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
+      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:8vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
 
     </div>
   </div>
@@ -1419,6 +1523,26 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   if (!wrap) return;
   popup.classList.remove('visible');
 });
+
+// ─── Light/Dark toggle ────────────────────────────────────────────────────────
+(function() {
+  const toggle = document.getElementById('themeToggle');
+  const label  = document.getElementById('toggleLabel');
+  const knob   = document.getElementById('toggleKnob');
+
+  function applyTheme(isLight) {
+    document.body.classList.toggle('light-mode', isLight);
+    label.textContent = isLight ? 'LIGHT' : 'DARK';
+    knob.textContent  = isLight ? '☀️' : '🌙';
+    localStorage.setItem('nes-theme', isLight ? 'light' : 'dark');
+  }
+
+  toggle.addEventListener('change', () => applyTheme(toggle.checked));
+
+  // Restore saved preference
+  const saved = localStorage.getItem('nes-theme');
+  if (saved === 'light') { toggle.checked = true; applyTheme(true); }
+})();
 
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
