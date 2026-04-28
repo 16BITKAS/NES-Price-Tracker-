@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
+<script src="asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -20,6 +21,135 @@
   --gold: #c8c8c8;
   --red: #e60012;
   --glow: rgba(230,0,18,0.15);
+}
+
+/* Light mode overrides */
+body.light-mode {
+  --bg: #f0ece8;
+  --surface: #ffffff;
+  --surface2: #e8e4e0;
+  --border: #d0ccc8;
+  --ink: #1a1a1a;
+  --muted: #888888;
+  --accent: #e60012;
+  --accent2: #ff3333;
+  --gold: #555555;
+  --red: #e60012;
+  --glow: rgba(230,0,18,0.10);
+}
+
+body.light-mode::before {
+  background-image:
+    linear-gradient(rgba(230,0,18,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,0,18,0.06) 1px, transparent 1px);
+}
+
+body.light-mode::after {
+  background: radial-gradient(ellipse, rgba(230,0,18,0.09) 0%, transparent 65%);
+}
+
+body.light-mode .pill {
+  background: #ffffff;
+  border-color: #d0ccc8;
+  color: #1a1a1a;
+}
+
+body.light-mode td:last-child .pill,
+body.light-mode .game-sub .pill {
+  background: #ffffff;
+  border-color: #d0ccc8;
+  color: #1a1a1a;
+}
+
+/* Tiny row trailer play button */
+.row-play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e60012;
+  border: none;
+  border-radius: 2px;
+  width: 18px;
+  height: 13px;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 1px 1px 0 #8b0000, -1px -1px 0 rgba(255,255,255,0.15) inset;
+  transition: transform 0.1s, box-shadow 0.1s;
+  vertical-align: middle;
+  image-rendering: pixelated;
+}
+.row-play-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(230,0,18,0.7), 1px 1px 0 #8b0000;
+}
+.row-play-btn:active {
+  transform: scale(0.95);
+}
+.pixel-toggle-wrap {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.pixel-toggle {
+  position: relative;
+  width: 52px;
+  height: 26px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.pixel-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.pixel-track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pixel-toggle input:checked ~ .pixel-track {
+  background: #e8e4e0;
+  border-color: #c0bcb8;
+}
+
+.pixel-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  transition: transform 0.15s, background 0.15s;
+  image-rendering: pixelated;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.pixel-toggle input:checked ~ .pixel-track .pixel-knob {
+  transform: translateX(26px);
+  background: #ffffff;
+  color: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,7 +190,7 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 48px 0 36px;
+  padding: 13px 0 8px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
@@ -71,6 +201,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .header-badge {
@@ -123,40 +254,55 @@ h1 span { color: var(--accent); }
 .wrap {
   max-width: 1380px;
   margin: 0 auto;
-  padding: 28px 28px;
+  padding: 0 28px 28px;
   position: relative;
   z-index: 1;
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg);
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Stats */
 .stats {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  gap: 14px;
-  margin: 28px 0;
+  grid-template-columns: auto auto;
+  gap: 8px;
+  margin: 0 0 10px;
   align-items: stretch;
 }
 
-.stats .stat {
+.stat-stack {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 8px;
+}
+
+.stat-stack .stat {
+  flex: 1;
+  min-height: 0;
 }
 
 @media (max-width: 700px) {
   .stats {
     grid-template-columns: 1fr 1fr;
   }
-  .stat.stat--hero {
-    grid-column: 1 / -1;
-  }
 }
 
 .stat {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px 20px 18px;
+  border-radius: 10px;
+  padding: 4px 16px;
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, transform 0.2s;
@@ -189,23 +335,26 @@ h1 span { color: var(--accent); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 28px 32px 24px;
+  padding: 4px 20px;
+  align-self: stretch;
+  height: 100%;
 }
 
 .stat.stat--hero .stat-label {
   font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--accent);
-  margin-bottom: 6px;
+  margin-bottom: 1px;
 }
 
 .stat.stat--hero .stat-value {
-  font-size: clamp(28px, 8vw, 72px);
+  font-size: 18px;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-shadow: 0 0 40px rgba(230,0,18,0.5);
-  word-break: break-all;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
 }
 
 .stat.stat--hero::before {
@@ -222,18 +371,20 @@ h1 span { color: var(--accent); }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .stat-value {
-  font-size: clamp(13px, 3.5vw, 22px);
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Press Start 2P', monospace;
   color: var(--accent);
-  line-height: 1.2;
+  line-height: 1;
   letter-spacing: 0;
-  word-break: break-all;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  display: block;
 }
 
 .progress {
@@ -242,6 +393,41 @@ h1 span { color: var(--accent); }
   border-radius: 999px;
   overflow: hidden;
   margin-top: 12px;
+}
+
+/* Gameplay snap thumbnail */
+.snap-thumb {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+  aspect-ratio: 4/3;
+  background: #000;
+}
+
+.snap-thumb:hover {
+  border-color: var(--accent);
+}
+
+.snap-play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.snap-thumb:hover .snap-play-btn {
+  opacity: 1;
+}
+
+.snap-play-btn svg {
+  filter: drop-shadow(0 0 8px rgba(230,0,18,0.8));
 }
 
 /* Milestone bar */
@@ -327,11 +513,12 @@ h1 span { color: var(--accent); }
 
 /* Controls */
 .controls {
-  display: grid;
-  grid-template-columns: 1fr repeat(2, minmax(160px, auto)) repeat(3, auto);
-  gap: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
   align-items: center;
-  margin: 24px 0 16px;
+  margin: 0 0 10px;
+  min-width: 0;
 }
 
 .controls input,
@@ -340,14 +527,18 @@ h1 span { color: var(--accent); }
   color: var(--ink);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 7px 10px;
   font-family: 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   min-width: 0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
+  flex-shrink: 1;
 }
+
+#search { flex: 2 1 120px; }
+#statusFilter, #developerFilter, #yearFilter { flex: 1 1 80px; }
 
 .controls input:focus,
 .controls select:focus {
@@ -360,13 +551,14 @@ h1 span { color: var(--accent); }
 button {
   border: 0;
   border-radius: 10px;
-  padding: 11px 18px;
-  font-family: 'Syne', sans-serif;
+  padding: 7px 14px;
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 button.primary {
@@ -384,6 +576,26 @@ button.secondary {
 }
 
 button.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+button.floppy-btn {
+  background: transparent;
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 6px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+button.floppy-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(230,0,18,0.4), 2px 2px 0 rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
 
 button.danger {
   background: transparent;
@@ -424,6 +636,12 @@ thead th {
   text-align: left;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 30;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 th.sortable {
@@ -473,8 +691,9 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .game-title {
   font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20.7px;
   letter-spacing: -0.01em;
+  text-decoration: underline;
 }
 
 .game-sub {
@@ -573,8 +792,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .cover-wrap {
   position: relative;
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   overflow: visible;
   display: flex;
@@ -584,11 +803,11 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-thumb {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
   display: block;
   background: var(--surface2);
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -600,8 +819,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-placeholder {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px dashed var(--border);
   background: var(--surface2);
@@ -614,8 +833,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-loading {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--surface2);
@@ -685,85 +904,260 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 @media (max-width: 1100px) {
-  .stats { grid-template-columns: repeat(3, 1fr); }
-  .stat.stat--hero { grid-column: 1 / -1; }
+  .stats { grid-template-columns: 1fr 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
   table { min-width: 900px; }
 }
 
 @media (max-width: 640px) {
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { grid-column: 1 / -1; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
-  .controls { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { padding: 20px 16px; }
-  .stat-value { font-size: clamp(11px, 5vw, 18px); }
+  .stat-value { font-size: clamp(8px, 5vw, 18px); }
 }
+
+/* ── Image Lightbox ───────────────────────────────────────────────────────── */
+#imageLightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: rgba(0,0,0,0.96);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lb-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 60px 0 16px;
+}
+
+.lb-arrow {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  background: rgba(230,0,18,0.12);
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  margin: 0 20px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+}
+
+.lb-arrow:hover {
+  background: rgba(230,0,18,0.35);
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+.lb-arrow:active { transform: scale(0.95); }
+
+.lb-img-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#lbImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: opacity 0.2s;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  image-rendering: pixelated;
+}
+
+.lb-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 24px;
+  flex-shrink: 0;
+}
+
+#lbLabel {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+#lbCounter {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--accent);
+}
+
+#lbDots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lb-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  image-rendering: pixelated;
+}
+
+.lb-dot:hover { background: rgba(255,255,255,0.45); transform: scale(1.2); }
+.lb-dot--active { background: var(--accent) !important; border-color: var(--accent); box-shadow: 0 0 8px rgba(230,0,18,0.7); }
+
+.lb-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #e60012;
+  border: none;
+  border-radius: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  box-shadow: inset -2px -2px 0 #8b0000, inset 2px 2px 0 #ff4444;
+  transition: transform 0.1s;
+}
+
+.lb-close-btn:hover { transform: scale(1.1); }
+
 </style>
 </head>
 <body>
 
+<!-- Pixel art light/dark toggle is now inside header -->
 <header>
   <div class="header-inner">
+    <div class="pixel-toggle-wrap">
+      <label class="pixel-toggle" title="Toggle light/dark mode">
+        <input type="checkbox" id="themeToggle">
+        <div class="pixel-track">
+          <div class="pixel-knob" id="toggleKnob">🌙</div>
+        </div>
+      </label>
+    </div>
     <div>
-      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:10vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-
+      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Owned</div>
-      <div class="stat-value" id="ownedCount">0</div>
-      <div class="game-sub" style="margin-top:6px">of 677 titles</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Missing</div>
-      <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
-    </div>
-    <div class="stat stat--hero">
-      <div class="stat-label">Completion</div>
-      <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
-      <div class="milestone-bar-wrap">
-        <div class="milestone-track">
-          <div class="milestone-fill" id="bar"></div>
-          <div class="milestone-markers" id="milestoneMarkers"></div>
+  <div class="sticky-panel">
+    <div class="stats">
+
+      <!-- Stack 1: Owned + Missing -->
+      <div class="stat-stack">
+        <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+          <div class="stat-label">Owned</div>
+          <div class="stat-value" id="ownedCount">0</div>
         </div>
-        <div class="milestone-labels" id="milestoneLabels"></div>
+        <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+          <div class="stat-label">Missing</div>
+          <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
+        </div>
       </div>
-      <div class="milestone-achieved" id="milestoneAchieved"></div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Collection Value</div>
-      <div class="stat-value" id="collectionValue">$0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Full Set Value</div>
-      <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
-    </div>
-  </div>
 
-  <div class="controls">
-    <input id="search" placeholder="Search games, developer, year…">
-    <select id="statusFilter">
-      <option value="all">All games</option>
-      <option value="owned">Owned</option>
-      <option value="missing">Missing</option>
-      <option value="priced">Priced</option>
-      <option value="unpriced">Unpriced</option>
-    </select>
-    <select id="developerFilter"><option value="all">All developers</option></select>
-    <select id="yearFilter"><option value="all">All years</option></select>
-    <button class="primary" id="refreshVisible">Refresh prices</button>
-    <button class="secondary" id="exportData">Export save</button>
-    <button class="danger" id="resetData">Reset</button>
-  </div>
+      <!-- Stack 2: Collection Value + Full Set Value -->
+      <div class="stat-stack">
+        <div class="stat" style="align-items:center;text-align:center;">
+          <div class="stat-label">Collection Value</div>
+          <div class="stat-value" id="collectionValue">$0</div>
+        </div>
+        <div class="stat" style="align-items:center;text-align:center;">
+          <div class="stat-label">Full Set Value</div>
+          <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
+        </div>
+      </div>
 
-  <p class="note"><span class="warn">Note:</span> estimates use active eBay listings through your API bridge.</p>
-  <p id="priceStatus">Prices will load when you click Refresh prices.</p>
+      <!-- Hero: Completion -->
+      <div class="stat stat--hero" style="grid-column: 1 / -1; padding-bottom: 0;">
+        <div class="stat-label" style="width:100%;text-align:center;">Completion</div>
+        <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
+        <div class="milestone-bar-wrap" style="margin-bottom:0;">
+          <div class="milestone-track">
+            <div class="milestone-fill" id="bar"></div>
+            <div class="milestone-markers" id="milestoneMarkers"></div>
+          </div>
+          <div class="milestone-labels" id="milestoneLabels"></div>
+        </div>
+        <div class="milestone-achieved" id="milestoneAchieved" style="min-height:0;margin-top:0;"></div>
+      </div>
+
+    </div>
+
+    <div class="controls">
+      <input id="search" placeholder="Search games, developer, year…">
+      <select id="statusFilter">
+        <option value="all">All games</option>
+        <option value="owned">Owned</option>
+        <option value="missing">Missing</option>
+        <option value="priced">Priced</option>
+        <option value="unpriced">Unpriced</option>
+      </select>
+      <select id="developerFilter"><option value="all">All developers</option></select>
+      <select id="yearFilter"><option value="all">All years</option></select>
+      <button class="primary" id="refreshVisible">Refresh prices</button>
+      <button class="floppy-btn" id="exportData" title="Export save">
+        <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
+          <!-- Body -->
+          <rect x="1" y="1" width="14" height="14" fill="#e60012"/>
+          <!-- Top-right corner cut -->
+          <rect x="10" y="1" width="5" height="1" fill="transparent"/>
+          <rect x="11" y="1" width="4" height="1" fill="#e60012"/>
+          <rect x="12" y="2" width="3" height="1" fill="#e60012"/>
+          <!-- Shutter slot (label area) -->
+          <rect x="2" y="2" width="9" height="5" fill="#c0000e"/>
+          <!-- Shutter window white strip -->
+          <rect x="6" y="2" width="2" height="5" fill="#ff6666"/>
+          <!-- Metal shutter slider -->
+          <rect x="3" y="3" width="2" height="3" fill="#ff9999"/>
+          <!-- Bottom disk read area -->
+          <rect x="3" y="9" width="10" height="5" fill="#c0000e"/>
+          <!-- Border outline -->
+          <rect x="1" y="1" width="14" height="1" fill="#ff3333"/>
+          <rect x="1" y="1" width="1" height="14" fill="#ff3333"/>
+          <rect x="1" y="14" width="14" height="1" fill="#8b0000"/>
+          <rect x="14" y="1" width="1" height="14" fill="#8b0000"/>
+          <!-- Top-right corner notch -->
+          <rect x="11" y="1" width="3" height="3" fill="#ff3333"/>
+          <rect x="12" y="2" width="2" height="2" fill="#e60012"/>
+          <rect x="13" y="1" width="1" height="1" fill="#8b0000"/>
+        </svg>
+      </button>
+    </div>
+
+    <p id="priceStatus"></p>
+  </div>
 
   <div class="tablewrap">
     <table>
@@ -796,19 +1190,32 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 <!-- Game Detail Modal -->
 <div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
   <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
-    <button onclick="closeModal()"  style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:2px solid var(--border);color:var(--ink);border-radius:0;width:32px;height:32px;padding:0;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;font-family:'Press Start 2P',monospace;line-height:1;">X</button>
+    <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
     <div id="modalContent" style="padding:32px;"></div>
   </div>
 </div>
 
 <script>
+const TRAILER_BASE_URL = "https://archive.org/download/RetroQuest-Trailers-NES/";
 const STORAGE_KEY = "nesTrackerSaveV2";
 const rawState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 const oldState = JSON.parse(localStorage.getItem("nesTrackerSaveV1") || "{}");
 const state = Object.keys(rawState).length ? rawState : oldState;
 const games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
 
-let sortKey = "id";
+let sortKey = "title";
 let sortDir = "asc";
 
 const fmt = n => Number.isFinite(Number(n))
@@ -843,6 +1250,24 @@ function toImageName(title) {
 }
 
 function imgUrl(folder, title) {
+  const manifest = window.nesAssetManifest || {};
+  const entry = manifest[title];
+
+  const folderKeyMap = {
+    boxfronts: 'boxfront',
+    boxbacks: 'boxback',
+    cartridges: 'cartridge',
+    clearlogos: 'clearlogo',
+    snaps: 'snap',
+    titles: 'title'
+  };
+
+  const key = folderKeyMap[folder];
+
+  if (entry && entry[key]) {
+    return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
+  }
+
   return BASE + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 }
 
@@ -970,6 +1395,15 @@ function filtered() {
 const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t + ' NES cartridge') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
+// ─── Trailer filename helper (global so row render can use it) ────────────────
+function trailerName(title) {
+  let name = title
+    .replace(/:/g, ' -')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return name + ' (USA).mp4';
+}
+
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   renderStats();
@@ -1010,7 +1444,14 @@ function render() {
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
-        ${g.genre ? `<div class="game-sub" style="margin-top:2px"><span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span></div>` : ''}
+        ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
+          <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
+          <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
+            <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+              <polygon points="2,1 2,8 9,4.5" fill="white"/>
+            </svg>
+          </button>
+        </div>` : ''}
         ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
         <div style="margin-top:6px;display:flex;gap:10px;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
@@ -1042,37 +1483,12 @@ function openModal(gameId) {
   const cart  = imgUrl('cartridges', g.title);
   const logo  = imgUrl('clearlogos', g.title);
   const snap  = imgUrl('snaps',      g.title);
+  const title_screen = imgUrl('titles', g.title);
 
   document.getElementById('modalContent').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
 
-      <!-- TOP LEFT: Box front and back side by side -->
-      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
-          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-            onerror="this.style.opacity='0.2'">
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
-          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-            onerror="this.style.opacity='0.2'">
-        </div>
-      </div>
-
-      <!-- TOP RIGHT: Cartridge focused, description below -->
-      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;justify-content:center;">
-          <img src="${cart}" alt="Cartridge" style="max-height:180px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
-            onerror="this.style.display='none'">
-        </div>
-        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
-          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
-          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
-        </div>
-      </div>
-
-      <!-- BOTTOM LEFT: Game info -->
+      <!-- TOP LEFT: Game info (was bottom-left) -->
       <div style="display:flex;flex-direction:column;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:16px;">
 
         <!-- Clear logo -->
@@ -1083,22 +1499,33 @@ function openModal(gameId) {
           <div style="display:none;font-family:'Press Start 2P',monospace;font-size:13px;color:var(--ink);text-align:center;line-height:1.6;">${esc(g.title)}</div>
         </div>
 
-        <!-- Metadata -->
-        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:14px;">
+        <!-- Cartridge + Metadata side by side -->
+        <div style="display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px;">
 
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Year</span>
-            <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);">${esc(yearOf(g))}</span>
+          <!-- Cartridge image -->
+          <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="${cart}" alt="Cartridge" style="max-height:130px;max-width:90px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
+              onerror="this.style.display='none'">
           </div>
 
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Developer</span>
-            <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);text-align:right;max-width:60%;word-break:break-word;">${esc(developerOf(g) || '—')}</span>
-          </div>
+          <!-- Metadata -->
+          <div style="display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;">
 
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">eBay Est.</span>
-            <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:${valueOf(g) ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}${g.resultCount ? ' <span style="font-size:9px;color:var(--muted);">(' + g.resultCount + ' listings)</span>' : ''}</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Year</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);">${esc(yearOf(g))}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Developer</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);text-align:right;max-width:60%;word-break:break-word;">${esc(developerOf(g) || '—')}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">eBay Est.</span>
+              <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:${valueOf(g) ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}${g.resultCount ? ' <span style="font-size:9px;color:var(--muted);">(' + g.resultCount + ' listings)</span>' : ''}</span>
+            </div>
+
           </div>
 
         </div>
@@ -1117,28 +1544,146 @@ function openModal(gameId) {
 
       </div>
 
-      <!-- BOTTOM RIGHT: Gameplay snap -->
+      <!-- TOP RIGHT: Title screen + Description -->
+      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <!-- Title screen image -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Title Screen</div>
+          <img src="${title_screen}" alt="Title Screen" style="max-width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.parentElement.style.display='none'">
+        </div>
+        <!-- Description -->
+        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
+          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
+        </div>
+      </div>
+
+      <!-- BOTTOM LEFT: Box front and back side by side (was top-left) -->
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
+      </div>
+
+      <!-- BOTTOM RIGHT: Gameplay snap (click to play trailer) -->
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:10px;">
         <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Gameplay</div>
-        <img src="${snap}" alt="Gameplay" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
-          onerror="this.style.opacity='0.2'">
+        <div class="snap-thumb" onclick="openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Watch gameplay">
+          <img src="${snap}" alt="Gameplay" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;"
+            onerror="this.style.opacity='0.25'">
+          <div class="snap-play-btn">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;">
+              <rect width="36" height="36" fill="rgba(0,0,0,0.6)"/>
+              <polygon points="12,8 12,28 28,18" fill="#e60012"/>
+              <rect x="11" y="7" width="2" height="22" fill="rgba(255,255,255,0.12)"/>
+              <rect x="11" y="7" width="18" height="2" fill="rgba(255,255,255,0.12)"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
     </div>
   `;
 
+  // Track images available for this game for lightbox navigation
+  window._modalImages = [
+    { src: front,        label: 'Box Front'    },
+    { src: back,         label: 'Box Back'     },
+    { src: cart,         label: 'Cartridge'    },
+    { src: title_screen, label: 'Title Screen' },
+    { src: snap,         label: 'Gameplay'     },
+  ];
+
+  // Wire up click-to-lightbox on every modal image after render
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#modalContent img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        const idx = window._modalImages.findIndex(m => m.src === img.src);
+        openLightbox(idx >= 0 ? idx : 0);
+      });
+    });
+  });
+
   document.getElementById('gameModal').style.display = 'block';
   document.body.style.overflow = 'hidden';
 }
 
+// ─── Lightbox ─────────────────────────────────────────────────────────────────
+let _lbIndex = 0;
 
+function openLightbox(index) {
+  const imgs = window._modalImages || [];
+  if (!imgs.length) return;
+  _lbIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+  _renderLightbox();
+  document.getElementById('imageLightbox').style.display = 'flex';
+}
 
+function closeLightbox() {
+  document.getElementById('imageLightbox').style.display = 'none';
+}
+
+function lbNav(dir) {
+  const imgs = window._modalImages || [];
+  _lbIndex = ((_lbIndex + dir) + imgs.length) % imgs.length;
+  _renderLightbox();
+}
+
+function _renderLightbox() {
+  const imgs = window._modalImages || [];
+  const item = imgs[_lbIndex];
+  const img  = document.getElementById('lbImg');
+  const lbl  = document.getElementById('lbLabel');
+  const ctr  = document.getElementById('lbCounter');
+
+  img.style.opacity = '0';
+  img.src = item.src;
+  img.onload = () => { img.style.opacity = '1'; };
+  img.onerror = () => { img.style.opacity = '0.15'; };
+  lbl.textContent = item.label;
+  ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
+
+  // Force identical dimensions for box art only
+  const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
+  img.style.width      = isBoxArt ? '400px' : '';
+  img.style.height     = isBoxArt ? '560px' : '';
+  img.style.objectFit  = isBoxArt ? 'fill'    : 'contain';
+  img.style.flexShrink = isBoxArt ? '0'       : '';
+
+  // Update dot indicators
+  document.querySelectorAll('.lb-dot').forEach((d, i) => {
+    d.classList.toggle('lb-dot--active', i === _lbIndex);
+  });
+
+  // Rebuild dots (in case game changed)
+  const dotsEl = document.getElementById('lbDots');
+  if (dotsEl.children.length !== imgs.length) {
+    dotsEl.innerHTML = imgs.map((_, i) =>
+      `<div class="lb-dot${i === _lbIndex ? ' lb-dot--active' : ''}" onclick="openLightbox(${i})"></div>`
+    ).join('');
+  }
+}
 
 document.getElementById('gameModal').addEventListener('click', e => {
   if (e.target === document.getElementById('gameModal')) closeModal();
 });
 
 document.addEventListener('keydown', e => {
+  const lb = document.getElementById('imageLightbox');
+  if (lb && lb.style.display === 'flex') {
+    if (e.key === 'ArrowLeft')  { lbNav(-1); return; }
+    if (e.key === 'ArrowRight') { lbNav(1);  return; }
+    if (e.key === 'Escape')     { closeLightbox(); return; }
+  }
   if (e.key === 'Escape') closeModal();
 });
 
@@ -1279,14 +1824,6 @@ document.getElementById('exportData').addEventListener('click', () => {
   a.click();
 });
 
-// ─── Reset ────────────────────────────────────────────────────────────────────
-document.getElementById('resetData').addEventListener('click', () => {
-  if (confirm('Clear your owned games and price cache in this browser?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-});
-
 // ─── Hover popup (box front preview) ─────────────────────────────────────────
 const popup    = document.getElementById('artPopup');
 const popupImg = document.getElementById('artPopupImg');
@@ -1320,6 +1857,55 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   popup.classList.remove('visible');
 });
 
+// ─── Light/Dark toggle ────────────────────────────────────────────────────────
+(function() {
+  const toggle = document.getElementById('themeToggle');
+  const knob   = document.getElementById('toggleKnob');
+
+  function applyTheme(isLight) {
+    document.body.classList.toggle('light-mode', isLight);
+    knob.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('nes-theme', isLight ? 'light' : 'dark');
+  }
+
+  toggle.addEventListener('change', () => applyTheme(toggle.checked));
+
+  // Restore saved preference
+  const saved = localStorage.getItem('nes-theme');
+  if (saved === 'light') { toggle.checked = true; applyTheme(true); }
+})();
+
+// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+function fitStatValues() {
+  document.querySelectorAll('.stat-value').forEach(el => {
+    el.style.fontSize = '18px';
+    const parent = el.closest('.stat');
+    const paddingH = parseFloat(getComputedStyle(parent).paddingLeft) + parseFloat(getComputedStyle(parent).paddingRight);
+    const maxW = parent.clientWidth - paddingH;
+    let size = 18;
+    while (el.scrollWidth > maxW && size > 8) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+  });
+}
+
+// Run after render and on resize
+const _origRenderStats = renderStats;
+renderStats = function() { _origRenderStats.apply(this, arguments); requestAnimationFrame(fitStatValues); };
+window.addEventListener('resize', fitStatValues);
+
+// ─── Sticky thead offset ──────────────────────────────────────────────────────
+function updateStickyTheadTop() {
+  const panel = document.querySelector('.sticky-panel');
+  const ths = document.querySelectorAll('thead th');
+  if (!panel || !ths.length) return;
+  const offset = panel.offsetHeight + 'px';
+  ths.forEach(th => th.style.top = offset);
+}
+window.addEventListener('resize', updateStickyTheadTop);
+requestAnimationFrame(updateStickyTheadTop);
+
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
 {
@@ -1332,5 +1918,160 @@ populateFilters();
 }
 render();
 </script>
+<!-- Video Trailer Overlay -->
+<div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
+  <div style="position:relative;width:min(860px,94vw);">
+    <button onclick="closeTrailer()" title="Close" style="position:absolute;top:-44px;right:0;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
+    <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
+    <div style="position:relative;">
+      <video id="trailerVideo"
+        controls autoplay
+        style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
+        onerror="showTrailerError()">
+      </video>
+      <img id="trailerClearLogo" alt=""
+        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
+    </div>
+  </div>
+</div>
+
+<script>
+function openTrailer(filename, gameTitle) {
+  const overlay  = document.getElementById('trailerOverlay');
+  const video    = document.getElementById('trailerVideo');
+  const errEl    = document.getElementById('trailerError');
+  const logoEl   = document.getElementById('trailerClearLogo');
+
+  const src = filename.includes('/')
+    ? BASE + filename.split('/').map(encodeURIComponent).join('/')
+    : TRAILER_BASE_URL + encodeURIComponent(filename);
+  errEl.style.display  = 'none';
+  video.style.display  = 'block';
+  video.src = src;
+
+  // Show clear logo overlay using the exact game title for manifest lookup
+  if (gameTitle) {
+    logoEl.style.display = 'block';
+    logoEl.alt = gameTitle + ' logo';
+    logoEl.onerror = () => { logoEl.style.display = 'none'; };
+    logoEl.src = imgUrl('clearlogos', gameTitle);
+  } else {
+    logoEl.style.display = 'none';
+  }
+
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Detect missing file
+  video.onerror = () => showTrailerError();
+  video.load();
+}
+
+function showTrailerError() {
+  const video = document.getElementById('trailerVideo');
+  const errEl = document.getElementById('trailerError');
+  video.style.display = 'none';
+  errEl.style.display = 'block';
+}
+
+function closeTrailer() {
+  const overlay = document.getElementById('trailerOverlay');
+  const video   = document.getElementById('trailerVideo');
+  const logoEl  = document.getElementById('trailerClearLogo');
+  video.pause();
+  video.src = '';
+  logoEl.src = '';
+  logoEl.style.display = 'none';
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click or Escape
+document.getElementById('trailerOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('trailerOverlay')) closeTrailer();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('trailerOverlay').style.display === 'flex') closeTrailer();
+});
+</script>
+
+
+<!-- Image Lightbox -->
+<div id="imageLightbox">
+  <button class="lb-close-btn" onclick="closeLightbox()" title="Close (Esc)">
+    <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+      <rect x="0" y="0" width="2" height="2" fill="white"/>
+      <rect x="8" y="0" width="2" height="2" fill="white"/>
+      <rect x="2" y="2" width="2" height="2" fill="white"/>
+      <rect x="6" y="2" width="2" height="2" fill="white"/>
+      <rect x="4" y="4" width="2" height="2" fill="white"/>
+      <rect x="2" y="6" width="2" height="2" fill="white"/>
+      <rect x="6" y="6" width="2" height="2" fill="white"/>
+      <rect x="0" y="8" width="2" height="2" fill="white"/>
+      <rect x="8" y="8" width="2" height="2" fill="white"/>
+    </svg>
+  </button>
+
+  <div class="lb-stage">
+    <!-- Left arrow -->
+    <button class="lb-arrow" onclick="lbNav(-1)" title="Previous (←)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="8"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="2"  y="6"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="8"  y="12" width="2" height="2" fill="white"/>
+        <rect x="10" y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+
+    <!-- Image -->
+    <div class="lb-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+
+    <!-- Right arrow -->
+    <button class="lb-arrow" onclick="lbNav(1)" title="Next (→)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="4"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="10" y="6"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="4"  y="12" width="2" height="2" fill="white"/>
+        <rect x="2"  y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="lb-footer">
+    <div id="lbLabel"></div>
+    <div id="lbDots"></div>
+    <div id="lbCounter"></div>
+  </div>
+</div>
+
+
+<script>
+document.getElementById('imageLightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('imageLightbox')) closeLightbox();
+});
+</script>
+
 </body>
 </html>
