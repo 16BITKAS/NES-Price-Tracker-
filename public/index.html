@@ -1911,21 +1911,24 @@ render();
       </svg>
     </button>
     <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
-    <video id="trailerVideo"
-      controls autoplay
-      style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
-      onerror="showTrailerError()">
-    </video>
-    <div id="trailerTitle" style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--muted);text-align:center;margin-top:12px;letter-spacing:0.08em;"></div>
+    <div style="position:relative;">
+      <video id="trailerVideo"
+        controls autoplay
+        style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
+        onerror="showTrailerError()">
+      </video>
+      <img id="trailerClearLogo" src="" alt=""
+        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;">
+    </div>
   </div>
 </div>
 
 <script>
 function openTrailer(filename) {
-  const overlay = document.getElementById('trailerOverlay');
-  const video   = document.getElementById('trailerVideo');
-  const errEl   = document.getElementById('trailerError');
-  const titleEl = document.getElementById('trailerTitle');
+  const overlay  = document.getElementById('trailerOverlay');
+  const video    = document.getElementById('trailerVideo');
+  const errEl    = document.getElementById('trailerError');
+  const logoEl   = document.getElementById('trailerClearLogo');
 
   const src = filename.includes('/')
     ? BASE + filename.split('/').map(encodeURIComponent).join('/')
@@ -1933,7 +1936,14 @@ function openTrailer(filename) {
   errEl.style.display  = 'none';
   video.style.display  = 'block';
   video.src = src;
-  titleEl.textContent  = filename.replace('.mp4','');
+
+  // Derive game title from filename and show clear logo overlay
+  const gameTitle = filename.replace(/\.mp4$/i, '');
+  logoEl.src = imgUrl('clearlogos', gameTitle);
+  logoEl.alt = gameTitle + ' logo';
+  logoEl.style.display = 'block';
+  logoEl.onerror = () => { logoEl.style.display = 'none'; };
+
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 
@@ -1952,8 +1962,11 @@ function showTrailerError() {
 function closeTrailer() {
   const overlay = document.getElementById('trailerOverlay');
   const video   = document.getElementById('trailerVideo');
+  const logoEl  = document.getElementById('trailerClearLogo');
   video.pause();
   video.src = '';
+  logoEl.src = '';
+  logoEl.style.display = 'none';
   overlay.style.display = 'none';
   document.body.style.overflow = '';
 }
