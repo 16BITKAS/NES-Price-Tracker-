@@ -5691,12 +5691,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Werewolf - The Last Warrior (USA).mp4"
   },
   "Wheel of Fortune": {
-    "boxfront": "boxfronts/Wheel of Fortune (USA) (Rev A).png",
-    "boxback": "boxbacks/Wheel of Fortune (USA) (Rev A).png",
+    "boxfront": "boxfronts/Wheel of Fortune (USA).png",
+    "boxback": "boxbacks/Wheel of Fortune (USA).png",
     "cartridge": "cartridges/Wheel of Fortune (USA).png",
     "clearlogo": "clearlogos/Wheel of Fortune (USA).png",
-    "snap": "snaps/Wheel of Fortune (USA) (Rev A).png",
-    "title": "titles/Wheel of Fortune (USA) (Rev A).png",
+    "snap": "snaps/Wheel of Fortune (USA).png",
+    "title": "titles/Wheel of Fortune (USA).png",
     "trailer": "trailers/Wheel of Fortune (USA).mp4"
   },
   "Wheel of Fortune: Family Edition": {
@@ -5709,12 +5709,12 @@ window.nesAssetManifest = {
     "trailer": "trailers/Wheel of Fortune - Family Edition (USA).mp4"
   },
   "Wheel of Fortune: Featuring Vanna White": {
-    "boxfront": "boxfronts/Wheel of Fortune (USA) (Rev A).png",
-    "boxback": "boxbacks/Wheel of Fortune (USA) (Rev A).png",
-    "cartridge": "cartridges/Wheel of Fortune (USA).png",
-    "clearlogo": "clearlogos/Wheel of Fortune (USA).png",
-    "snap": "snaps/Wheel of Fortune (USA) (Rev A).png",
-    "title": "titles/Wheel of Fortune (USA) (Rev A).png",
+    "boxfront": "boxfronts/Wheel of Fortune Starring Vanna White (USA).png",
+    "boxback": "boxbacks/Wheel of Fortune Starring Vanna White (USA).png",
+    "cartridge": "cartridges/Wheel of Fortune Starring Vanna White (USA).png",
+    "clearlogo": "clearlogos/Wheel of Fortune Starring Vanna White (USA).png",
+    "snap": "snaps/Wheel of Fortune Starring Vanna White (USA).png",
+    "title": "titles/Wheel of Fortune Starring Vanna White (USA).png",
     "trailer": "trailers/Wheel of Fortune Featuring Vanna White (USA).mp4"
   },
   "Wheel of Fortune: Junior Edition": {
