@@ -56,11 +56,6 @@ body.light-mode::after {
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: var(--muted);
-  letter-spacing: 0.05em;
   user-select: none;
 }
 
@@ -90,8 +85,8 @@ body.light-mode::after {
 }
 
 .pixel-toggle input:checked ~ .pixel-track {
-  background: #d4e8f0;
-  border-color: #a0c4d8;
+  background: #e8e4e0;
+  border-color: #c0bcb8;
 }
 
 .pixel-knob {
@@ -100,20 +95,23 @@ body.light-mode::after {
   left: 3px;
   width: 16px;
   height: 16px;
-  background: var(--accent);
+  background: #e60012;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
   transition: transform 0.15s, background 0.15s;
   image-rendering: pixelated;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1;
+  color: #ffffff;
 }
 
 .pixel-toggle input:checked ~ .pixel-track .pixel-knob {
   transform: translateX(26px);
-  background: #f5c542;
+  background: #ffffff;
+  color: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -702,8 +700,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .cover-wrap {
   position: relative;
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   overflow: visible;
   display: flex;
@@ -713,8 +711,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-thumb {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid var(--border);
@@ -729,8 +727,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-placeholder {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px dashed var(--border);
   background: var(--surface2);
@@ -743,8 +741,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-loading {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--surface2);
@@ -834,7 +832,6 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 <!-- Pixel art light/dark toggle -->
 <div class="pixel-toggle-wrap">
-  <span id="toggleLabel">DARK</span>
   <label class="pixel-toggle" title="Toggle light/dark mode">
     <input type="checkbox" id="themeToggle">
     <div class="pixel-track">
@@ -1527,13 +1524,11 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
 // ─── Light/Dark toggle ────────────────────────────────────────────────────────
 (function() {
   const toggle = document.getElementById('themeToggle');
-  const label  = document.getElementById('toggleLabel');
   const knob   = document.getElementById('toggleKnob');
 
   function applyTheme(isLight) {
     document.body.classList.toggle('light-mode', isLight);
-    label.textContent = isLight ? 'LIGHT' : 'DARK';
-    knob.textContent  = isLight ? '☀️' : '🌙';
+    knob.textContent = isLight ? '☀️' : '🌙';
     localStorage.setItem('nes-theme', isLight ? 'light' : 'dark');
   }
 
