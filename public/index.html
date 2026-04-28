@@ -6,6 +6,7 @@
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
 <script src="asset-manifest.js"></script>
+<script src="trailer-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -1277,11 +1278,17 @@ function openModal(gameId) {
   const title_screen = imgUrl('titles', g.title);
 
   function trailerName(title) {
-    // Match filename convention: "Title (USA).mp4"
+    const trailerManifest = window.nesTrailerManifest || {};
+
+    if (trailerManifest[title]) {
+      return trailerManifest[title];
+    }
+
     let name = title
       .replace(/:/g, ' -')
       .replace(/\s+/g, ' ')
       .trim();
+
     return name + ' (USA).mp4';
   }
 
