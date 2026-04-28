@@ -239,8 +239,7 @@ h1 span { color: var(--accent); }
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   gap: 8px;
   margin: 0 0 10px;
-  align-items: stretch;
-  min-width: 0;
+  align-items: center;
   flex-wrap: nowrap;
 }
 
@@ -307,8 +306,8 @@ h1 span { color: var(--accent); }
 }
 
 .stat.stat--hero .stat-value {
-  font-size: clamp(8px, 3.5vw, 22px);
-  line-height: 1.2;
+  font-size: 18px;
+  line-height: 1;
   letter-spacing: 0;
   text-shadow: 0 0 40px rgba(230,0,18,0.5);
   white-space: nowrap;
@@ -334,17 +333,16 @@ h1 span { color: var(--accent); }
 }
 
 .stat-value {
-  font-size: clamp(8px, 3.5vw, 22px);
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Press Start 2P', monospace;
   color: var(--accent);
-  line-height: 1.2;
+  line-height: 1;
   letter-spacing: 0;
   white-space: nowrap;
   overflow: hidden;
   width: 100%;
   display: block;
-  scale: 1;
 }
 
 .progress {
@@ -1602,10 +1600,11 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
 // ─── Auto-shrink stat values to fit on one line ───────────────────────────────
 function fitStatValues() {
   document.querySelectorAll('.stat-value').forEach(el => {
-    el.style.fontSize = '';
-    const parent = el.parentElement;
-    const maxW = parent.clientWidth - 32; // account for padding
-    let size = parseFloat(getComputedStyle(el).fontSize);
+    el.style.fontSize = '18px';
+    const parent = el.closest('.stat');
+    const paddingH = parseFloat(getComputedStyle(parent).paddingLeft) + parseFloat(getComputedStyle(parent).paddingRight);
+    const maxW = parent.clientWidth - paddingH;
+    let size = 18;
     while (el.scrollWidth > maxW && size > 8) {
       size -= 0.5;
       el.style.fontSize = size + 'px';
