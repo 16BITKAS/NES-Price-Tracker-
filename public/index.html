@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
+<script src="asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -20,6 +21,98 @@
   --gold: #c8c8c8;
   --red: #e60012;
   --glow: rgba(230,0,18,0.15);
+}
+
+/* Light mode overrides */
+body.light-mode {
+  --bg: #f0ece8;
+  --surface: #ffffff;
+  --surface2: #e8e4e0;
+  --border: #d0ccc8;
+  --ink: #1a1a1a;
+  --muted: #888888;
+  --accent: #e60012;
+  --accent2: #ff3333;
+  --gold: #555555;
+  --red: #e60012;
+  --glow: rgba(230,0,18,0.10);
+}
+
+body.light-mode::before {
+  background-image:
+    linear-gradient(rgba(230,0,18,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,0,18,0.06) 1px, transparent 1px);
+}
+
+body.light-mode::after {
+  background: radial-gradient(ellipse, rgba(230,0,18,0.09) 0%, transparent 65%);
+}
+
+/* Pixel toggle */
+.pixel-toggle-wrap {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.pixel-toggle {
+  position: relative;
+  width: 52px;
+  height: 26px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.pixel-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.pixel-track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pixel-toggle input:checked ~ .pixel-track {
+  background: #e8e4e0;
+  border-color: #c0bcb8;
+}
+
+.pixel-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  transition: transform 0.15s, background 0.15s;
+  image-rendering: pixelated;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.pixel-toggle input:checked ~ .pixel-track .pixel-knob {
+  transform: translateX(26px);
+  background: #ffffff;
+  color: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,7 +153,7 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 48px 0 36px;
+  padding: 13px 0 8px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
@@ -71,6 +164,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .header-badge {
@@ -123,18 +217,32 @@ h1 span { color: var(--accent); }
 .wrap {
   max-width: 1380px;
   margin: 0 auto;
-  padding: 28px 28px;
+  padding: 0 28px 28px;
   position: relative;
   z-index: 1;
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg);
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Stats */
 .stats {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  gap: 14px;
-  margin: 28px 0;
-  align-items: stretch;
+  gap: 8px;
+  margin: 0 0 10px;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .stats .stat {
@@ -155,8 +263,8 @@ h1 span { color: var(--accent); }
 .stat {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px 20px 18px;
+  border-radius: 10px;
+  padding: 4px 16px;
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, transform 0.2s;
@@ -189,23 +297,24 @@ h1 span { color: var(--accent); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 28px 32px 24px;
+  padding: 4px 20px;
 }
 
 .stat.stat--hero .stat-label {
   font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--accent);
-  margin-bottom: 6px;
+  margin-bottom: 1px;
 }
 
 .stat.stat--hero .stat-value {
-  font-size: clamp(28px, 8vw, 72px);
+  font-size: 18px;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-shadow: 0 0 40px rgba(230,0,18,0.5);
-  word-break: break-all;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
 }
 
 .stat.stat--hero::before {
@@ -222,18 +331,20 @@ h1 span { color: var(--accent); }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .stat-value {
-  font-size: clamp(13px, 3.5vw, 22px);
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Press Start 2P', monospace;
   color: var(--accent);
-  line-height: 1.2;
+  line-height: 1;
   letter-spacing: 0;
-  word-break: break-all;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  display: block;
 }
 
 .progress {
@@ -362,11 +473,12 @@ h1 span { color: var(--accent); }
 
 /* Controls */
 .controls {
-  display: grid;
-  grid-template-columns: 1fr repeat(2, minmax(160px, auto)) repeat(3, auto);
-  gap: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
   align-items: center;
-  margin: 24px 0 16px;
+  margin: 0 0 10px;
+  min-width: 0;
 }
 
 .controls input,
@@ -375,14 +487,18 @@ h1 span { color: var(--accent); }
   color: var(--ink);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 7px 10px;
   font-family: 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   min-width: 0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
+  flex-shrink: 1;
 }
+
+#search { flex: 2 1 120px; }
+#statusFilter, #developerFilter, #yearFilter { flex: 1 1 80px; }
 
 .controls input:focus,
 .controls select:focus {
@@ -395,13 +511,14 @@ h1 span { color: var(--accent); }
 button {
   border: 0;
   border-radius: 10px;
-  padding: 11px 18px;
-  font-family: 'Syne', sans-serif;
+  padding: 7px 14px;
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 button.primary {
@@ -419,6 +536,26 @@ button.secondary {
 }
 
 button.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+button.floppy-btn {
+  background: transparent;
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 6px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+button.floppy-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(230,0,18,0.4), 2px 2px 0 rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
 
 button.danger {
   background: transparent;
@@ -519,47 +656,6 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   margin-top: 2px;
 }
 
-
-.trailer-list-btn {
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  padding: 0;
-  border-radius: 4px;
-  background: var(--accent);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.18);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 0 8px rgba(230,0,18,0.35);
-  vertical-align: middle;
-  transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
-}
-
-.trailer-list-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 12px rgba(230,0,18,0.65);
-  filter: brightness(1.1);
-}
-
-.trailer-list-btn svg {
-  width: 9px;
-  height: 9px;
-  display: block;
-  margin-left: 1px;
-  image-rendering: pixelated;
-}
-
-.game-meta-row {
-  margin-top: 2px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
 .pill {
   display: inline-block;
   padding: 3px 10px;
@@ -649,8 +745,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .cover-wrap {
   position: relative;
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   overflow: visible;
   display: flex;
@@ -660,8 +756,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-thumb {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid var(--border);
@@ -676,8 +772,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-placeholder {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px dashed var(--border);
   background: var(--surface2);
@@ -690,8 +786,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .cover-loading {
-  width: 90px;
-  height: 124px;
+  width: 113px;
+  height: 155px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--surface2);
@@ -768,77 +864,107 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 @media (max-width: 640px) {
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { grid-column: 1 / -1; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
-  .controls { grid-template-columns: 1fr 1fr; }
-  .stat.stat--hero { padding: 20px 16px; }
-  .stat-value { font-size: clamp(11px, 5vw, 18px); }
+  .stat-value { font-size: clamp(8px, 5vw, 18px); }
 }
 </style>
 </head>
 <body>
 
+<!-- Pixel art light/dark toggle is now inside header -->
 <header>
   <div class="header-inner">
+    <div class="pixel-toggle-wrap">
+      <label class="pixel-toggle" title="Toggle light/dark mode">
+        <input type="checkbox" id="themeToggle">
+        <div class="pixel-track">
+          <div class="pixel-knob" id="toggleKnob">🌙</div>
+        </div>
+      </label>
+    </div>
     <div>
-      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:10vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-
+      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-  <div class="stats">
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Owned</div>
-      <div class="stat-value" id="ownedCount">0</div>
-      <div class="game-sub" style="margin-top:6px">of 677 titles</div>
-    </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Missing</div>
-      <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
-    </div>
-    <div class="stat stat--hero">
-      <div class="stat-label">Completion</div>
-      <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
-      <div class="milestone-bar-wrap">
-        <div class="milestone-track">
-          <div class="milestone-fill" id="bar"></div>
-          <div class="milestone-markers" id="milestoneMarkers"></div>
-        </div>
-        <div class="milestone-labels" id="milestoneLabels"></div>
+  <div class="sticky-panel">
+    <div class="stats">
+      <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+        <div class="stat-label">Owned</div>
+        <div class="stat-value" id="ownedCount">0</div>
       </div>
-      <div class="milestone-achieved" id="milestoneAchieved"></div>
+      <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+        <div class="stat-label">Missing</div>
+        <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
+      </div>
+      <div class="stat stat--hero">
+        <div class="stat-label" style="width:100%;text-align:center;">Completion</div>
+        <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
+        <div class="milestone-bar-wrap">
+          <div class="milestone-track">
+            <div class="milestone-fill" id="bar"></div>
+            <div class="milestone-markers" id="milestoneMarkers"></div>
+          </div>
+          <div class="milestone-labels" id="milestoneLabels"></div>
+        </div>
+        <div class="milestone-achieved" id="milestoneAchieved"></div>
+      </div>
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Collection Value</div>
+        <div class="stat-value" id="collectionValue">$0</div>
+      </div>
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Full Set Value</div>
+        <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
+      </div>
     </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Collection Value</div>
-      <div class="stat-value" id="collectionValue">$0</div>
-    </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Full Set Value</div>
-      <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
-    </div>
-  </div>
 
-  <div class="controls">
-    <input id="search" placeholder="Search games, developer, year…">
-    <select id="statusFilter">
-      <option value="all">All games</option>
-      <option value="owned">Owned</option>
-      <option value="missing">Missing</option>
-      <option value="priced">Priced</option>
-      <option value="unpriced">Unpriced</option>
-    </select>
-    <select id="developerFilter"><option value="all">All developers</option></select>
-    <select id="yearFilter"><option value="all">All years</option></select>
-    <button class="primary" id="refreshVisible">Refresh prices</button>
-    <button class="secondary" id="exportData">Export save</button>
-    <button class="danger" id="resetData">Reset</button>
-  </div>
+    <div class="controls">
+      <input id="search" placeholder="Search games, developer, year…">
+      <select id="statusFilter">
+        <option value="all">All games</option>
+        <option value="owned">Owned</option>
+        <option value="missing">Missing</option>
+        <option value="priced">Priced</option>
+        <option value="unpriced">Unpriced</option>
+      </select>
+      <select id="developerFilter"><option value="all">All developers</option></select>
+      <select id="yearFilter"><option value="all">All years</option></select>
+      <button class="primary" id="refreshVisible">Refresh prices</button>
+      <button class="floppy-btn" id="exportData" title="Export save">
+        <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
+          <!-- Body -->
+          <rect x="1" y="1" width="14" height="14" fill="#e60012"/>
+          <!-- Top-right corner cut -->
+          <rect x="10" y="1" width="5" height="1" fill="transparent"/>
+          <rect x="11" y="1" width="4" height="1" fill="#e60012"/>
+          <rect x="12" y="2" width="3" height="1" fill="#e60012"/>
+          <!-- Shutter slot (label area) -->
+          <rect x="2" y="2" width="9" height="5" fill="#c0000e"/>
+          <!-- Shutter window white strip -->
+          <rect x="6" y="2" width="2" height="5" fill="#ff6666"/>
+          <!-- Metal shutter slider -->
+          <rect x="3" y="3" width="2" height="3" fill="#ff9999"/>
+          <!-- Bottom disk read area -->
+          <rect x="3" y="9" width="10" height="5" fill="#c0000e"/>
+          <!-- Border outline -->
+          <rect x="1" y="1" width="14" height="1" fill="#ff3333"/>
+          <rect x="1" y="1" width="1" height="14" fill="#ff3333"/>
+          <rect x="1" y="14" width="14" height="1" fill="#8b0000"/>
+          <rect x="14" y="1" width="1" height="14" fill="#8b0000"/>
+          <!-- Top-right corner notch -->
+          <rect x="11" y="1" width="3" height="3" fill="#ff3333"/>
+          <rect x="12" y="2" width="2" height="2" fill="#e60012"/>
+          <rect x="13" y="1" width="1" height="1" fill="#8b0000"/>
+        </svg>
+      </button>
+    </div>
 
-  <p id="priceStatus"></p>
+    <p id="priceStatus"></p>
+  </div>
 
   <div class="tablewrap">
     <table>
@@ -931,6 +1057,24 @@ function toImageName(title) {
 }
 
 function imgUrl(folder, title) {
+  const manifest = window.nesAssetManifest || {};
+  const entry = manifest[title];
+
+  const folderKeyMap = {
+    boxfronts: 'boxfront',
+    boxbacks: 'boxback',
+    cartridges: 'cartridge',
+    clearlogos: 'clearlogo',
+    snaps: 'snap',
+    titles: 'title'
+  };
+
+  const key = folderKeyMap[folder];
+
+  if (entry && entry[key]) {
+    return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
+  }
+
   return BASE + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 }
 
@@ -1058,22 +1202,6 @@ function filtered() {
 const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t + ' NES cartridge') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
-
-function trailerName(title) {
-  const trailerManifest = window.nesTrailerManifest || {};
-
-  if (trailerManifest[title]) {
-    return trailerManifest[title];
-  }
-
-  let name = title
-    .replace(/:/g, ' -')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  return name + ' (USA).mp4';
-}
-
 // ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   renderStats();
@@ -1114,14 +1242,7 @@ function render() {
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
-        <div class="game-sub game-meta-row">
-          ${g.genre ? `<span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>` : ''}
-          <button type="button" class="trailer-list-btn" title="Play trailer" aria-label="Play trailer for ${esc(g.title)}" onclick="event.stopPropagation(); openTrailer('${esc(trailerName(g.title))}')">
-            <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">
-              <polygon points="3,2 3,8 8,5" fill="currentColor"></polygon>
-            </svg>
-          </button>
-        </div>
+        ${g.genre ? `<div class="game-sub" style="margin-top:2px"><span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span></div>` : ''}
         ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
         <div style="margin-top:6px;display:flex;gap:10px;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
@@ -1424,14 +1545,6 @@ document.getElementById('exportData').addEventListener('click', () => {
   a.click();
 });
 
-// ─── Reset ────────────────────────────────────────────────────────────────────
-document.getElementById('resetData').addEventListener('click', () => {
-  if (confirm('Clear your owned games and price cache in this browser?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-});
-
 // ─── Hover popup (box front preview) ─────────────────────────────────────────
 const popup    = document.getElementById('artPopup');
 const popupImg = document.getElementById('artPopupImg');
@@ -1464,6 +1577,44 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   if (!wrap) return;
   popup.classList.remove('visible');
 });
+
+// ─── Light/Dark toggle ────────────────────────────────────────────────────────
+(function() {
+  const toggle = document.getElementById('themeToggle');
+  const knob   = document.getElementById('toggleKnob');
+
+  function applyTheme(isLight) {
+    document.body.classList.toggle('light-mode', isLight);
+    knob.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('nes-theme', isLight ? 'light' : 'dark');
+  }
+
+  toggle.addEventListener('change', () => applyTheme(toggle.checked));
+
+  // Restore saved preference
+  const saved = localStorage.getItem('nes-theme');
+  if (saved === 'light') { toggle.checked = true; applyTheme(true); }
+})();
+
+// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+function fitStatValues() {
+  document.querySelectorAll('.stat-value').forEach(el => {
+    el.style.fontSize = '18px';
+    const parent = el.closest('.stat');
+    const paddingH = parseFloat(getComputedStyle(parent).paddingLeft) + parseFloat(getComputedStyle(parent).paddingRight);
+    const maxW = parent.clientWidth - paddingH;
+    let size = 18;
+    while (el.scrollWidth > maxW && size > 8) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+  });
+}
+
+// Run after render and on resize
+const _origRenderStats = renderStats;
+renderStats = function() { _origRenderStats.apply(this, arguments); requestAnimationFrame(fitStatValues); };
+window.addEventListener('resize', fitStatValues);
 
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
@@ -1498,7 +1649,9 @@ function openTrailer(filename) {
   const errEl   = document.getElementById('trailerError');
   const titleEl = document.getElementById('trailerTitle');
 
-  const src = TRAILER_BASE_URL + encodeURIComponent(filename);
+  const src = filename.includes('/')
+    ? BASE + filename.split('/').map(encodeURIComponent).join('/')
+    : TRAILER_BASE_URL + encodeURIComponent(filename);
   errEl.style.display  = 'none';
   video.style.display  = 'block';
   video.src = src;
