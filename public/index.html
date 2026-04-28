@@ -636,6 +636,12 @@ thead th {
   text-align: left;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 30;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 th.sortable {
@@ -1646,6 +1652,13 @@ function _renderLightbox() {
   lbl.textContent = item.label;
   ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
 
+  // Force identical dimensions for box art only
+  const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
+  img.style.width      = isBoxArt ? '400px' : '';
+  img.style.height     = isBoxArt ? '560px' : '';
+  img.style.objectFit  = isBoxArt ? 'fill'    : 'contain';
+  img.style.flexShrink = isBoxArt ? '0'       : '';
+
   // Update dot indicators
   document.querySelectorAll('.lb-dot').forEach((d, i) => {
     d.classList.toggle('lb-dot--active', i === _lbIndex);
@@ -1881,6 +1894,17 @@ function fitStatValues() {
 const _origRenderStats = renderStats;
 renderStats = function() { _origRenderStats.apply(this, arguments); requestAnimationFrame(fitStatValues); };
 window.addEventListener('resize', fitStatValues);
+
+// ─── Sticky thead offset ──────────────────────────────────────────────────────
+function updateStickyTheadTop() {
+  const panel = document.querySelector('.sticky-panel');
+  const ths = document.querySelectorAll('thead th');
+  if (!panel || !ths.length) return;
+  const offset = panel.offsetHeight + 'px';
+  ths.forEach(th => th.style.top = offset);
+}
+window.addEventListener('resize', updateStickyTheadTop);
+requestAnimationFrame(updateStickyTheadTop);
 
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
