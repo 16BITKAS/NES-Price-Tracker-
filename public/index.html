@@ -1679,7 +1679,19 @@ render();
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
   <div style="position:relative;width:min(860px,94vw);">
-    <button onclick="closeTrailer()" style="position:absolute;top:-44px;right:0;background:rgba(255,255,255,0.08);border:2px solid var(--border);color:var(--ink);border-radius:0;width:32px;height:32px;padding:0;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;font-family:'Press Start 2P',monospace;line-height:1;">X</button>
+    <button onclick="closeTrailer()" title="Close" style="position:absolute;top:-44px;right:0;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
     <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
     <video id="trailerVideo"
       controls autoplay
