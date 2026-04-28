@@ -637,7 +637,7 @@ thead th {
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
   position: sticky;
-  top: 0;
+  top: var(--sticky-panel-height, 280px);
   background: var(--bg);
   z-index: 30;
   backdrop-filter: blur(8px);
@@ -1898,10 +1898,9 @@ window.addEventListener('resize', fitStatValues);
 // ─── Sticky thead offset ──────────────────────────────────────────────────────
 function updateStickyTheadTop() {
   const panel = document.querySelector('.sticky-panel');
-  const ths = document.querySelectorAll('thead th');
-  if (!panel || !ths.length) return;
+  if (!panel) return;
   const offset = panel.offsetHeight + 'px';
-  ths.forEach(th => th.style.top = offset);
+  document.documentElement.style.setProperty('--sticky-panel-height', offset);
 }
 window.addEventListener('resize', updateStickyTheadTop);
 
@@ -1916,8 +1915,17 @@ populateFilters();
   });
 }
 render();
-// Double rAF ensures sticky panel has its final height before calculating thead offset
-requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+// Use ResizeObserver so thead top updates whenever the sticky panel height changes
+(function() {
+  const panel = document.querySelector('.sticky-panel');
+  if (!panel) return;
+  // Set immediately after render
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+  // Keep in sync if panel resizes (milestone text, filters, etc.)
+  if (window.ResizeObserver) {
+    new ResizeObserver(updateStickyTheadTop).observe(panel);
+  }
+})();
 </script>
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
