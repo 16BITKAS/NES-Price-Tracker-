@@ -1656,9 +1656,12 @@ function openTrailer(filename) {
   const errEl   = document.getElementById('trailerError');
   const titleEl = document.getElementById('trailerTitle');
 
-  const src = filename.includes('/')
-    ? BASE + filename.split('/').map(encodeURIComponent).join('/')
-    : TRAILER_BASE_URL + encodeURIComponent(filename);
+  const cleanFilename = filename.replace(/^trailers?\//i, "");
+
+  const src = TRAILER_BASE_URL + cleanFilename
+    .split("/")
+    .map(encodeURIComponent)
+    .join("/");
   errEl.style.display  = 'none';
   video.style.display  = 'block';
   video.src = src;
