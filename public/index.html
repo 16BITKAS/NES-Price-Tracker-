@@ -529,6 +529,25 @@ button.secondary {
 
 button.secondary:hover { border-color: var(--accent); color: var(--accent); }
 
+button.floppy-btn {
+  background: transparent;
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 6px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+button.floppy-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(230,0,18,0.4), 2px 2px 0 rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
+
 button.danger {
   background: transparent;
   color: var(--red);
@@ -913,7 +932,33 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       <select id="developerFilter"><option value="all">All developers</option></select>
       <select id="yearFilter"><option value="all">All years</option></select>
       <button class="primary" id="refreshVisible">Refresh prices</button>
-      <button class="secondary" id="exportData">Export save</button>
+      <button class="floppy-btn" id="exportData" title="Export save">
+        <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
+          <!-- Body -->
+          <rect x="1" y="1" width="14" height="14" fill="#e60012"/>
+          <!-- Top-right corner cut -->
+          <rect x="10" y="1" width="5" height="1" fill="transparent"/>
+          <rect x="11" y="1" width="4" height="1" fill="#e60012"/>
+          <rect x="12" y="2" width="3" height="1" fill="#e60012"/>
+          <!-- Shutter slot (label area) -->
+          <rect x="2" y="2" width="9" height="5" fill="#c0000e"/>
+          <!-- Shutter window white strip -->
+          <rect x="6" y="2" width="2" height="5" fill="#ff6666"/>
+          <!-- Metal shutter slider -->
+          <rect x="3" y="3" width="2" height="3" fill="#ff9999"/>
+          <!-- Bottom disk read area -->
+          <rect x="3" y="9" width="10" height="5" fill="#c0000e"/>
+          <!-- Border outline -->
+          <rect x="1" y="1" width="14" height="1" fill="#ff3333"/>
+          <rect x="1" y="1" width="1" height="14" fill="#ff3333"/>
+          <rect x="1" y="14" width="14" height="1" fill="#8b0000"/>
+          <rect x="14" y="1" width="1" height="14" fill="#8b0000"/>
+          <!-- Top-right corner notch -->
+          <rect x="11" y="1" width="3" height="3" fill="#ff3333"/>
+          <rect x="12" y="2" width="2" height="2" fill="#e60012"/>
+          <rect x="13" y="1" width="1" height="1" fill="#8b0000"/>
+        </svg>
+      </button>
     </div>
 
     <p id="priceStatus"></p>
