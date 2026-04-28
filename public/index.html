@@ -152,7 +152,7 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 48px 0 36px;
+  padding: 36px 0 24px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
@@ -215,9 +215,22 @@ h1 span { color: var(--accent); }
 .wrap {
   max-width: 1380px;
   margin: 0 auto;
-  padding: 28px 28px;
+  padding: 0 28px 28px;
   position: relative;
   z-index: 1;
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg);
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Stats */
@@ -225,7 +238,7 @@ h1 span { color: var(--accent); }
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   gap: 14px;
-  margin: 28px 0;
+  margin: 0 0 14px;
   align-items: stretch;
 }
 
@@ -458,7 +471,7 @@ h1 span { color: var(--accent); }
   grid-template-columns: 1fr repeat(2, minmax(160px, auto)) repeat(3, auto);
   gap: 10px;
   align-items: center;
-  margin: 24px 0 16px;
+  margin: 0 0 12px;
 }
 
 .controls input,
@@ -851,55 +864,57 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 <main class="wrap">
 
-  <div class="stats">
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Owned</div>
-      <div class="stat-value" id="ownedCount">0</div>
-      <div class="game-sub" style="margin-top:6px">of 677 titles</div>
-    </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Missing</div>
-      <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
-    </div>
-    <div class="stat stat--hero">
-      <div class="stat-label">Completion</div>
-      <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
-      <div class="milestone-bar-wrap">
-        <div class="milestone-track">
-          <div class="milestone-fill" id="bar"></div>
-          <div class="milestone-markers" id="milestoneMarkers"></div>
-        </div>
-        <div class="milestone-labels" id="milestoneLabels"></div>
+  <div class="sticky-panel">
+    <div class="stats">
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Owned</div>
+        <div class="stat-value" id="ownedCount">0</div>
+        <div class="game-sub" style="margin-top:6px">of 677 titles</div>
       </div>
-      <div class="milestone-achieved" id="milestoneAchieved"></div>
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Missing</div>
+        <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
+      </div>
+      <div class="stat stat--hero">
+        <div class="stat-label">Completion</div>
+        <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
+        <div class="milestone-bar-wrap">
+          <div class="milestone-track">
+            <div class="milestone-fill" id="bar"></div>
+            <div class="milestone-markers" id="milestoneMarkers"></div>
+          </div>
+          <div class="milestone-labels" id="milestoneLabels"></div>
+        </div>
+        <div class="milestone-achieved" id="milestoneAchieved"></div>
+      </div>
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Collection Value</div>
+        <div class="stat-value" id="collectionValue">$0</div>
+      </div>
+      <div class="stat" style="align-items:center;text-align:center;">
+        <div class="stat-label">Full Set Value</div>
+        <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
+      </div>
     </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Collection Value</div>
-      <div class="stat-value" id="collectionValue">$0</div>
-    </div>
-    <div class="stat" style="align-items:center;text-align:center;">
-      <div class="stat-label">Full Set Value</div>
-      <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
-    </div>
-  </div>
 
-  <div class="controls">
-    <input id="search" placeholder="Search games, developer, year…">
-    <select id="statusFilter">
-      <option value="all">All games</option>
-      <option value="owned">Owned</option>
-      <option value="missing">Missing</option>
-      <option value="priced">Priced</option>
-      <option value="unpriced">Unpriced</option>
-    </select>
-    <select id="developerFilter"><option value="all">All developers</option></select>
-    <select id="yearFilter"><option value="all">All years</option></select>
-    <button class="primary" id="refreshVisible">Refresh prices</button>
-    <button class="secondary" id="exportData">Export save</button>
-    <button class="danger" id="resetData">Reset</button>
-  </div>
+    <div class="controls">
+      <input id="search" placeholder="Search games, developer, year…">
+      <select id="statusFilter">
+        <option value="all">All games</option>
+        <option value="owned">Owned</option>
+        <option value="missing">Missing</option>
+        <option value="priced">Priced</option>
+        <option value="unpriced">Unpriced</option>
+      </select>
+      <select id="developerFilter"><option value="all">All developers</option></select>
+      <select id="yearFilter"><option value="all">All years</option></select>
+      <button class="primary" id="refreshVisible">Refresh prices</button>
+      <button class="secondary" id="exportData">Export save</button>
+      <button class="danger" id="resetData">Reset</button>
+    </div>
 
-  <p id="priceStatus"></p>
+    <p id="priceStatus"></p>
+  </div>
 
   <div class="tablewrap">
     <table>
