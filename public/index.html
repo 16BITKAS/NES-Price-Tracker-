@@ -6,11 +6,15 @@
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
 <script src="nes-asset-manifest.js"></script>
+<script src="snes-games.js"></script>
+<script src="snes-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #111111;
+  --console-nes: #e60012;
+  --console-snes: #7b2fff;
   --surface: #1c1c1c;
   --surface2: #242424;
   --border: #2e2e2e;
@@ -617,7 +621,11 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 .note .warn { color: var(--gold); }
 
 /* Table */
-.tablewrap { overflow-x: auto; }
+/* tablewrap must NOT have any overflow set - it breaks position:sticky on thead */
+.tablewrap { }
+
+/* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
+.tablewrap-outer { overflow-x: clip; }
 
 table {
   width: 100%;
@@ -626,23 +634,7 @@ table {
   margin-top: 8px;
 }
 
-thead th {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 6px 14px 10px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 30;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
+/* thead removed - header row is now a sticky div above the table */
 
 th.sortable {
   cursor: pointer;
@@ -655,6 +647,8 @@ th.sortable.active { color: var(--accent); }
 
 tbody tr {
   transition: transform 0.15s;
+  position: relative;
+  z-index: 1;
 }
 
 tbody tr:hover { transform: translateX(3px); }
@@ -815,7 +809,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .cover-wrap:hover .cover-thumb {
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(230,0,18,0.4);
+  box-shadow: 0 0 10px var(--glow);
 }
 
 .cover-placeholder {
@@ -851,6 +845,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
+
+/* SNES landscape box art overrides */
+#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -1066,6 +1066,10 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
+      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
+        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+      </div>
     </div>
   </div>
 </header>
@@ -1159,21 +1163,19 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <p id="priceStatus"></p>
   </div>
 
-  <div class="tablewrap">
+  <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">
+    <span class="sortable" data-sort="owned" style="cursor:pointer;">Own</span>
+    <span style="cursor:default;">Cover</span>
+    <span class="sortable" data-sort="title" style="cursor:pointer;">Game</span>
+    <span class="sortable" data-sort="year" style="cursor:pointer;">Year</span>
+    <span class="sortable" data-sort="estimate" style="cursor:pointer;">eBay Est.</span>
+    <span class="sortable" data-sort="updatedAt" style="cursor:pointer;">Updated</span>
+  </div>
+  <div class="tablewrap-outer"><div class="tablewrap">
     <table>
-      <thead>
-        <tr>
-          <th class="sortable" data-sort="owned">Own</th>
-          <th>Cover</th>
-          <th class="sortable" data-sort="title">Game</th>
-          <th class="sortable" data-sort="year">Year</th>
-          <th class="sortable" data-sort="estimate">eBay Est.</th>
-          <th class="sortable" data-sort="updatedAt">Updated</th>
-        </tr>
-      </thead>
       <tbody id="tbody"></tbody>
     </table>
-  </div>
+  </div></div>
 
   <div class="footer">
     Data saves in this browser via localStorage. Cover art served from your GitHub Pages image archive.
@@ -1208,12 +1210,46 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 </div>
 
 <script>
-const TRAILER_BASE_URL = "https://archive.org/download/RetroQuest-Trailers-NES/";
+// ─── Console state ───────────────────────────────────────────────────────────
+let activeConsole = 'nes';
+
+const CONSOLE_CONFIG = {
+  nes: {
+    games:        () => window.nesGames || [],
+    manifest:     () => window.nesAssetManifest || {},
+    storageKey:   'nesTrackerSaveV2',
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-NES/',
+    accent:       '#e60012',
+    accent2:      '#ff3333',
+    glow:         'rgba(230,0,18,0.15)',
+    glowLight:    'rgba(230,0,18,0.10)',
+    label:        'NES',
+    tabId:        'tabNES',
+  },
+  snes: {
+    games:        () => window.snesGames || [],
+    manifest:     () => window.snesAssetManifest || {},
+    storageKey:   'snesTrackerSaveV1',
+    trailerBase:  '',   // archive.org SNES collection TBD
+    accent:       '#7b2fff',
+    accent2:      '#9d5fff',
+    glow:         'rgba(123,47,255,0.15)',
+    glowLight:    'rgba(123,47,255,0.10)',
+    label:        'SNES',
+    tabId:        'tabSNES',
+  }
+};
+
+let TRAILER_BASE_URL = CONSOLE_CONFIG.nes.trailerBase;
+
+function getStorageKey() { return CONSOLE_CONFIG[activeConsole].storageKey; }
+function getManifest()   { return CONSOLE_CONFIG[activeConsole].manifest(); }
+
 const STORAGE_KEY = "nesTrackerSaveV2";
 const rawState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 const oldState = JSON.parse(localStorage.getItem("nesTrackerSaveV1") || "{}");
 const state = Object.keys(rawState).length ? rawState : oldState;
-const games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
+let games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
 
 let sortKey = "title";
 let sortDir = "asc";
@@ -1232,25 +1268,33 @@ function save() {
     const { id, owned, estimate, resultCount, updatedAt } = g;
     if (owned || estimate) out[id] = { owned, estimate, resultCount, updatedAt };
   });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
+  localStorage.setItem(getStorageKey(), JSON.stringify(out));
 }
 
 // ─── Image URL helper ─────────────────────────────────────────────────────────
 const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
 
 function toImageName(title) {
-  // Convert title to match filename convention:
-  // "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
-  // "720" -> "720 Degrees (USA)"
   let name = title
-    .replace(/:/g, ' - ')  // colon -> space dash space
-    .replace(/\s+/g, ' ')  // normalize spaces
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
     .trim();
   return name + ' (USA)';
 }
 
+function toImageNameNoRegion(title) {
+  return title
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function imgUrlNoRegion(folder, title) {
+  return BASE + activeConsole + '/' + folder + '/' + encodeURIComponent(toImageNameNoRegion(title)) + '.png';
+}
+
 function imgUrl(folder, title) {
-  const manifest = window.nesAssetManifest || {};
+  const manifest = getManifest();
   const entry = manifest[title];
 
   const folderKeyMap = {
@@ -1268,7 +1312,9 @@ function imgUrl(folder, title) {
     return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
   }
 
-  return BASE + 'nes/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+  const filePath = activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+
+  return BASE + filePath;
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
@@ -1437,7 +1483,7 @@ function render() {
       <td class="cover-cell">
         <div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}" onclick="openModal(${g.id})">
           <img class="cover-thumb" src="${coverSrc}" alt="${esc(g.title)}" loading="lazy"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src=imgUrlNoRegion('boxfronts','${esc(g.title)}');}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
           <div class="cover-placeholder" style="display:none">🎮</div>
         </div>
       </td>
@@ -1559,16 +1605,16 @@ function openModal(gameId) {
         </div>
       </div>
 
-      <!-- BOTTOM LEFT: Box front and back side by side (was top-left) -->
-      <div style="display:flex;gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES) -->
+      <div style="display:flex;flex-direction:${activeConsole === 'snes' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' ? 'auto' : 'visible'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
-          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
-          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
       </div>
@@ -1654,10 +1700,25 @@ function _renderLightbox() {
 
   // Force identical dimensions for box art only
   const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
-  img.style.width      = isBoxArt ? '400px' : '';
-  img.style.height     = isBoxArt ? '560px' : '';
-  img.style.objectFit  = isBoxArt ? 'fill'    : 'contain';
-  img.style.flexShrink = isBoxArt ? '0'       : '';
+  const isSNES   = activeConsole === 'snes';
+  if (isBoxArt) {
+    if (isSNES) {
+      // SNES boxes are landscape (~170×120 ratio)
+      img.style.width      = '560px';
+      img.style.height     = '395px';
+    } else {
+      // NES boxes are portrait (~113×155 ratio)
+      img.style.width      = '400px';
+      img.style.height     = '560px';
+    }
+    img.style.objectFit  = 'fill';
+    img.style.flexShrink = '0';
+  } else {
+    img.style.width      = '';
+    img.style.height     = '';
+    img.style.objectFit  = 'contain';
+    img.style.flexShrink = '';
+  }
 
   // Update dot indicators
   document.querySelectorAll('.lb-dot').forEach((d, i) => {
@@ -1700,9 +1761,65 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
-document.querySelectorAll('th.sortable').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.sort;
+// ─── Console switcher ────────────────────────────────────────────────────────
+function switchConsole(console) {
+  if (console === activeConsole) return;
+  activeConsole = console;
+  const cfg = CONSOLE_CONFIG[console];
+
+  // Update accent colors
+  const root = document.documentElement;
+  root.style.setProperty('--accent',  cfg.accent);
+  root.style.setProperty('--accent2', cfg.accent2);
+  root.style.setProperty('--red',     cfg.accent);
+  root.style.setProperty('--glow',    cfg.glow);
+
+  // Update trailer base URL
+  TRAILER_BASE_URL = cfg.trailerBase;
+
+  // Update tab button styles
+  Object.values(CONSOLE_CONFIG).forEach(c => {
+    const btn = document.getElementById(c.tabId);
+    if (!btn) return;
+    if (c.tabId === cfg.tabId) {
+      btn.style.background   = cfg.accent;
+      btn.style.borderColor  = cfg.accent;
+      btn.style.color        = '#fff';
+      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
+    } else {
+      btn.style.background   = 'transparent';
+      btn.style.borderColor  = '#444';
+      btn.style.color        = '#888';
+      btn.style.boxShadow    = '3px 3px 0 #222';
+    }
+  });
+
+  // Load games for this console
+  const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
+  games = cfg.games().map(g => ({ ...g, ...(savedState[g.id] || {}) }));
+
+  // Toggle landscape cover class on table
+  const tbody = document.getElementById('tbody');
+  if (tbody) {
+    tbody.classList.toggle('snes-covers', console === 'snes');
+  }
+
+  // Reset filters and re-render
+  sortKey = 'title';
+  sortDir = 'asc';
+  document.getElementById('search').value = '';
+  document.getElementById('statusFilter').value = 'all';
+  document.getElementById('developerFilter').value = 'all';
+  document.getElementById('yearFilter').value = 'all';
+  _prevMilestonesReached = new Set();
+  populateFilters();
+  render();
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+document.querySelectorAll('#table-header .sortable').forEach(el => {
+  el.addEventListener('click', () => {
+    const key = el.dataset.sort;
     if (sortKey === key) {
       sortDir = sortDir === 'asc' ? 'desc' : 'asc';
     } else {
@@ -1898,13 +2015,11 @@ window.addEventListener('resize', fitStatValues);
 // ─── Sticky thead offset ──────────────────────────────────────────────────────
 function updateStickyTheadTop() {
   const panel = document.querySelector('.sticky-panel');
-  const ths = document.querySelectorAll('thead th');
-  if (!panel || !ths.length) return;
+  if (!panel) return;
   const offset = panel.offsetHeight + 'px';
-  ths.forEach(th => th.style.top = offset);
+  document.documentElement.style.setProperty('--sticky-panel-height', offset);
 }
 window.addEventListener('resize', updateStickyTheadTop);
-requestAnimationFrame(updateStickyTheadTop);
 
 populateFilters();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
@@ -1917,6 +2032,17 @@ populateFilters();
   });
 }
 render();
+// Use ResizeObserver so thead top updates whenever the sticky panel height changes
+(function() {
+  const panel = document.querySelector('.sticky-panel');
+  if (!panel) return;
+  // Set immediately after render
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+  // Keep in sync if panel resizes (milestone text, filters, etc.)
+  if (window.ResizeObserver) {
+    new ResizeObserver(updateStickyTheadTop).observe(panel);
+  }
+})();
 </script>
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
