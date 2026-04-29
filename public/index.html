@@ -809,7 +809,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .cover-wrap:hover .cover-thumb {
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(230,0,18,0.4);
+  box-shadow: 0 0 10px var(--glow);
 }
 
 .cover-placeholder {
@@ -845,6 +845,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
+
+/* SNES landscape box art overrides */
+#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -1766,6 +1772,12 @@ function switchConsole(console) {
   // Load games for this console
   const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
   games = cfg.games().map(g => ({ ...g, ...(savedState[g.id] || {}) }));
+
+  // Toggle landscape cover class on table
+  const tbody = document.getElementById('tbody');
+  if (tbody) {
+    tbody.classList.toggle('snes-covers', console === 'snes');
+  }
 
   // Reset filters and re-render
   sortKey = 'title';
