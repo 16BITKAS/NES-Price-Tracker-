@@ -617,9 +617,10 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 .note .warn { color: var(--gold); }
 
 /* Table */
-.tablewrap { overflow-x: auto; }
+/* tablewrap must NOT have any overflow set - it breaks position:sticky on thead */
+.tablewrap { }
 
-/* Sticky thead fix: clip overflow on a wrapper that doesn't affect sticky positioning */
+/* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
 .tablewrap-outer { overflow-x: clip; }
 
 table {
