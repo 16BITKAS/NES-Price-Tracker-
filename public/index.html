@@ -1274,15 +1274,23 @@ function save() {
 // ─── Image URL helper ─────────────────────────────────────────────────────────
 const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
 
-function toImageName(title, console) {
-  // NES:  "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
-  // SNES: filenames already include region tags, so just normalise colons/spaces.
+function toImageName(title) {
   let name = title
     .replace(/:/g, ' - ')
     .replace(/\s+/g, ' ')
     .trim();
-  if (console === 'snes') return name;
   return name + ' (USA)';
+}
+
+function toImageNameNoRegion(title) {
+  return title
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function imgUrlNoRegion(folder, title) {
+  return BASE + activeConsole + '/' + folder + '/' + encodeURIComponent(toImageNameNoRegion(title)) + '.png';
 }
 
 function imgUrl(folder, title) {
@@ -1304,9 +1312,7 @@ function imgUrl(folder, title) {
     return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
   }
 
-  // Both NES and SNES use "console/folder/" structure.
-  // SNES filenames already include region tags (e.g. "Aladdin (USA).png") so don't append (USA).
-  const filePath = activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title, activeConsole)) + '.png';
+  const filePath = activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 
   return BASE + filePath;
 }
@@ -1477,7 +1483,7 @@ function render() {
       <td class="cover-cell">
         <div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}" onclick="openModal(${g.id})">
           <img class="cover-thumb" src="${coverSrc}" alt="${esc(g.title)}" loading="lazy"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src=imgUrlNoRegion('boxfronts','${esc(g.title)}');}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
           <div class="cover-placeholder" style="display:none">🎮</div>
         </div>
       </td>
