@@ -630,23 +630,7 @@ table {
   margin-top: 8px;
 }
 
-thead th {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 6px 14px 10px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: var(--sticky-panel-height, 280px);
-  background: var(--bg);
-  z-index: 100;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
+/* thead removed - header row is now a sticky div above the table */
 
 th.sortable {
   cursor: pointer;
@@ -1165,18 +1149,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     <p id="priceStatus"></p>
   </div>
 
+  <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">
+    <span class="sortable" data-sort="owned" style="cursor:pointer;">Own</span>
+    <span style="cursor:default;">Cover</span>
+    <span class="sortable" data-sort="title" style="cursor:pointer;">Game</span>
+    <span class="sortable" data-sort="year" style="cursor:pointer;">Year</span>
+    <span class="sortable" data-sort="estimate" style="cursor:pointer;">eBay Est.</span>
+    <span class="sortable" data-sort="updatedAt" style="cursor:pointer;">Updated</span>
+  </div>
   <div class="tablewrap-outer"><div class="tablewrap">
     <table>
-      <thead>
-        <tr>
-          <th class="sortable" data-sort="owned">Own</th>
-          <th>Cover</th>
-          <th class="sortable" data-sort="title">Game</th>
-          <th class="sortable" data-sort="year">Year</th>
-          <th class="sortable" data-sort="estimate">eBay Est.</th>
-          <th class="sortable" data-sort="updatedAt">Updated</th>
-        </tr>
-      </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div></div>
@@ -1706,9 +1688,9 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
-document.querySelectorAll('th.sortable').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.sort;
+document.querySelectorAll('#table-header .sortable').forEach(el => {
+  el.addEventListener('click', () => {
+    const key = el.dataset.sort;
     if (sortKey === key) {
       sortDir = sortDir === 'asc' ? 'desc' : 'asc';
     } else {
