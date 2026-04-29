@@ -642,7 +642,7 @@ thead th {
   position: sticky;
   top: var(--sticky-panel-height, 280px);
   background: var(--bg);
-  z-index: 30;
+  z-index: 100;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -658,6 +658,8 @@ th.sortable.active { color: var(--accent); }
 
 tbody tr {
   transition: transform 0.15s;
+  position: relative;
+  z-index: 1;
 }
 
 tbody tr:hover { transform: translateX(3px); }
