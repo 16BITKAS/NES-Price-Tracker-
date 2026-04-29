@@ -1274,14 +1274,14 @@ function save() {
 // ─── Image URL helper ─────────────────────────────────────────────────────────
 const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
 
-function toImageName(title) {
-  // Convert title to match filename convention:
-  // "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
-  // "720" -> "720 Degrees (USA)"
+function toImageName(title, console) {
+  // NES:  "1943: The Battle of Midway" -> "1943 - The Battle of Midway (USA)"
+  // SNES: filenames already include region tags, so just normalise colons/spaces.
   let name = title
-    .replace(/:/g, ' - ')  // colon -> space dash space
-    .replace(/\s+/g, ' ')  // normalize spaces
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
     .trim();
+  if (console === 'snes') return name;
   return name + ' (USA)';
 }
 
@@ -1304,7 +1304,11 @@ function imgUrl(folder, title) {
     return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
   }
 
-  return BASE + activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+  // Both NES and SNES use "console/folder/" structure.
+  // SNES filenames already include region tags (e.g. "Aladdin (USA).png") so don't append (USA).
+  const filePath = activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title, activeConsole)) + '.png';
+
+  return BASE + filePath;
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
@@ -1690,10 +1694,25 @@ function _renderLightbox() {
 
   // Force identical dimensions for box art only
   const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
-  img.style.width      = isBoxArt ? '400px' : '';
-  img.style.height     = isBoxArt ? '560px' : '';
-  img.style.objectFit  = isBoxArt ? 'fill'    : 'contain';
-  img.style.flexShrink = isBoxArt ? '0'       : '';
+  const isSNES   = activeConsole === 'snes';
+  if (isBoxArt) {
+    if (isSNES) {
+      // SNES boxes are landscape (~170×120 ratio)
+      img.style.width      = '560px';
+      img.style.height     = '395px';
+    } else {
+      // NES boxes are portrait (~113×155 ratio)
+      img.style.width      = '400px';
+      img.style.height     = '560px';
+    }
+    img.style.objectFit  = 'fill';
+    img.style.flexShrink = '0';
+  } else {
+    img.style.width      = '';
+    img.style.height     = '';
+    img.style.objectFit  = 'contain';
+    img.style.flexShrink = '';
+  }
 
   // Update dot indicators
   document.querySelectorAll('.lb-dot').forEach((d, i) => {
