@@ -6,11 +6,15 @@
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
 <script src="nes-asset-manifest.js"></script>
+<script src="snes-games.js"></script>
+<script src="snes-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #111111;
+  --console-nes: #e60012;
+  --console-snes: #7b2fff;
   --surface: #1c1c1c;
   --surface2: #242424;
   --border: #2e2e2e;
@@ -1056,6 +1060,10 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
+      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
+        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+      </div>
     </div>
   </div>
 </header>
@@ -1196,12 +1204,46 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 </div>
 
 <script>
-const TRAILER_BASE_URL = "https://archive.org/download/RetroQuest-Trailers-NES/";
+// ─── Console state ───────────────────────────────────────────────────────────
+let activeConsole = 'nes';
+
+const CONSOLE_CONFIG = {
+  nes: {
+    games:        () => window.nesGames || [],
+    manifest:     () => window.nesAssetManifest || {},
+    storageKey:   'nesTrackerSaveV2',
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-NES/',
+    accent:       '#e60012',
+    accent2:      '#ff3333',
+    glow:         'rgba(230,0,18,0.15)',
+    glowLight:    'rgba(230,0,18,0.10)',
+    label:        'NES',
+    tabId:        'tabNES',
+  },
+  snes: {
+    games:        () => window.snesGames || [],
+    manifest:     () => window.snesAssetManifest || {},
+    storageKey:   'snesTrackerSaveV1',
+    trailerBase:  '',   // archive.org SNES collection TBD
+    accent:       '#7b2fff',
+    accent2:      '#9d5fff',
+    glow:         'rgba(123,47,255,0.15)',
+    glowLight:    'rgba(123,47,255,0.10)',
+    label:        'SNES',
+    tabId:        'tabSNES',
+  }
+};
+
+let TRAILER_BASE_URL = CONSOLE_CONFIG.nes.trailerBase;
+
+function getStorageKey() { return CONSOLE_CONFIG[activeConsole].storageKey; }
+function getManifest()   { return CONSOLE_CONFIG[activeConsole].manifest(); }
+
 const STORAGE_KEY = "nesTrackerSaveV2";
 const rawState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 const oldState = JSON.parse(localStorage.getItem("nesTrackerSaveV1") || "{}");
 const state = Object.keys(rawState).length ? rawState : oldState;
-const games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
+let games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
 
 let sortKey = "title";
 let sortDir = "asc";
@@ -1220,7 +1262,7 @@ function save() {
     const { id, owned, estimate, resultCount, updatedAt } = g;
     if (owned || estimate) out[id] = { owned, estimate, resultCount, updatedAt };
   });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
+  localStorage.setItem(getStorageKey(), JSON.stringify(out));
 }
 
 // ─── Image URL helper ─────────────────────────────────────────────────────────
@@ -1238,7 +1280,7 @@ function toImageName(title) {
 }
 
 function imgUrl(folder, title) {
-  const manifest = window.nesAssetManifest || {};
+  const manifest = getManifest();
   const entry = manifest[title];
 
   const folderKeyMap = {
@@ -1256,7 +1298,7 @@ function imgUrl(folder, title) {
     return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
   }
 
-  return BASE + 'nes/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+  return BASE + activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
@@ -1688,6 +1730,56 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
+// ─── Console switcher ────────────────────────────────────────────────────────
+function switchConsole(console) {
+  if (console === activeConsole) return;
+  activeConsole = console;
+  const cfg = CONSOLE_CONFIG[console];
+
+  // Update accent colors
+  const root = document.documentElement;
+  root.style.setProperty('--accent',  cfg.accent);
+  root.style.setProperty('--accent2', cfg.accent2);
+  root.style.setProperty('--red',     cfg.accent);
+  root.style.setProperty('--glow',    cfg.glow);
+
+  // Update trailer base URL
+  TRAILER_BASE_URL = cfg.trailerBase;
+
+  // Update tab button styles
+  Object.values(CONSOLE_CONFIG).forEach(c => {
+    const btn = document.getElementById(c.tabId);
+    if (!btn) return;
+    if (c.tabId === cfg.tabId) {
+      btn.style.background   = cfg.accent;
+      btn.style.borderColor  = cfg.accent;
+      btn.style.color        = '#fff';
+      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
+    } else {
+      btn.style.background   = 'transparent';
+      btn.style.borderColor  = '#444';
+      btn.style.color        = '#888';
+      btn.style.boxShadow    = '3px 3px 0 #222';
+    }
+  });
+
+  // Load games for this console
+  const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
+  games = cfg.games().map(g => ({ ...g, ...(savedState[g.id] || {}) }));
+
+  // Reset filters and re-render
+  sortKey = 'title';
+  sortDir = 'asc';
+  document.getElementById('search').value = '';
+  document.getElementById('statusFilter').value = 'all';
+  document.getElementById('developerFilter').value = 'all';
+  document.getElementById('yearFilter').value = 'all';
+  _prevMilestonesReached = new Set();
+  populateFilters();
+  render();
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
 document.querySelectorAll('#table-header .sortable').forEach(el => {
   el.addEventListener('click', () => {
     const key = el.dataset.sort;
