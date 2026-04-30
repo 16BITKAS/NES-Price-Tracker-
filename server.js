@@ -28,6 +28,22 @@ function isBadListing(title) {
   const badWords = ["manual", "box only", "case only", "replacement", "reproduction", "repro", "homebrew", "poster", "sticker", "label", "shell", "sleeve", "protector", "lot of", "bundle", "choose", "pick", "read description", "not working", "damaged", "for parts", "untested", "rom", "everdrive", "famicom"];
   return badWords.some(w => t.includes(w));
 }
+function isTitleMatch(listingTitle, gameTitle) {
+  const norm = s => s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const listing = norm(listingTitle);
+  const game = norm(gameTitle);
+  // Require the full normalized game title to appear as a phrase in the listing
+  if (listing.includes(game)) return true;
+  // Also allow if game title appears with minor word boundary differences
+  // e.g. "super mario world" inside "snes super mario world cartridge"
+  const gameWords = game.split(' ');
+  const listingWords = listing.split(' ');
+  // Check for consecutive sequence of game words inside listing words
+  for (let i = 0; i <= listingWords.length - gameWords.length; i++) {
+    if (gameWords.every((w, j) => listingWords[i + j] === w)) return true;
+  }
+  return false;
+}
 async function getEbayToken() {
   const auth = Buffer.from(`${process.env.EBAY_CLIENT_ID}:${process.env.EBAY_CLIENT_SECRET}`).toString("base64");
   const response = await axios.post("https://api.ebay.com/identity/v1/oauth2/token", "grant_type=client_credentials&scope=https://api.ebay.com/oauth/api_scope", { headers: { Authorization: `Basic ${auth}`, "Content-Type": "application/x-www-form-urlencoded" }});
@@ -48,9 +64,9 @@ app.get("/api/price", async (req, res) => {
     const q = `${title} ${consoleName} cartridge`;
     const response = await axios.get("https://api.ebay.com/buy/browse/v1/item_summary/search", { params: { q, limit: 50, filter: "buyingOptions:{FIXED_PRICE}" }, headers: { Authorization: `Bearer ${token}` }});
     const rawItems = response.data.itemSummaries || [];
-    const items = rawItems.filter(item => item.price?.currency === "USD").filter(item => !isBadListing(item.title)).map(item => ({ title: item.title, price: Number(item.price.value), currency: item.price.currency, condition: item.condition, url: item.itemWebUrl, image: item.image?.imageUrl || "" })).filter(item => Number.isFinite(item.price) && item.price > 0).sort((a, b) => a.price - b.price);
+    const items = rawItems.filter(item => item.price?.currency === "USD").filter(item => !isBadListing(item.title)).filter(item => isTitleMatch(item.title, title)).map(item => ({ title: item.title, price: Number(item.price.value), currency: item.price.currency, condition: item.condition, url: item.itemWebUrl, image: item.image?.imageUrl || "" })).filter(item => Number.isFinite(item.price) && item.price > 0).sort((a, b) => a.price - b.price);
     const prices = items.map(i => i.price);
-    const data = { title, query: q, estimate: median(prices), average: average(prices), low: prices.length ? prices[0] : null, high: prices.length ? prices[prices.length - 1] : null, resultCount: items.length, sampleListings: items.slice(0, 5), updatedAt: new Date().toISOString(), note: "Estimate uses active eBay fixed-price listings, filtered for loose cartridge-style results. Sold-price endpoint can be added later if your eBay access supports it." };
+    const data = { title, query: q, estimate: median(prices), average: average(prices), low: prices.length ? prices[0] : null, high: prices.length ? prices[prices.length - 1] : null, resultCount: items.length, sampleListings: items.slice(0, 5), updatedAt: new Date().toISOString(), note: "Estimate uses active eBay fixed-price listings, filtered for loose cartridge-style results." };
     priceCache.set(cacheKey, { data, cachedAt: Date.now() });
     res.json(data);
   } catch (error) { res.status(500).json({ error: "price lookup failed", details: error.response?.data || error.message }); }
