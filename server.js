@@ -40,11 +40,12 @@ app.get("/api/price", async (req, res) => {
   try {
     const title = String(req.query.title || "").trim();
     if (!title) return res.status(400).json({ error: "Missing title" });
-    const cacheKey = title.toLowerCase();
+    const consoleName = req.query.console === 'snes' ? 'SNES' : 'NES';
+    const cacheKey = (title + consoleName).toLowerCase();
     const cached = priceCache.get(cacheKey);
     if (cached && Date.now() - cached.cachedAt < CACHE_MS) return res.json({ ...cached.data, cached: true });
     const token = await getEbayToken();
-    const q = `${title} NES cartridge`;
+    const q = `${title} ${consoleName} cartridge`;
     const response = await axios.get("https://api.ebay.com/buy/browse/v1/item_summary/search", { params: { q, limit: 50, filter: "buyingOptions:{FIXED_PRICE}" }, headers: { Authorization: `Bearer ${token}` }});
     const rawItems = response.data.itemSummaries || [];
     const items = rawItems.filter(item => item.price?.currency === "USD").filter(item => !isBadListing(item.title)).map(item => ({ title: item.title, price: Number(item.price.value), currency: item.price.currency, condition: item.condition, url: item.itemWebUrl, image: item.image?.imageUrl || "" })).filter(item => Number.isFinite(item.price) && item.price > 0).sort((a, b) => a.price - b.price);
