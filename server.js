@@ -25,7 +25,7 @@ function average(numbers) {
 }
 function isBadListing(title) {
   const t = String(title || "").toLowerCase();
-  const badWords = ["manual", "box only", "case only", "replacement", "reproduction", "repro", "homebrew", "poster", "sticker", "label", "shell", "sleeve", "protector", "lot of", "bundle", "choose", "pick", "read description", "not working", "damaged", "for parts", "untested", "rom", "everdrive", "famicom", "complete in box", "cib"];
+  const badWords = ["manual", "box only", "case only", "replacement", "reproduction", "repro", "homebrew", "poster", "sticker", "label", "shell", "sleeve", "protector", "lot of", "bundle", "choose", "pick", "read description", "not working", "damaged", "for parts", "untested", "rom", "everdrive", "famicom", "complete in box", "cib", "sealed", "complete"];
   return badWords.some(w => t.includes(w));
 }
 function isTitleMatch(listingTitle, gameTitle) {
@@ -61,7 +61,7 @@ app.get("/api/price", async (req, res) => {
     const cached = priceCache.get(cacheKey);
     if (cached && Date.now() - cached.cachedAt < CACHE_MS) return res.json({ ...cached.data, cached: true });
     const token = await getEbayToken();
-    const q = `${title} ${consoleName} cartridge`;
+    const q = `${title} ${consoleName} cartridge -CIB -sealed -"complete in box" -complete`;
     const response = await axios.get("https://api.ebay.com/buy/browse/v1/item_summary/search", { params: { q, limit: 50, filter: "buyingOptions:{FIXED_PRICE}" }, headers: { Authorization: `Bearer ${token}` }});
     const rawItems = response.data.itemSummaries || [];
     const items = rawItems.filter(item => item.price?.currency === "USD").filter(item => !isBadListing(item.title)).filter(item => isTitleMatch(item.title, title)).map(item => ({ title: item.title, price: Number(item.price.value), currency: item.price.currency, condition: item.condition, url: item.itemWebUrl, image: item.image?.imageUrl || "" })).filter(item => Number.isFinite(item.price) && item.price > 0).sort((a, b) => a.price - b.price);
