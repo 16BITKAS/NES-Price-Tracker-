@@ -49,7 +49,7 @@ window.nesGames = [
   {"id":45,"title":"Athletic World","publisher":"Bandai","owned":false,"year":1987,"genre":"Sports","description":"Power Pad sports game with various athletic running challenges."},
   {"id":46,"title":"Attack of the Killer Tomatoes","publisher":"THQ","owned":false,"year":1992,"genre":"Platformer","description":"B-movie parody platformer where tomatoes have taken over the world."},
   {"id":47,"title":"Back to the Future","publisher":"Acclaim (LJN)","owned":false,"year":1989,"genre":"Action","description":"Licensed game based on the Back to the Future film with time travel."},
-  {"id":48,"title":"Back to the Future II & III","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"Covers events of the second and third films in one licensed package."},
+  {"id":48,"title":"Back to the Future Part II & III","publisher":"Acclaim (LJN)","owned":false,"year":1990,"genre":"Action","description":"Covers events of the second and third films in one licensed package."},
   {"id":49,"title":"Bad Dudes","publisher":"Data East","owned":false,"year":1988,"genre":"Action","description":"Rescue the President from ninjas in this classic beat-em-up arcade port."},
   {"id":50,"title":"Bad News Baseball","publisher":"Tecmo","owned":false,"year":1990,"genre":"Sports","description":"Arcade-style baseball with cartoon characters and simple mechanics."},
   {"id":51,"title":"Bad Street Brawler","publisher":"Mattel","owned":false,"year":1987,"genre":"Action","description":"Street brawler where you punch through waves of street thugs."},
