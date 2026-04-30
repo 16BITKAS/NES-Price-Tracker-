@@ -20,7 +20,7 @@ window.snesAssetManifest = {
     "boxback": "snes/boxbacks/ACME Animation Factory[ (USA).png"
   },
   "ActRaiser": {
-    "boxfront": "snes/boxfronts/ActRaiser (Europe).png",
+    "boxfront": "snes/boxfronts/ActRaiser (USA).png",
     "boxback": "snes/boxbacks/ActRaiser (USA).png"
   },
   "ActRaiser 2": {
