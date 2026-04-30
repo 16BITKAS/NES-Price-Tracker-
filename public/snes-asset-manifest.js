@@ -24,8 +24,8 @@ window.snesAssetManifest = {
     "boxback": "snes/boxbacks/ActRaiser (USA).png"
   },
   "ActRaiser 2": {
-    "boxfront": "snes/boxfronts/ActRaiser 2 (Europe).png",
-    "boxback": "snes/boxbacks/ActRaiser 2[ (USA).png"
+    "boxfront": "snes/boxfronts/ActRaiser 2 (USA).png",
+    "boxback": "snes/boxbacks/ActRaiser 2 (USA).png"
   },
   "Addams Family: Pugsley's Scavenger Hunt, The": {
     "boxfront": "snes/boxfronts/Addams Family, The (USA) (Alt).png",
