@@ -13,7 +13,7 @@ window.snesGames = [
   {"id":8,"title":"Addams Family: Pugsley's Scavenger Hunt, The","publisher":"Ocean","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Ocean in February 1993."},
   {"id":9,"title":"Addams Family, The","publisher":"Ocean","owned":false,"year":1992,"genre":"Action","description":"SNES action game released by Ocean in March 1992."},
   {"id":10,"title":"Addams Family Values","publisher":"Ocean","owned":false,"year":1995,"genre":"Adventure","description":"SNES adventure game released by Ocean in February 1995."},
-  {"id":11,"title":"Adventure of Kid Kleets, The","publisher":"Ocean","owned":false,"year":1994,"genre":"Adventure","description":"SNES adventure game released by Ocean in August 1994."},
+  {"id":11,"title":"Adventures of Kid Kleets, The","publisher":"Ocean","owned":false,"year":1994,"genre":"Adventure","description":"SNES adventure game released by Ocean in August 1994."},
   {"id":12,"title":"Adventures of Batman & Robin, The","publisher":"Konami","owned":false,"year":1994,"genre":"Adventure","description":"SNES adventure game released by Konami in December 1994."},
   {"id":13,"title":"Adventures of Dr. Franken","publisher":"DTMC","owned":false,"year":1993,"genre":"Adventure","description":"SNES adventure game released by DTMC in December 1993."},
   {"id":14,"title":"Adventures of Rocky & Bullwinkle and Friends, The","publisher":"THQ","owned":false,"year":1993,"genre":"Adventure","description":"SNES adventure game released by THQ in June 1993."},
