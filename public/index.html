@@ -1751,7 +1751,7 @@ document.addEventListener('keydown', e => {
 
 // ─── Price refresh ────────────────────────────────────────────────────────────
 async function refreshGame(g) {
-  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title));
+  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title) + '&console=' + activeConsole);
   if (!res.ok) throw new Error(await res.text());
   const data = await res.json();
   g.estimate = data.estimate;
