@@ -1508,6 +1508,7 @@ function render() {
       <td>
         <div class="price-val ${hasPrice ? 'has-price' : ''}">${fmt(g.estimate)}</div>
         <div class="price-sub">${g.resultCount ? g.resultCount + ' listings' : ''}</div>
+        <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="margin-top:4px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:1px 6px;font-size:9px;cursor:pointer;letter-spacing:0.05em;font-family:inherit;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">↻ refresh</button>
       </td>
       <td><span class="pill">${g.updatedAt ? new Date(g.updatedAt).toLocaleDateString() : 'never'}</span></td>
     </tr>`;
@@ -1912,6 +1913,26 @@ document.getElementById('tbody').addEventListener('change', e => {
 // ─── Filter listeners ─────────────────────────────────────────────────────────
 ['search', 'statusFilter', 'developerFilter', 'yearFilter'].forEach(id => {
   document.getElementById(id).addEventListener(id === 'search' ? 'input' : 'change', render);
+});
+
+// ─── Refresh single game price ────────────────────────────────────────────────
+document.getElementById('tbody').addEventListener('click', async e => {
+  const btn = e.target.closest('.refresh-single-btn');
+  if (!btn) return;
+  const id = parseInt(btn.dataset.id);
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await refreshGame(g);
+    btn.textContent = '✓';
+    setTimeout(() => { btn.disabled = false; btn.textContent = '↻ refresh'; }, 1500);
+  } catch (err) {
+    btn.textContent = '✗';
+    btn.disabled = false;
+    console.error(g.title, err);
+  }
 });
 
 // ─── Refresh prices ───────────────────────────────────────────────────────────
