@@ -1439,7 +1439,7 @@ function filtered() {
 }
 
 const normalizeTitle = t => t.replace(/^(.*),\s*The$/i, 'The $1').trim();
-const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : 'NES') + ' -CIB -sealed -"complete in box" -"complete" -CGC') + '&_sop=12';
+const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : 'NES') + ' -CIB -sealed -complete -CGC -lot') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
 // ─── Trailer filename helper (global so row render can use it) ────────────────
