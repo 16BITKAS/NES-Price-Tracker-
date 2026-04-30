@@ -6,7 +6,7 @@ window.snesGames = [
   {"id":1,"title":"7th Saga, The","publisher":"Enix","owned":false,"year":1993,"genre":"RPG","description":"SNES role-playing game released by Enix in September 1993."},
   {"id":2,"title":"A.S.P.: Air Strike Patrol","publisher":"Seta","owned":false,"year":1995,"genre":"Shooter","description":"SNES shooter released by Seta in January 1995."},
   {"id":3,"title":"Aaahh!!! Real Monsters","publisher":"Majesco","owned":false,"year":1995,"genre":"Action","description":"SNES action game released by Majesco in November 1995."},
-  {"id":4,"title":"ABC's Monday Night Football","publisher":"Data East","owned":false,"year":1993,"genre":"Sports","description":"SNES sports title released by Data East in December 1993."},
+  {"id":4,"title":"ABC Monday Night Football","publisher":"Data East","owned":false,"year":1993,"genre":"Sports","description":"SNES sports title released by Data East in December 1993."},
   {"id":5,"title":"ACME Animation Factory","publisher":"Sunsoft","owned":false,"year":1994,"genre":"Puzzle","description":"SNES puzzle or board-style game released by Sunsoft in November 1994."},
   {"id":6,"title":"ActRaiser","publisher":"Enix","owned":false,"year":1991,"genre":"Action","description":"SNES action game released by Enix in November 1991."},
   {"id":7,"title":"ActRaiser 2","publisher":"Enix","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Enix in November 1993."},
