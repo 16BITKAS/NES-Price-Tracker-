@@ -25,7 +25,7 @@ function average(numbers) {
 }
 function isBadListing(title) {
   const t = String(title || "").toLowerCase();
-  const badWords = ["manual", "box only", "case only", "replacement", "reproduction", "repro", "homebrew", "poster", "sticker", "label", "shell", "sleeve", "protector", "lot of", "bundle", "choose", "pick", "read description", "not working", "damaged", "for parts", "untested", "rom", "everdrive", "famicom"];
+  const badWords = ["manual", "box only", "case only", "replacement", "reproduction", "repro", "homebrew", "poster", "sticker", "label", "shell", "sleeve", "protector", "lot of", "bundle", "choose", "pick", "read description", "not working", "damaged", "for parts", "untested", "rom", "everdrive", "famicom", "complete in box", "cib"];
   return badWords.some(w => t.includes(w));
 }
 function isTitleMatch(listingTitle, gameTitle) {
