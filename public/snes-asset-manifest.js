@@ -155,7 +155,7 @@ window.snesAssetManifest = {
     "boxfront": "snes/boxfronts/BASS Masters Classic (USA).png",
     "boxback": "snes/boxbacks/Bass Masters Classic (USA).png"
   },
-  "Bass Masters Classic: Pro Edition": {
+  "Bass Masters Classic Pro Edition": {
     "boxfront": "snes/boxfronts/BASS Masters Classic (USA).png",
     "boxback": "snes/boxbacks/Bass Masters Classic Pro Edition (USA).png"
   },
