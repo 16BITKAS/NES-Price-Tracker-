@@ -633,6 +633,9 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
   .tablewrap { min-width: 0; }
   #table-header { grid-template-columns: 40px 90px 1fr 80px !important; }
   #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
+  td:nth-child(4), td:nth-child(5) { display: none; }
+  tr td:nth-child(3) { max-width: calc(100vw - 180px); overflow: hidden; }
+  table { width: 100%; table-layout: fixed; }
 }
 
 table {
@@ -1517,7 +1520,7 @@ function render() {
             </svg>
           </button>
         </div>` : ''}
-        ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
+        ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:min(280px,40vw);">${esc(g.description)}</div>` : ''}
         <div style="margin-top:6px;display:flex;gap:10px;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
           <a class="link" href="${priceChartingUrl(g.title)}" target="_blank">PriceCharting</a>
