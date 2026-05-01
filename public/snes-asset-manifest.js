@@ -207,7 +207,7 @@ window.snesAssetManifest = {
     "boxfront": "snes/boxfronts/Bebe's Kids (USA).png",
     "boxback": "snes/boxbacks/Bebes Kids (USA).png"
   },
-  "Beethoven's 2nd": {
+  "Beethoven - The Ultimate Canine Caper! (USA)": {
     "boxfront": "snes/boxfronts/2020 Super Baseball (USA).png",
     "boxback": "snes/boxbacks/3 Ninjas Kick Back (USA).png"
   },
