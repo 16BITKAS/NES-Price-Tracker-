@@ -793,6 +793,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .cover-cell {
   width: 48px;
   padding: 6px 10px !important;
+  overflow: hidden;
 }
 
 .cover-wrap {
@@ -800,7 +801,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   width: 113px;
   height: 155px;
   border-radius: 4px;
-  overflow: visible;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -848,6 +849,28 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   justify-content: center;
 }
 
+/* Mobile: shrink cover art to fit column without overflowing */
+@media (max-width: 640px) {
+  .cover-cell {
+    width: 56px;
+    padding: 4px 6px !important;
+  }
+  .cover-wrap,
+  .cover-thumb,
+  .cover-placeholder,
+  .cover-loading {
+    width: 56px;
+    height: 76px;
+  }
+  #tbody.snes-covers .cover-wrap,
+  #tbody.snes-covers .cover-thumb,
+  #tbody.snes-covers .cover-placeholder,
+  #tbody.snes-covers .cover-loading {
+    width: 76px;
+    height: 54px;
+  }
+}
+
 .cover-loading::after {
   content: '';
   width: 14px; height: 14px;
@@ -858,7 +881,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 /* SNES landscape box art overrides */
-#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
 #tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
 #tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
 #tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
