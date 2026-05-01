@@ -628,17 +628,19 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 /* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
 .tablewrap-outer { overflow-x: clip; }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .tablewrap-outer { overflow-x: clip; }
   .tablewrap { min-width: 0; width: 100%; }
-  #table-header { grid-template-columns: 52px 78px 1fr !important; }
+  #table-header { grid-template-columns: 60px 140px 1fr !important; }
   #table-header span:nth-child(4), #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
-  td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; }
+  td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; border: none !important; padding: 0 !important; width: 0 !important; }
   /* Force col widths on the actual table cells */
-  td:nth-child(1) { width: 52px !important; }
-  td:nth-child(2) { width: 78px !important; padding: 4px 6px !important; text-align: left !important; vertical-align: middle !important; }
-  td:nth-child(3) { overflow: hidden; max-width: 0; }
-  td:last-child { border-radius: 0 12px 12px 0 !important; }
+  td:nth-child(1) { width: 60px !important; }
+  td:nth-child(2) { width: 140px !important; padding: 6px 10px !important; text-align: left !important; vertical-align: middle !important; }
+  td:nth-child(3) { overflow: hidden; max-width: 0;
+    border-right: 1px solid var(--border) !important;
+    border-radius: 0 12px 12px 0 !important;
+  }
   table { width: 100%; table-layout: fixed; }
 }
 
@@ -854,31 +856,31 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 /* Mobile: cover art sized to fill the fixed column */
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .cover-cell {
-    padding: 4px 6px !important;
+    padding: 6px 10px !important;
     overflow: hidden;
     vertical-align: middle;
   }
   .cover-wrap {
-    width: 66px;
-    height: 90px;
+    width: 120px;
+    height: 165px;
     margin: 0;
     justify-content: flex-start;
   }
   .cover-thumb,
   .cover-placeholder,
   .cover-loading {
-    width: 66px;
-    height: 90px;
+    width: 120px;
+    height: 165px;
     flex-shrink: 0;
   }
   #tbody.snes-covers .cover-wrap,
   #tbody.snes-covers .cover-thumb,
   #tbody.snes-covers .cover-placeholder,
   #tbody.snes-covers .cover-loading {
-    width: 66px;
-    height: 47px;
+    width: 120px;
+    height: 85px;
   }
 }
 
@@ -954,7 +956,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   table { min-width: 900px; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   body { overflow-x: hidden; }
   .wrap { padding: 0 12px 12px; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
@@ -965,8 +967,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   .tablewrap-outer { overflow-x: clip; }
   .tablewrap { max-width: 100vw; }
   table { min-width: 0; width: 100%; }
-  th:nth-child(5), td:nth-child(5) { display: none; }
-  .game-title { white-space: normal; word-break: break-word; max-width: 140px; }
+  .game-title { white-space: normal; word-break: break-word; }
   .refresh-single-btn { display: none; }
 }
 
