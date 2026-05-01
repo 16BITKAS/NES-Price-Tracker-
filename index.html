@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NES Collection Dashboard</title>
 <script src="nes-games.js"></script>
+<script src="nes-asset-manifest.js"></script>
+<script src="snes-games.js"></script>
+<script src="snes-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #111111;
+  --console-nes: #e60012;
+  --console-snes: #7b2fff;
   --surface: #1c1c1c;
   --surface2: #242424;
   --border: #2e2e2e;
@@ -20,6 +25,135 @@
   --gold: #c8c8c8;
   --red: #e60012;
   --glow: rgba(230,0,18,0.15);
+}
+
+/* Light mode overrides */
+body.light-mode {
+  --bg: #f0ece8;
+  --surface: #ffffff;
+  --surface2: #e8e4e0;
+  --border: #d0ccc8;
+  --ink: #1a1a1a;
+  --muted: #888888;
+  --accent: #e60012;
+  --accent2: #ff3333;
+  --gold: #555555;
+  --red: #e60012;
+  --glow: rgba(230,0,18,0.10);
+}
+
+body.light-mode::before {
+  background-image:
+    linear-gradient(rgba(230,0,18,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,0,18,0.06) 1px, transparent 1px);
+}
+
+body.light-mode::after {
+  background: radial-gradient(ellipse, rgba(230,0,18,0.09) 0%, transparent 65%);
+}
+
+body.light-mode .pill {
+  background: #ffffff;
+  border-color: #d0ccc8;
+  color: #1a1a1a;
+}
+
+body.light-mode td:last-child .pill,
+body.light-mode .game-sub .pill {
+  background: #ffffff;
+  border-color: #d0ccc8;
+  color: #1a1a1a;
+}
+
+/* Tiny row trailer play button */
+.row-play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e60012;
+  border: none;
+  border-radius: 2px;
+  width: 18px;
+  height: 13px;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 1px 1px 0 #8b0000, -1px -1px 0 rgba(255,255,255,0.15) inset;
+  transition: transform 0.1s, box-shadow 0.1s;
+  vertical-align: middle;
+  image-rendering: pixelated;
+}
+.row-play-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(230,0,18,0.7), 1px 1px 0 #8b0000;
+}
+.row-play-btn:active {
+  transform: scale(0.95);
+}
+.pixel-toggle-wrap {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.pixel-toggle {
+  position: relative;
+  width: 52px;
+  height: 26px;
+  cursor: pointer;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.pixel-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.pixel-track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pixel-toggle input:checked ~ .pixel-track {
+  background: #e8e4e0;
+  border-color: #c0bcb8;
+}
+
+.pixel-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  transition: transform 0.15s, background 0.15s;
+  image-rendering: pixelated;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.pixel-toggle input:checked ~ .pixel-track .pixel-knob {
+  transform: translateX(26px);
+  background: #ffffff;
+  color: #e60012;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,18 +194,18 @@ body::after {
 header {
   position: relative;
   z-index: 1;
-  padding: 48px 0 36px;
+  padding: 13px 0 8px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
 }
 
 .header-inner {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 28px;
+  width: 100%;
+  padding: 0 20px;
   display: flex;
-  align-items: flex-end;
-  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .header-badge {
@@ -124,27 +258,63 @@ h1 span { color: var(--accent); }
 .wrap {
   max-width: 1380px;
   margin: 0 auto;
-  padding: 28px 28px;
+  padding: 0 28px 28px;
   position: relative;
   z-index: 1;
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg);
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Stats */
 .stats {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
-  margin: 28px 0;
+  grid-template-columns: auto auto;
+  gap: 8px;
+  margin: 0 0 10px;
+  align-items: stretch;
+}
+
+.stat-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-stack .stat {
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 700px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .stat {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px 20px 18px;
+  border-radius: 10px;
+  padding: 4px 16px;
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, transform 0.2s;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .stat:hover {
@@ -162,6 +332,41 @@ h1 span { color: var(--accent); }
   transition: opacity 0.2s;
 }
 
+.stat.stat--hero {
+  border-color: rgba(230,0,18,0.35);
+  background: linear-gradient(135deg, rgba(230,0,18,0.08) 0%, var(--surface) 60%);
+  box-shadow: 0 0 0 1px rgba(230,0,18,0.2), 0 0 40px rgba(230,0,18,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 20px;
+  align-self: stretch;
+  height: 100%;
+}
+
+.stat.stat--hero .stat-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 1px;
+}
+
+.stat.stat--hero .stat-value {
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 0 40px rgba(230,0,18,0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.stat.stat--hero::before {
+  opacity: 1;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #ff3333, var(--accent));
+}
+
 .stat:hover::before { opacity: 1; }
 
 .stat-label {
@@ -170,15 +375,20 @@ h1 span { color: var(--accent); }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .stat-value {
-  font-size: 32px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Press Start 2P', monospace;
   color: var(--accent);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  display: block;
 }
 
 .progress {
@@ -189,22 +399,130 @@ h1 span { color: var(--accent); }
   margin-top: 12px;
 }
 
-.bar {
+/* Gameplay snap thumbnail */
+.snap-thumb {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+  aspect-ratio: 4/3;
+  background: #000;
+}
+
+.snap-thumb:hover {
+  border-color: var(--accent);
+}
+
+.snap-play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.snap-thumb:hover .snap-play-btn {
+  opacity: 1;
+}
+
+.snap-play-btn svg {
+  filter: drop-shadow(0 0 8px rgba(230,0,18,0.8));
+}
+
+/* Milestone bar */
+.milestone-bar-wrap {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.milestone-track {
+  position: relative;
+  height: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid var(--border);
+  image-rendering: pixelated;
+  overflow: visible;
+}
+
+.milestone-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #b0000e);
   width: 0%;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 999px;
-  box-shadow: 0 0 8px rgba(230,0,18,0.5);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0px,
+    var(--accent) 6px,
+    #b0000e 6px,
+    #b0000e 12px
+  );
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(230,0,18,0.6), inset 0 1px 0 rgba(255,100,100,0.3);
+  image-rendering: pixelated;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tick marks on the track */
+.milestone-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.milestone-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-50%);
+}
+
+.milestone-tick.reached {
+  background: rgba(255,255,255,0.55);
+  box-shadow: 0 0 4px rgba(255,255,255,0.4);
+}
+
+/* Labels row - hidden */
+.milestone-labels { display: none; }
+.milestone-lbl { display: none; }
+
+/* Achievement flash banner */
+.milestone-achieved {
+  min-height: 22px;
+  margin-top: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: transparent;
+  text-align: center;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.milestone-achieved.flash {
+  animation: achieveFlash 2.4s ease-out forwards;
+}
+
+@keyframes achieveFlash {
+  0%   { color: #fff; text-shadow: 0 0 14px rgba(230,0,18,1), 0 0 4px #fff; }
+  30%  { color: var(--accent); text-shadow: 0 0 10px rgba(230,0,18,0.8); }
+  80%  { color: var(--accent); text-shadow: 0 0 6px rgba(230,0,18,0.4); }
+  100% { color: var(--muted); text-shadow: none; }
 }
 
 /* Controls */
 .controls {
-  display: grid;
-  grid-template-columns: 1fr repeat(2, minmax(160px, auto)) repeat(3, auto);
-  gap: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
   align-items: center;
-  margin: 24px 0 16px;
+  margin: 0 0 10px;
+  min-width: 0;
 }
 
 .controls input,
@@ -213,14 +531,18 @@ h1 span { color: var(--accent); }
   color: var(--ink);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 7px 10px;
   font-family: 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   min-width: 0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
+  flex-shrink: 1;
 }
+
+#search { flex: 2 1 120px; }
+#statusFilter, #developerFilter, #yearFilter { flex: 1 1 80px; }
 
 .controls input:focus,
 .controls select:focus {
@@ -233,13 +555,14 @@ h1 span { color: var(--accent); }
 button {
   border: 0;
   border-radius: 10px;
-  padding: 11px 18px;
-  font-family: 'Syne', sans-serif;
+  padding: 7px 14px;
+  font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 button.primary {
@@ -257,6 +580,26 @@ button.secondary {
 }
 
 button.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+button.floppy-btn {
+  background: transparent;
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 6px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+button.floppy-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(230,0,18,0.4), 2px 2px 0 rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
 
 button.danger {
   background: transparent;
@@ -278,7 +621,17 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 .note .warn { color: var(--gold); }
 
 /* Table */
-.tablewrap { overflow-x: auto; }
+/* tablewrap handles horizontal scroll on mobile */
+.tablewrap { }
+
+
+/* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
+.tablewrap-outer { overflow-x: clip; }
+
+@media (max-width: 640px) {
+  .tablewrap-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tablewrap { min-width: 0; }
+}
 
 table {
   width: 100%;
@@ -287,17 +640,7 @@ table {
   margin-top: 8px;
 }
 
-thead th {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 6px 14px 10px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-}
+/* thead removed - header row is now a sticky div above the table */
 
 th.sortable {
   cursor: pointer;
@@ -310,6 +653,8 @@ th.sortable.active { color: var(--accent); }
 
 tbody tr {
   transition: transform 0.15s;
+  position: relative;
+  z-index: 1;
 }
 
 tbody tr:hover { transform: translateX(3px); }
@@ -346,8 +691,9 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .game-title {
   font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 20.7px;
   letter-spacing: -0.01em;
+  text-decoration: underline;
 }
 
 .game-sub {
@@ -398,33 +744,153 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 /* Checkbox */
 .owned-check {
-  appearance: none;
-  width: 20px; height: 20px;
-  border: 2px solid var(--border);
+  display: none;
+}
+
+.pixel-check {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   position: relative;
-  transition: all 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pixel-check:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(230,0,18,0.2);
+}
+
+.pixel-check.is-checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(230,0,18,0.6);
+}
+
+.pixel-check svg {
+  display: none;
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
+.pixel-check.is-checked svg {
   display: block;
 }
 
-.owned-check:checked {
-  background: var(--accent);
+/* Cover art */
+.cover-cell {
+  width: 48px;
+  padding: 6px 10px !important;
+}
+
+.cover-wrap {
+  position: relative;
+  width: 113px;
+  height: 155px;
+  border-radius: 4px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cover-thumb {
+  width: 113px;
+  height: 155px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  display: block;
+  background: var(--surface2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cover-wrap:hover .cover-thumb {
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(230,0,18,0.5);
+  box-shadow: 0 0 10px var(--glow);
 }
 
-.owned-check:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 12px;
-  color: #ffffff;
-  font-weight: 900;
+.cover-placeholder {
+  width: 113px;
+  height: 155px;
+  border-radius: 4px;
+  border: 1px dashed var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  opacity: 0.5;
 }
 
-.owned-check:hover { border-color: var(--accent); }
+.cover-loading {
+  width: 113px;
+  height: 155px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-loading::after {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* SNES landscape box art overrides */
+#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
+#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Hover popup */
+#artPopup {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.8));
+}
+
+#artPopup.visible { opacity: 1; }
+
+#artPopup img {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  display: block;
+}
+
+#artPopup .popup-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 6px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Footer */
 .footer {
@@ -443,238 +909,866 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   margin-bottom: 16px;
 }
 
-@media (max-width: 1100px) {
-  .stats { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1100px) and (min-width: 641px) {
+  .stats { grid-template-columns: 1fr 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
   table { min-width: 900px; }
 }
 
 @media (max-width: 640px) {
-  .stats { grid-template-columns: 1fr 1fr; }
+  body { overflow-x: hidden; }
+  .wrap { padding: 0 12px 12px; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
+  .stat-value { font-size: clamp(8px, 5vw, 18px); }
+  .controls { flex-wrap: wrap; }
+  #search { flex: 1 1 100%; }
+  #statusFilter, #developerFilter, #yearFilter { flex: 1 1 calc(33% - 6px); min-width: 0; font-size: 9px; }
+  .tablewrap, .tablewrap-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100vw; }
+  table { min-width: 480px; }
+  th:nth-child(5), td:nth-child(5) { display: none; }
+  .game-title { white-space: normal; word-break: break-word; max-width: 140px; }
+  .refresh-single-btn { display: none; }
 }
+
+/* ── Image Lightbox ───────────────────────────────────────────────────────── */
+#imageLightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: rgba(0,0,0,0.96);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lb-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 60px 0 16px;
+}
+
+.lb-arrow {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  background: rgba(230,0,18,0.12);
+  border: 2px solid rgba(230,0,18,0.4);
+  border-radius: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  margin: 0 20px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+}
+
+.lb-arrow:hover {
+  background: rgba(230,0,18,0.35);
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+.lb-arrow:active { transform: scale(0.95); }
+
+.lb-img-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#lbImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: opacity 0.2s;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  image-rendering: pixelated;
+}
+
+.lb-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 24px;
+  flex-shrink: 0;
+}
+
+#lbLabel {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+#lbCounter {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--accent);
+}
+
+#lbDots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lb-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  image-rendering: pixelated;
+}
+
+.lb-dot:hover { background: rgba(255,255,255,0.45); transform: scale(1.2); }
+.lb-dot--active { background: var(--accent) !important; border-color: var(--accent); box-shadow: 0 0 8px rgba(230,0,18,0.7); }
+
+.lb-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #e60012;
+  border: none;
+  border-radius: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  box-shadow: inset -2px -2px 0 #8b0000, inset 2px 2px 0 #ff4444;
+  transition: transform 0.1s;
+}
+
+.lb-close-btn:hover { transform: scale(1.1); }
+
 </style>
 </head>
 <body>
 
+<!-- Pixel art light/dark toggle is now inside header -->
 <header>
   <div class="header-inner">
+    <div class="pixel-toggle-wrap">
+      <label class="pixel-toggle" title="Toggle light/dark mode">
+        <input type="checkbox" id="themeToggle">
+        <div class="pixel-track">
+          <div class="pixel-knob" id="toggleKnob">🌙</div>
+        </div>
+      </label>
+    </div>
     <div>
-      <div class="header-badge">Live Tracker</div>
-      <h1>NES <span>Collection</span></h1>
-      <div class="tagline">677 licensed North American titles · eBay API bridge</div>
+      <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
+      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
+        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Owned</div>
-      <div class="stat-value" id="ownedCount">0</div>
-      <div class="game-sub" style="margin-top:6px">of 677 titles</div>
+  <div class="sticky-panel">
+    <div class="stats">
+
+      <!-- Stack 1: Owned + Missing -->
+      <div class="stat-stack">
+        <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+          <div class="stat-label">Owned</div>
+          <div class="stat-value" id="ownedCount">0</div>
+        </div>
+        <div class="stat" style="align-items:center;text-align:center;padding-left:0;padding-right:0;">
+          <div class="stat-label">Missing</div>
+          <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
+        </div>
+      </div>
+
+      <!-- Stack 2: Collection Value + Full Set Value -->
+      <div class="stat-stack">
+        <div class="stat" style="align-items:center;text-align:center;">
+          <div class="stat-label">Collection Value</div>
+          <div class="stat-value" id="collectionValue">$0</div>
+        </div>
+        <div class="stat" style="align-items:center;text-align:center;">
+          <div class="stat-label">Full Set Value</div>
+          <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
+        </div>
+      </div>
+
+      <!-- Hero: Completion -->
+      <div class="stat stat--hero" style="grid-column: 1 / -1; padding-bottom: 0;">
+        <div class="stat-label" style="width:100%;text-align:center;">Completion</div>
+        <div class="stat-value" id="completion" style="width:100%;text-align:center;">0%</div>
+        <div class="milestone-bar-wrap" style="margin-bottom:0;">
+          <div class="milestone-track">
+            <div class="milestone-fill" id="bar"></div>
+            <div class="milestone-markers" id="milestoneMarkers"></div>
+          </div>
+          <div class="milestone-labels" id="milestoneLabels"></div>
+        </div>
+        <div class="milestone-achieved" id="milestoneAchieved" style="min-height:0;margin-top:0;"></div>
+      </div>
+
     </div>
-    <div class="stat">
-      <div class="stat-label">Missing</div>
-      <div class="stat-value" id="missingCount" style="color:var(--ink)">677</div>
+
+    <div class="controls">
+      <input id="search" placeholder="Search games, developer, year…">
+      <select id="statusFilter">
+        <option value="all">All games</option>
+        <option value="owned">Owned</option>
+        <option value="missing">Missing</option>
+        <option value="priced">Priced</option>
+        <option value="unpriced">Unpriced</option>
+      </select>
+      <select id="developerFilter"><option value="all">All developers</option></select>
+      <select id="yearFilter"><option value="all">All years</option></select>
+      <button class="primary" id="refreshVisible">Refresh prices</button>
+      <button class="floppy-btn" id="exportData" title="Export save">
+        <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
+          <!-- Body -->
+          <rect x="1" y="1" width="14" height="14" fill="#e60012"/>
+          <!-- Top-right corner cut -->
+          <rect x="10" y="1" width="5" height="1" fill="transparent"/>
+          <rect x="11" y="1" width="4" height="1" fill="#e60012"/>
+          <rect x="12" y="2" width="3" height="1" fill="#e60012"/>
+          <!-- Shutter slot (label area) -->
+          <rect x="2" y="2" width="9" height="5" fill="#c0000e"/>
+          <!-- Shutter window white strip -->
+          <rect x="6" y="2" width="2" height="5" fill="#ff6666"/>
+          <!-- Metal shutter slider -->
+          <rect x="3" y="3" width="2" height="3" fill="#ff9999"/>
+          <!-- Bottom disk read area -->
+          <rect x="3" y="9" width="10" height="5" fill="#c0000e"/>
+          <!-- Border outline -->
+          <rect x="1" y="1" width="14" height="1" fill="#ff3333"/>
+          <rect x="1" y="1" width="1" height="14" fill="#ff3333"/>
+          <rect x="1" y="14" width="14" height="1" fill="#8b0000"/>
+          <rect x="14" y="1" width="1" height="14" fill="#8b0000"/>
+          <!-- Top-right corner notch -->
+          <rect x="11" y="1" width="3" height="3" fill="#ff3333"/>
+          <rect x="12" y="2" width="2" height="2" fill="#e60012"/>
+          <rect x="13" y="1" width="1" height="1" fill="#8b0000"/>
+        </svg>
+      </button>
     </div>
-    <div class="stat">
-      <div class="stat-label">Completion</div>
-      <div class="stat-value" id="completion">0%</div>
-      <div class="progress"><div class="bar" id="bar"></div></div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Collection Value</div>
-      <div class="stat-value" id="collectionValue">$0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Full Set Value</div>
-      <div class="stat-value" style="color:var(--gold)" id="setValue">$0</div>
-    </div>
+
+    <p id="priceStatus"></p>
   </div>
 
-  <div class="controls">
-    <input id="search" placeholder="Search games, developer, year…">
-    <select id="statusFilter">
-      <option value="all">All games</option>
-      <option value="owned">Owned</option>
-      <option value="missing">Missing</option>
-      <option value="priced">Priced</option>
-      <option value="unpriced">Unpriced</option>
-    </select>
-    <select id="developerFilter"><option value="all">All developers</option></select>
-    <select id="yearFilter"><option value="all">All years</option></select>
-    <button class="primary" id="refreshVisible">Refresh prices</button>
-    <button class="secondary" id="exportData">Export save</button>
-    <button class="danger" id="resetData">Reset</button>
+  <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">
+    <span class="sortable" data-sort="owned" style="cursor:pointer;">Own</span>
+    <span style="cursor:default;">Cover</span>
+    <span class="sortable" data-sort="title" style="cursor:pointer;">Game</span>
+    <span class="sortable" data-sort="year" style="cursor:pointer;">Year</span>
+    <span class="sortable" data-sort="estimate" style="cursor:pointer;">eBay Est.</span>
+    <span class="sortable" data-sort="updatedAt" style="cursor:pointer;">Updated</span>
   </div>
-
-  <p class="note"><span class="warn">Note:</span> estimates use active eBay listings through your API bridge.</p>
-  <p id="priceStatus">Prices will load when you click Refresh prices.</p>
-
-  <div class="tablewrap">
+  <div class="tablewrap-outer"><div class="tablewrap">
     <table>
-      <thead>
-        <tr>
-          <th class="sortable" data-sort="owned">Own</th>
-          <th class="sortable" data-sort="id">#</th>
-          <th class="sortable" data-sort="title">Game</th>
-          <th class="sortable" data-sort="year">Year</th>
-          <th class="sortable" data-sort="estimate">eBay Est.</th>
-          <th class="sortable" data-sort="updatedAt">Updated</th>
-          <th>Links</th>
-        </tr>
-      </thead>
       <tbody id="tbody"></tbody>
     </table>
-  </div>
+  </div></div>
 
   <div class="footer">
-    Data saves in this browser via localStorage. Developer shown under game title when available, otherwise falls back to publisher.
+    Data saves in this browser via localStorage. Cover art served from your GitHub Pages image archive.
   </div>
 
 </main>
 
+<!-- Art hover popup -->
+<div id="artPopup">
+  <img id="artPopupImg" src="" alt="">
+  <div class="popup-title" id="artPopupTitle"></div>
+</div>
+
+<!-- Game Detail Modal -->
+<div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
+  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
+    <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
+    <div id="modalContent" style="padding:32px;"></div>
+  </div>
+</div>
+
 <script>
+// ─── Console state ───────────────────────────────────────────────────────────
+let activeConsole = 'nes';
+
+const CONSOLE_CONFIG = {
+  nes: {
+    games:        () => window.nesGames || [],
+    manifest:     () => window.nesAssetManifest || {},
+    storageKey:   'nesTrackerSaveV2',
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-NES/',
+    accent:       '#e60012',
+    accent2:      '#ff3333',
+    glow:         'rgba(230,0,18,0.15)',
+    glowLight:    'rgba(230,0,18,0.10)',
+    label:        'NES',
+    tabId:        'tabNES',
+  },
+  snes: {
+    games:        () => window.snesGames || [],
+    manifest:     () => window.snesAssetManifest || {},
+    storageKey:   'snesTrackerSaveV1',
+    trailerBase:  '',   // archive.org SNES collection TBD
+    accent:       '#7b2fff',
+    accent2:      '#9d5fff',
+    glow:         'rgba(123,47,255,0.15)',
+    glowLight:    'rgba(123,47,255,0.10)',
+    label:        'SNES',
+    tabId:        'tabSNES',
+  }
+};
+
+let TRAILER_BASE_URL = CONSOLE_CONFIG.nes.trailerBase;
+
+function getStorageKey() { return CONSOLE_CONFIG[activeConsole].storageKey; }
+function getManifest()   { return CONSOLE_CONFIG[activeConsole].manifest(); }
+
 const STORAGE_KEY = "nesTrackerSaveV2";
 const rawState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 const oldState = JSON.parse(localStorage.getItem("nesTrackerSaveV1") || "{}");
 const state = Object.keys(rawState).length ? rawState : oldState;
-const games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
+let games = (window.nesGames || []).map(g => ({ ...g, ...(state[g.id] || {}) }));
 
-let sortKey = "id";
+let sortKey = "title";
 let sortDir = "asc";
 
 const fmt = n => Number.isFinite(Number(n))
   ? Number(n).toLocaleString(undefined, { style: 'currency', currency: 'USD' })
   : "—";
-const esc = s => String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-const developerOf = g => g.developer || g.developerName || g.publisher || "Unknown";
-const yearOf = g => g.year || g.releaseYear || g.release_year || "Unknown";
+
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const STORAGE_KEY2 = "nesTrackerSaveV2";
 
 function save() {
   const out = {};
   games.forEach(g => {
-    out[g.id] = { owned: !!g.owned, estimate: g.estimate ?? null, resultCount: g.resultCount || 0, updatedAt: g.updatedAt || "" };
+    const { id, owned, estimate, resultCount, updatedAt } = g;
+    if (owned || estimate) out[id] = { owned, estimate, resultCount, updatedAt };
   });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
+  localStorage.setItem(getStorageKey(), JSON.stringify(out));
 }
 
+// ─── Image URL helper ─────────────────────────────────────────────────────────
+const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
+
+function toImageName(title) {
+  let name = title
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return name + ' (USA)';
+}
+
+function toImageNameNoRegion(title) {
+  return title
+    .replace(/:/g, ' - ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function imgUrlNoRegion(folder, title) {
+  return BASE + activeConsole + '/' + folder + '/' + encodeURIComponent(toImageNameNoRegion(title)) + '.png';
+}
+
+function imgUrl(folder, title) {
+  const manifest = getManifest();
+  const entry = manifest[title];
+
+  const folderKeyMap = {
+    boxfronts: 'boxfront',
+    boxbacks: 'boxback',
+    cartridges: 'cartridge',
+    clearlogos: 'clearlogo',
+    snaps: 'snap',
+    titles: 'title'
+  };
+
+  const key = folderKeyMap[folder];
+
+  if (entry && entry[key]) {
+    return BASE + entry[key].split('/').map(encodeURIComponent).join('/');
+  }
+
+  const filePath = activeConsole + '/' + folder + '/' + encodeURIComponent(toImageName(title)) + '.png';
+
+  return BASE + filePath;
+}
+
+// ─── Stats ────────────────────────────────────────────────────────────────────
 function valueOf(g) { return Number(g.estimate) || 0; }
 
-function renderStats() {
-  const owned = games.filter(g => g.owned).length;
-  const missing = games.length - owned;
-  const pct = games.length ? owned / games.length * 100 : 0;
-  const collection = games.filter(g => g.owned).reduce((s, g) => s + valueOf(g), 0);
-  const set = games.reduce((s, g) => s + valueOf(g), 0);
-  document.getElementById('ownedCount').textContent = owned;
-  document.getElementById('missingCount').textContent = missing;
-  document.getElementById('completion').textContent = pct.toFixed(1) + "%";
-  document.getElementById('bar').style.width = pct + "%";
-  document.getElementById('collectionValue').textContent = fmt(collection);
-  document.getElementById('setValue').textContent = fmt(set);
+// ─── Milestones ───────────────────────────────────────────────────────────────
+// 7 milestones: 10%, 25%, 50%, 75%, 90% (10% left), last-5, 100%
+// last-5 and 90% positions are computed from total at runtime
+let _prevMilestonesReached = new Set();
+
+function getMilestones(total) {
+  const last5pct = ((total - 5) / total * 100);
+  return [
+    { pct: 10,      icon: '★', label: '10%'    },
+    { pct: 25,      icon: '♦', label: '25%'    },
+    { pct: 50,      icon: '♥', label: '50%'    },
+    { pct: 75,      icon: '♣', label: '75%'    },
+    { pct: 90,      icon: '!', label: '90%'    },
+    { pct: Math.max(last5pct, 91), icon: '5', label: 'LAST 5' },
+    { pct: 100,     icon: '✦', label: '100%'   },
+  ];
 }
+
+function renderMilestoneBar(ownedCount, total) {
+  const pct = ownedCount / total * 100;
+  const milestones = getMilestones(total);
+
+  // Build tick markers
+  const markersEl = document.getElementById('milestoneMarkers');
+  const labelsEl  = document.getElementById('milestoneLabels');
+
+  if (!markersEl._built) {
+    markersEl.innerHTML = milestones.map(m =>
+      `<div class="milestone-tick" id="tick-${m.label.replace(/\s/g,'_')}" style="left:${m.pct}%"></div>`
+    ).join('');
+    labelsEl.innerHTML = milestones.map(m =>
+      `<div class="milestone-lbl" id="lbl-${m.label.replace(/\s/g,'_')}" style="left:${m.pct}%">
+        <span class="lbl-icon">${m.icon}</span>${m.label}
+      </div>`
+    ).join('');
+    markersEl._built = true;
+  }
+
+  // Update reached states & detect newly crossed milestones
+  let newlyReached = null;
+  milestones.forEach(m => {
+    const key = m.label.replace(/\s/g,'_');
+    const reached = pct >= m.pct;
+    document.getElementById('tick-' + key)?.classList.toggle('reached', reached);
+    document.getElementById('lbl-'  + key)?.classList.toggle('reached', reached);
+    if (reached && !_prevMilestonesReached.has(key)) {
+      newlyReached = m;
+      _prevMilestonesReached.add(key);
+    }
+  });
+
+  // Achievement flash
+  if (newlyReached) {
+    const el = document.getElementById('milestoneAchieved');
+    el.textContent = '>> ' + newlyReached.label + ' REACHED! <<';
+    el.classList.remove('flash');
+    void el.offsetWidth; // reflow to restart animation
+    el.classList.add('flash');
+    // chiptune celebration
+    playCollectSound && playCollectSound();
+  }
+}
+
+function renderStats() {
+  const owned = games.filter(g => g.owned);
+  const total = games.length;
+  const pct = (owned.length / total * 100).toFixed(1);
+  document.getElementById('ownedCount').textContent = owned.length;
+  document.getElementById('missingCount').textContent = total - owned.length;
+  document.getElementById('completion').textContent = pct + '%';
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('collectionValue').textContent = fmt(owned.reduce((s,g) => s + valueOf(g), 0));
+  document.getElementById('setValue').textContent = fmt(games.reduce((s,g) => s + valueOf(g), 0));
+  renderMilestoneBar(owned.length, total);
+}
+
+// ─── Filters ──────────────────────────────────────────────────────────────────
+const developerOf = g => g.developer || g.publisher || '';
+const yearOf = g => g.year || g.releaseYear || g.release_year || 'Unknown';
 
 function populateFilters() {
-  const devs = [...new Set(games.map(developerOf).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-  document.getElementById('developerFilter').innerHTML =
-    '<option value="all">All developers</option>' +
-    devs.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  const devs = [...new Set(games.map(developerOf).filter(Boolean))].sort();
+  const devSel = document.getElementById('developerFilter');
+  devs.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; devSel.appendChild(o); });
 
-  const years = [...new Set(games.map(yearOf).filter(Boolean))]
-    .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
-  document.getElementById('yearFilter').innerHTML =
-    '<option value="all">All years</option>' +
-    years.map(y => `<option value="${esc(y)}">${esc(y)}</option>`).join('');
-}
-
-function sortValue(g, key) {
-  if (key === 'id') return Number(g.id) || 0;
-  if (key === 'title') return String(g.title || '').toLowerCase();
-  if (key === 'year') { const y = Number(yearOf(g)); return Number.isFinite(y) ? y : 9999; }
-  if (key === 'estimate') return valueOf(g);
-  if (key === 'updatedAt') return g.updatedAt ? new Date(g.updatedAt).getTime() : 0;
-  if (key === 'owned') return g.owned ? 1 : 0;
-  return String(g[key] || '').toLowerCase();
+  const years = [...new Set(games.map(yearOf).filter(y => y !== 'Unknown'))].sort();
+  const yrSel = document.getElementById('yearFilter');
+  years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; yrSel.appendChild(o); });
 }
 
 function filtered() {
-  const q = document.getElementById('search').value.toLowerCase().trim();
+  const q = document.getElementById('search').value.toLowerCase();
   const status = document.getElementById('statusFilter').value;
   const dev = document.getElementById('developerFilter').value;
   const yr = document.getElementById('yearFilter').value;
 
-  const list = games.filter(g => {
-    const developer = developerOf(g);
-    const year = String(yearOf(g));
-    const matches = !q || g.title.toLowerCase().includes(q) || developer.toLowerCase().includes(q) || year.toLowerCase().includes(q) || String(g.publisher || "").toLowerCase().includes(q);
-    if (!matches) return false;
-    if (dev !== "all" && developer !== dev) return false;
-    if (yr !== "all" && year !== yr) return false;
-    if (status === 'owned') return g.owned;
-    if (status === 'missing') return !g.owned;
-    if (status === 'priced') return valueOf(g) > 0;
-    if (status === 'unpriced') return valueOf(g) === 0;
+  return games.filter(g => {
+    if (q && !g.title.toLowerCase().includes(q) && !developerOf(g).toLowerCase().includes(q) && !String(yearOf(g)).includes(q)) return false;
+    if (status === 'owned' && !g.owned) return false;
+    if (status === 'missing' && g.owned) return false;
+    if (status === 'priced' && !valueOf(g)) return false;
+    if (status === 'unpriced' && valueOf(g)) return false;
+    if (dev !== 'all' && developerOf(g) !== dev) return false;
+    if (yr !== 'all' && String(yearOf(g)) !== yr) return false;
     return true;
+  }).sort((a, b) => {
+    let av, bv;
+    if (sortKey === 'owned') { av = a.owned ? 1 : 0; bv = b.owned ? 1 : 0; }
+    else if (sortKey === 'year') { av = Number(yearOf(a)) || 9999; bv = Number(yearOf(b)) || 9999; }
+    else if (sortKey === 'estimate') { av = valueOf(a); bv = valueOf(b); }
+    else if (sortKey === 'updatedAt') { av = a.updatedAt || 0; bv = b.updatedAt || 0; }
+    else { av = String(a[sortKey] ?? '').toLowerCase(); bv = String(b[sortKey] ?? '').toLowerCase(); }
+    if (av < bv) return sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return sortDir === 'asc' ? 1 : -1;
+    return 0;
   });
-
-  return list.sort((a, b) => {
-    const av = sortValue(a, sortKey), bv = sortValue(b, sortKey);
-    let cmp = 0;
-    if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
-    else cmp = String(av).localeCompare(String(bv), undefined, { numeric: true });
-    return sortDir === 'asc' ? cmp : -cmp;
-  });
 }
 
-function ebayUrl(title) {
-  return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(title + ' NES cartridge');
-}
-function priceChartingUrl(title) {
-  return 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(title + ' NES') + '&type=prices';
+const normalizeTitle = t => t.replace(/^(.*),\s*The$/i, 'The $1').trim();
+const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : 'NES') + ' -CIB -sealed -complete -CGC -lot') + '&_sop=12';
+const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
+
+// ─── Trailer filename helper (global so row render can use it) ────────────────
+function trailerName(title) {
+  let name = title
+    .replace(/:/g, ' -')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return name + ' (USA).mp4';
 }
 
+// ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
   renderStats();
-
-  document.querySelectorAll('th.sortable').forEach(th => {
-    const key = th.dataset.sort;
-    const isActive = key === sortKey;
-    th.classList.toggle('active', isActive);
-    const base = th.textContent.replace(/ [▲▼]$/, '');
-    th.textContent = base + (isActive ? (sortDir === 'asc' ? ' ▲' : ' ▼') : '');
-  });
-
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = filtered().map(g => {
+  const list = filtered();
+  document.getElementById('tbody').innerHTML = list.map(g => {
     const dev = developerOf(g);
-    const pub = g.publisher && g.publisher !== dev ? ` · ${esc(g.publisher)}` : '';
+    const pub = g.publisher && g.publisher !== dev ? ' · ' + esc(g.publisher) : '';
     const hasPrice = valueOf(g) > 0;
-    return `<tr data-id="${g.id}">
-      <td><input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}></td>
-      <td><span class="game-id">${g.id}</span></td>
+    const coverSrc = imgUrl('boxfronts', g.title);
+    return `<tr data-id="${g.id}" data-title="${esc(g.title)}">
+      <td style="text-align:center;">
+        <input class="owned-check" type="checkbox" ${g.owned ? 'checked' : ''}>
+        <div class="pixel-check ${g.owned ? 'is-checked' : ''}" role="checkbox">
+          <svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" style="shape-rendering:crispEdges;">
+            <rect x="0" y="0" width="1" height="1" fill="white"/>
+            <rect x="1" y="1" width="1" height="1" fill="white"/>
+            <rect x="2" y="2" width="1" height="1" fill="white"/>
+            <rect x="3" y="3" width="1" height="1" fill="white"/>
+            <rect x="4" y="4" width="1" height="1" fill="white"/>
+            <rect x="5" y="5" width="1" height="1" fill="white"/>
+            <rect x="6" y="6" width="1" height="1" fill="white"/>
+            <rect x="6" y="0" width="1" height="1" fill="white"/>
+            <rect x="5" y="1" width="1" height="1" fill="white"/>
+            <rect x="4" y="2" width="1" height="1" fill="white"/>
+            <rect x="2" y="4" width="1" height="1" fill="white"/>
+            <rect x="1" y="5" width="1" height="1" fill="white"/>
+            <rect x="0" y="6" width="1" height="1" fill="white"/>
+          </svg>
+        </div>
+      </td>
+      <td class="cover-cell">
+        <div class="cover-wrap" data-game-id="${g.id}" data-title="${esc(g.title)}" onclick="openModal(${g.id})">
+          <img class="cover-thumb" src="${coverSrc}" alt="${esc(g.title)}" loading="lazy"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src=imgUrlNoRegion('boxfronts','${esc(g.title)}');}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+          <div class="cover-placeholder" style="display:none">🎮</div>
+        </div>
+      </td>
       <td>
-        <div class="game-title">${esc(g.title)}</div>
+        <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
         <div class="game-sub">${esc(dev)}${pub}</div>
+        ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
+          <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
+          <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
+            <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+              <polygon points="2,1 2,8 9,4.5" fill="white"/>
+            </svg>
+          </button>
+        </div>` : ''}
+        ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
+        <div style="margin-top:6px;display:flex;gap:10px;">
+          <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
+          <a class="link" href="${priceChartingUrl(g.title)}" target="_blank">PriceCharting</a>
+        </div>
       </td>
       <td><span class="pill">${esc(yearOf(g))}</span></td>
       <td>
         <div class="price-val ${hasPrice ? 'has-price' : ''}">${fmt(g.estimate)}</div>
         <div class="price-sub">${g.resultCount ? g.resultCount + ' listings' : ''}</div>
+        <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="margin-top:4px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:1px 6px;font-size:9px;cursor:pointer;letter-spacing:0.05em;font-family:inherit;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">↻ refresh</button>
       </td>
       <td><span class="pill">${g.updatedAt ? new Date(g.updatedAt).toLocaleDateString() : 'never'}</span></td>
-      <td>
-        <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
-        <a class="link" href="${priceChartingUrl(g.title)}" target="_blank">PriceCharting</a>
-      </td>
     </tr>`;
   }).join('');
 }
 
+// ─── Game Detail Modal ────────────────────────────────────────────────────────
+function closeModal() {
+  document.getElementById('gameModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function openModal(gameId) {
+  const g = games.find(x => x.id === gameId);
+  if (!g) return;
+
+  const front = imgUrl('boxfronts', g.title);
+  const back  = imgUrl('boxbacks',  g.title);
+  const cart  = imgUrl('cartridges', g.title);
+  const logo  = imgUrl('clearlogos', g.title);
+  const snap  = imgUrl('snaps',      g.title);
+  const title_screen = imgUrl('titles', g.title);
+
+  document.getElementById('modalContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;min-height:520px;">
+
+      <!-- TOP LEFT: Game info (was bottom-left) -->
+      <div style="display:flex;flex-direction:column;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:16px;">
+
+        <!-- Clear logo -->
+        <div style="display:flex;align-items:center;justify-content:center;min-height:80px;">
+          <img src="${logo}" alt="${esc(g.title)} logo"
+            style="max-width:100%;max-height:90px;object-fit:contain;"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div style="display:none;font-family:'Press Start 2P',monospace;font-size:13px;color:var(--ink);text-align:center;line-height:1.6;">${esc(g.title)}</div>
+        </div>
+
+        <!-- Cartridge + Metadata side by side -->
+        <div style="display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);padding-top:14px;">
+
+          <!-- Cartridge image -->
+          <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="${cart}" alt="Cartridge" style="max-height:130px;max-width:90px;object-fit:contain;border-radius:6px;border:1px solid var(--border);"
+              onerror="this.style.display='none'">
+          </div>
+
+          <!-- Metadata -->
+          <div style="display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;">
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Year</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);">${esc(yearOf(g))}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Developer</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);text-align:right;max-width:60%;word-break:break-word;">${esc(developerOf(g) || '—')}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">eBay Est.</span>
+              <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:${valueOf(g) ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}${g.resultCount ? ' <span style="font-size:9px;color:var(--muted);">(' + g.resultCount + ' listings)</span>' : ''}</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Links -->
+        <div style="display:flex;gap:10px;padding-top:4px;">
+          <a href="${ebayUrl(g.title)}" target="_blank"
+            style="flex:1;text-align:center;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 6px;transition:border-color 0.15s,color 0.15s;"
+            onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink)'">eBay</a>
+          <a href="${priceChartingUrl(g.title)}" target="_blank"
+            style="flex:1;text-align:center;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 6px;transition:border-color 0.15s,color 0.15s;"
+            onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink)'">PriceCharting</a>
+        </div>
+
+      </div>
+
+      <!-- TOP RIGHT: Title screen + Description -->
+      <div style="display:flex;flex-direction:column;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <!-- Title screen image -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Title Screen</div>
+          <img src="${title_screen}" alt="Title Screen" style="max-width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.parentElement.style.display='none'">
+        </div>
+        <!-- Description -->
+        <div style="flex:1;overflow-y:auto;border-top:1px solid var(--border);padding-top:12px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Description</div>
+          <p style="font-size:13px;line-height:1.7;color:var(--ink);">${esc(g.description || 'No description available.')}</p>
+        </div>
+      </div>
+
+      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES) -->
+      <div style="display:flex;flex-direction:${activeConsole === 'snes' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' ? 'auto' : 'visible'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+            onerror="this.style.opacity='0.2'">
+        </div>
+      </div>
+
+      <!-- BOTTOM RIGHT: Gameplay snap (click to play trailer) -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;gap:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Gameplay</div>
+        <div class="snap-thumb" onclick="openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Watch gameplay">
+          <img src="${snap}" alt="Gameplay" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;"
+            onerror="this.style.opacity='0.25'">
+          <div class="snap-play-btn">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;">
+              <rect width="36" height="36" fill="rgba(0,0,0,0.6)"/>
+              <polygon points="12,8 12,28 28,18" fill="#e60012"/>
+              <rect x="11" y="7" width="2" height="22" fill="rgba(255,255,255,0.12)"/>
+              <rect x="11" y="7" width="18" height="2" fill="rgba(255,255,255,0.12)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  // Track images available for this game for lightbox navigation
+  window._modalImages = [
+    { src: front,        label: 'Box Front'    },
+    { src: back,         label: 'Box Back'     },
+    { src: cart,         label: 'Cartridge'    },
+    { src: title_screen, label: 'Title Screen' },
+    { src: snap,         label: 'Gameplay'     },
+  ];
+
+  // Wire up click-to-lightbox on every modal image after render
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#modalContent img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        const idx = window._modalImages.findIndex(m => m.src === img.src);
+        openLightbox(idx >= 0 ? idx : 0);
+      });
+    });
+  });
+
+  document.getElementById('gameModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+// ─── Lightbox ─────────────────────────────────────────────────────────────────
+let _lbIndex = 0;
+
+function openLightbox(index) {
+  const imgs = window._modalImages || [];
+  if (!imgs.length) return;
+  _lbIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+  _renderLightbox();
+  document.getElementById('imageLightbox').style.display = 'flex';
+}
+
+function closeLightbox() {
+  document.getElementById('imageLightbox').style.display = 'none';
+}
+
+function lbNav(dir) {
+  const imgs = window._modalImages || [];
+  _lbIndex = ((_lbIndex + dir) + imgs.length) % imgs.length;
+  _renderLightbox();
+}
+
+function _renderLightbox() {
+  const imgs = window._modalImages || [];
+  const item = imgs[_lbIndex];
+  const img  = document.getElementById('lbImg');
+  const lbl  = document.getElementById('lbLabel');
+  const ctr  = document.getElementById('lbCounter');
+
+  img.style.opacity = '0';
+  img.src = item.src;
+  img.onload = () => { img.style.opacity = '1'; };
+  img.onerror = () => { img.style.opacity = '0.15'; };
+  lbl.textContent = item.label;
+  ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
+
+  // Force identical dimensions for box art only
+  const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
+  const isSNES   = activeConsole === 'snes';
+  if (isBoxArt) {
+    if (isSNES) {
+      // SNES boxes are landscape (~170×120 ratio)
+      img.style.width      = '560px';
+      img.style.height     = '395px';
+    } else {
+      // NES boxes are portrait (~113×155 ratio)
+      img.style.width      = '400px';
+      img.style.height     = '560px';
+    }
+    img.style.objectFit  = 'fill';
+    img.style.flexShrink = '0';
+  } else {
+    img.style.width      = '';
+    img.style.height     = '';
+    img.style.objectFit  = 'contain';
+    img.style.flexShrink = '';
+  }
+
+  // Update dot indicators
+  document.querySelectorAll('.lb-dot').forEach((d, i) => {
+    d.classList.toggle('lb-dot--active', i === _lbIndex);
+  });
+
+  // Rebuild dots (in case game changed)
+  const dotsEl = document.getElementById('lbDots');
+  if (dotsEl.children.length !== imgs.length) {
+    dotsEl.innerHTML = imgs.map((_, i) =>
+      `<div class="lb-dot${i === _lbIndex ? ' lb-dot--active' : ''}" onclick="openLightbox(${i})"></div>`
+    ).join('');
+  }
+}
+
+document.getElementById('gameModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('gameModal')) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('imageLightbox');
+  if (lb && lb.style.display === 'flex') {
+    if (e.key === 'ArrowLeft')  { lbNav(-1); return; }
+    if (e.key === 'ArrowRight') { lbNav(1);  return; }
+    if (e.key === 'Escape')     { closeLightbox(); return; }
+  }
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─── Price refresh ────────────────────────────────────────────────────────────
 async function refreshGame(g) {
-  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title));
+  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title) + '&console=' + activeConsole);
   if (!res.ok) throw new Error(await res.text());
   const data = await res.json();
   g.estimate = data.estimate;
@@ -684,10 +1778,66 @@ async function refreshGame(g) {
   render();
 }
 
-// Sort
-document.querySelectorAll('th.sortable').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.sort;
+// ─── Sort ─────────────────────────────────────────────────────────────────────
+// ─── Console switcher ────────────────────────────────────────────────────────
+function switchConsole(console) {
+  if (console === activeConsole) return;
+  activeConsole = console;
+  const cfg = CONSOLE_CONFIG[console];
+
+  // Update accent colors
+  const root = document.documentElement;
+  root.style.setProperty('--accent',  cfg.accent);
+  root.style.setProperty('--accent2', cfg.accent2);
+  root.style.setProperty('--red',     cfg.accent);
+  root.style.setProperty('--glow',    cfg.glow);
+
+  // Update trailer base URL
+  TRAILER_BASE_URL = cfg.trailerBase;
+
+  // Update tab button styles
+  Object.values(CONSOLE_CONFIG).forEach(c => {
+    const btn = document.getElementById(c.tabId);
+    if (!btn) return;
+    if (c.tabId === cfg.tabId) {
+      btn.style.background   = cfg.accent;
+      btn.style.borderColor  = cfg.accent;
+      btn.style.color        = '#fff';
+      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
+    } else {
+      btn.style.background   = 'transparent';
+      btn.style.borderColor  = '#444';
+      btn.style.color        = '#888';
+      btn.style.boxShadow    = '3px 3px 0 #222';
+    }
+  });
+
+  // Load games for this console
+  const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
+  games = cfg.games().map(g => ({ ...g, ...(savedState[g.id] || {}) }));
+
+  // Toggle landscape cover class on table
+  const tbody = document.getElementById('tbody');
+  if (tbody) {
+    tbody.classList.toggle('snes-covers', console === 'snes');
+  }
+
+  // Reset filters and re-render
+  sortKey = 'title';
+  sortDir = 'asc';
+  document.getElementById('search').value = '';
+  document.getElementById('statusFilter').value = 'all';
+  document.getElementById('developerFilter').value = 'all';
+  document.getElementById('yearFilter').value = 'all';
+  _prevMilestonesReached = new Set();
+  populateFilters();
+  render();
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+document.querySelectorAll('#table-header .sortable').forEach(el => {
+  el.addEventListener('click', () => {
+    const key = el.dataset.sort;
     if (sortKey === key) {
       sortDir = sortDir === 'asc' ? 'desc' : 'asc';
     } else {
@@ -698,7 +1848,76 @@ document.querySelectorAll('th.sortable').forEach(th => {
   });
 });
 
-// Owned toggle
+// ─── Chiptune collect sound ──────────────────────────────────────────────────
+function playCollectSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+  // Classic NES-style rising arpeggio: square wave, 3 quick notes
+  const notes = [
+    { freq: 261.6, start: 0.00, dur: 0.07 },   // C4
+    { freq: 392.0, start: 0.07, dur: 0.07 },   // G4
+    { freq: 523.3, start: 0.14, dur: 0.07 },   // C5
+    { freq: 784.0, start: 0.21, dur: 0.12 },   // G5 — held finish
+  ];
+
+  notes.forEach(({ freq, start, dur }) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime + start);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(ctx.currentTime + start);
+    osc.stop(ctx.currentTime + start + dur);
+  });
+
+  // Close context after sound finishes
+  setTimeout(() => ctx.close(), 500);
+}
+
+function playUncheckSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(300, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.12);
+
+  gain.gain.setValueAtTime(0.12, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.13);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.13);
+
+  setTimeout(() => ctx.close(), 300);
+}
+
+// ─── Owned toggle ─────────────────────────────────────────────────────────────
+document.getElementById('tbody').addEventListener('click', e => {
+  const pc = e.target.closest('.pixel-check');
+  if (!pc) return;
+  const tr = pc.closest('tr');
+  if (!tr) return;
+  const g = games.find(x => x.id == tr.dataset.id);
+  if (!g) return;
+  g.owned = !g.owned;
+  pc.classList.toggle('is-checked', g.owned);
+  const cb = tr.querySelector('.owned-check');
+  if (cb) cb.checked = g.owned;
+  if (g.owned) playCollectSound(); else playUncheckSound();
+  save();
+  renderStats();
+});
+
 document.getElementById('tbody').addEventListener('change', e => {
   const tr = e.target.closest('tr');
   if (!tr) return;
@@ -708,12 +1927,32 @@ document.getElementById('tbody').addEventListener('change', e => {
   renderStats();
 });
 
-// Filter listeners
+// ─── Filter listeners ─────────────────────────────────────────────────────────
 ['search', 'statusFilter', 'developerFilter', 'yearFilter'].forEach(id => {
   document.getElementById(id).addEventListener(id === 'search' ? 'input' : 'change', render);
 });
 
-// Refresh
+// ─── Refresh single game price ────────────────────────────────────────────────
+document.getElementById('tbody').addEventListener('click', async e => {
+  const btn = e.target.closest('.refresh-single-btn');
+  if (!btn) return;
+  const id = parseInt(btn.dataset.id);
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await refreshGame(g);
+    btn.textContent = '✓';
+    setTimeout(() => { btn.disabled = false; btn.textContent = '↻ refresh'; }, 1500);
+  } catch (err) {
+    btn.textContent = '✗';
+    btn.disabled = false;
+    console.error(g.title, err);
+  }
+});
+
+// ─── Refresh prices ───────────────────────────────────────────────────────────
 document.getElementById('refreshVisible').addEventListener('click', async () => {
   const btn = document.getElementById('refreshVisible');
   const status = document.getElementById('priceStatus');
@@ -731,7 +1970,7 @@ document.getElementById('refreshVisible').addEventListener('click', async () => 
   btn.disabled = false;
 });
 
-// Export
+// ─── Export ───────────────────────────────────────────────────────────────────
 document.getElementById('exportData').addEventListener('click', () => {
   const blob = new Blob([localStorage.getItem(STORAGE_KEY) || '{}'], { type: 'application/json' });
   const a = document.createElement('a');
@@ -740,16 +1979,263 @@ document.getElementById('exportData').addEventListener('click', () => {
   a.click();
 });
 
-// Reset
-document.getElementById('resetData').addEventListener('click', () => {
-  if (confirm('Clear your owned games and price cache in this browser?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
+// ─── Hover popup (box front preview) ─────────────────────────────────────────
+const popup    = document.getElementById('artPopup');
+const popupImg = document.getElementById('artPopupImg');
+const popupTtl = document.getElementById('artPopupTitle');
+
+document.getElementById('tbody').addEventListener('mouseover', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) return;
+  const title = wrap.dataset.title;
+  popupImg.src = imgUrl('boxfronts', title);
+  popupTtl.textContent = title;
+  popup.classList.add('visible');
 });
 
+document.getElementById('tbody').addEventListener('mousemove', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) { popup.classList.remove('visible'); return; }
+  const margin = 16;
+  const pw = 180 + margin;
+  let left = e.clientX + margin;
+  let top  = e.clientY - 60;
+  if (left + pw > window.innerWidth) left = e.clientX - pw;
+  if (top < 8) top = 8;
+  popup.style.left = left + 'px';
+  popup.style.top  = top + 'px';
+});
+
+document.getElementById('tbody').addEventListener('mouseout', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) return;
+  popup.classList.remove('visible');
+});
+
+// ─── Light/Dark toggle ────────────────────────────────────────────────────────
+(function() {
+  const toggle = document.getElementById('themeToggle');
+  const knob   = document.getElementById('toggleKnob');
+
+  function applyTheme(isLight) {
+    document.body.classList.toggle('light-mode', isLight);
+    knob.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('nes-theme', isLight ? 'light' : 'dark');
+  }
+
+  toggle.addEventListener('change', () => applyTheme(toggle.checked));
+
+  // Restore saved preference
+  const saved = localStorage.getItem('nes-theme');
+  if (saved === 'light') { toggle.checked = true; applyTheme(true); }
+})();
+
+// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+function fitStatValues() {
+  document.querySelectorAll('.stat-value').forEach(el => {
+    el.style.fontSize = '18px';
+    const parent = el.closest('.stat');
+    const paddingH = parseFloat(getComputedStyle(parent).paddingLeft) + parseFloat(getComputedStyle(parent).paddingRight);
+    const maxW = parent.clientWidth - paddingH;
+    let size = 18;
+    while (el.scrollWidth > maxW && size > 8) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+  });
+}
+
+// Run after render and on resize
+const _origRenderStats = renderStats;
+renderStats = function() { _origRenderStats.apply(this, arguments); requestAnimationFrame(fitStatValues); };
+window.addEventListener('resize', fitStatValues);
+
+// ─── Sticky thead offset ──────────────────────────────────────────────────────
+function updateStickyTheadTop() {
+  const panel = document.querySelector('.sticky-panel');
+  if (!panel) return;
+  const offset = panel.offsetHeight + 'px';
+  document.documentElement.style.setProperty('--sticky-panel-height', offset);
+}
+window.addEventListener('resize', updateStickyTheadTop);
+
 populateFilters();
+// Pre-seed reached milestones so initial render doesn't trigger achievement flashes
+{
+  const owned = games.filter(g => g.owned).length;
+  const total = games.length;
+  const pct = owned / total * 100;
+  getMilestones(total).forEach(m => {
+    if (pct >= m.pct) _prevMilestonesReached.add(m.label.replace(/\s/g,'_'));
+  });
+}
 render();
+// Use ResizeObserver so thead top updates whenever the sticky panel height changes
+(function() {
+  const panel = document.querySelector('.sticky-panel');
+  if (!panel) return;
+  // Set immediately after render
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+  // Keep in sync if panel resizes (milestone text, filters, etc.)
+  if (window.ResizeObserver) {
+    new ResizeObserver(updateStickyTheadTop).observe(panel);
+  }
+})();
 </script>
+<!-- Video Trailer Overlay -->
+<div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
+  <div style="position:relative;width:min(860px,94vw);">
+    <button onclick="closeTrailer()" title="Close" style="position:absolute;top:-44px;right:0;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
+      <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="0" y="0" width="2" height="2" fill="white"/>
+        <rect x="8" y="0" width="2" height="2" fill="white"/>
+        <rect x="2" y="2" width="2" height="2" fill="white"/>
+        <rect x="6" y="2" width="2" height="2" fill="white"/>
+        <rect x="4" y="4" width="2" height="2" fill="white"/>
+        <rect x="2" y="6" width="2" height="2" fill="white"/>
+        <rect x="6" y="6" width="2" height="2" fill="white"/>
+        <rect x="0" y="8" width="2" height="2" fill="white"/>
+        <rect x="8" y="8" width="2" height="2" fill="white"/>
+      </svg>
+    </button>
+    <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
+    <div style="position:relative;">
+      <video id="trailerVideo"
+        controls autoplay
+        style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
+        onerror="showTrailerError()">
+      </video>
+      <img id="trailerClearLogo" alt=""
+        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
+    </div>
+  </div>
+</div>
+
+<script>
+function openTrailer(filename, gameTitle) {
+  const overlay  = document.getElementById('trailerOverlay');
+  const video    = document.getElementById('trailerVideo');
+  const errEl    = document.getElementById('trailerError');
+  const logoEl   = document.getElementById('trailerClearLogo');
+
+  const src = filename.includes('/')
+    ? BASE + filename.split('/').map(encodeURIComponent).join('/')
+    : TRAILER_BASE_URL + encodeURIComponent(filename);
+  errEl.style.display  = 'none';
+  video.style.display  = 'block';
+  video.src = src;
+
+  // Show clear logo overlay using the exact game title for manifest lookup
+  if (gameTitle) {
+    logoEl.style.display = 'block';
+    logoEl.alt = gameTitle + ' logo';
+    logoEl.onerror = () => { logoEl.style.display = 'none'; };
+    logoEl.src = imgUrl('clearlogos', gameTitle);
+  } else {
+    logoEl.style.display = 'none';
+  }
+
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Detect missing file
+  video.onerror = () => showTrailerError();
+  video.load();
+}
+
+function showTrailerError() {
+  const video = document.getElementById('trailerVideo');
+  const errEl = document.getElementById('trailerError');
+  video.style.display = 'none';
+  errEl.style.display = 'block';
+}
+
+function closeTrailer() {
+  const overlay = document.getElementById('trailerOverlay');
+  const video   = document.getElementById('trailerVideo');
+  const logoEl  = document.getElementById('trailerClearLogo');
+  video.pause();
+  video.src = '';
+  logoEl.src = '';
+  logoEl.style.display = 'none';
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click or Escape
+document.getElementById('trailerOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('trailerOverlay')) closeTrailer();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('trailerOverlay').style.display === 'flex') closeTrailer();
+});
+</script>
+
+
+<!-- Image Lightbox -->
+<div id="imageLightbox">
+  <button class="lb-close-btn" onclick="closeLightbox()" title="Close (Esc)">
+    <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+      <rect x="0" y="0" width="2" height="2" fill="white"/>
+      <rect x="8" y="0" width="2" height="2" fill="white"/>
+      <rect x="2" y="2" width="2" height="2" fill="white"/>
+      <rect x="6" y="2" width="2" height="2" fill="white"/>
+      <rect x="4" y="4" width="2" height="2" fill="white"/>
+      <rect x="2" y="6" width="2" height="2" fill="white"/>
+      <rect x="6" y="6" width="2" height="2" fill="white"/>
+      <rect x="0" y="8" width="2" height="2" fill="white"/>
+      <rect x="8" y="8" width="2" height="2" fill="white"/>
+    </svg>
+  </button>
+
+  <div class="lb-stage">
+    <!-- Left arrow -->
+    <button class="lb-arrow" onclick="lbNav(-1)" title="Previous (←)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="8"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="2"  y="6"  width="2" height="2" fill="white"/>
+        <rect x="4"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="8"  y="12" width="2" height="2" fill="white"/>
+        <rect x="10" y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+
+    <!-- Image -->
+    <div class="lb-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+
+    <!-- Right arrow -->
+    <button class="lb-arrow" onclick="lbNav(1)" title="Next (→)">
+      <svg width="28" height="28" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
+        <rect x="4"  y="0"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="2"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="4"  width="2" height="2" fill="white"/>
+        <rect x="10" y="6"  width="2" height="2" fill="white"/>
+        <rect x="8"  y="8"  width="2" height="2" fill="white"/>
+        <rect x="6"  y="10" width="2" height="2" fill="white"/>
+        <rect x="4"  y="12" width="2" height="2" fill="white"/>
+        <rect x="2"  y="0"  width="2" height="14" fill="white" opacity="0.25"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="lb-footer">
+    <div id="lbLabel"></div>
+    <div id="lbDots"></div>
+    <div id="lbCounter"></div>
+  </div>
+</div>
+
+
+<script>
+document.getElementById('imageLightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('imageLightbox')) closeLightbox();
+});
+</script>
+
 </body>
 </html>
