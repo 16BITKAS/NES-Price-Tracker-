@@ -42,7 +42,7 @@ window.snesGames = [
   {"id":37,"title":"Ballz 3-D","publisher":"Accolade","owned":false,"year":1994,"genre":"Action","description":"SNES action game released by Accolade in November 1994."},
   {"id":38,"title":"Barbie Super Model","publisher":"Hi-Tech","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Hi-Tech in December 1993."},
   {"id":39,"title":"Bass Masters Classic","publisher":"Malibu Games","owned":false,"year":1995,"genre":"Sports","description":"SNES sports title released by Malibu Games in June 1995."},
-  {"id":40,"title":"Bass Masters Classic: Pro Edition","publisher":"Black Pearl Software","owned":false,"year":1996,"genre":"Sports","description":"SNES sports title released by Black Pearl Software in July 1996."},
+  {"id":40,"title":"Bass Masters Classic Pro Edition","publisher":"Black Pearl Software","owned":false,"year":1996,"genre":"Sports","description":"SNES sports title released by Black Pearl Software in July 1996."},
   {"id":41,"title":"Bassin's Black Bass with Hank Parker","publisher":"Hot-B","owned":false,"year":1994,"genre":"Sports","description":"SNES sports title released by Hot-B in November 1994."},
   {"id":42,"title":"Batman Forever","publisher":"Acclaim","owned":false,"year":1995,"genre":"Action","description":"SNES action game released by Acclaim in August 1995."},
   {"id":43,"title":"Batman Returns","publisher":"Konami","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Konami in April 1993."},
