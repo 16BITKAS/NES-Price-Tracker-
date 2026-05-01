@@ -912,6 +912,14 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 @media (max-width: 640px) {
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
   .stat-value { font-size: clamp(8px, 5vw, 18px); }
+  .controls { flex-wrap: wrap; }
+  #search { flex: 1 1 100%; }
+  #statusFilter, #developerFilter, #yearFilter { flex: 1 1 calc(33% - 6px); min-width: 0; font-size: 9px; }
+  .tablewrap, .tablewrap-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 480px; }
+  th:nth-child(5), td:nth-child(5) { display: none; }
+  .game-title { white-space: normal; word-break: break-word; max-width: 140px; }
+  .refresh-single-btn { display: none; }
 }
 
 /* ── Image Lightbox ───────────────────────────────────────────────────────── */
