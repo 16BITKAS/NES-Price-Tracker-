@@ -621,11 +621,17 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 .note .warn { color: var(--gold); }
 
 /* Table */
-/* tablewrap must NOT have any overflow set - it breaks position:sticky on thead */
+/* tablewrap handles horizontal scroll on mobile */
 .tablewrap { }
+
 
 /* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
 .tablewrap-outer { overflow-x: clip; }
+
+@media (max-width: 640px) {
+  .tablewrap-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tablewrap { min-width: 0; }
+}
 
 table {
   width: 100%;
