@@ -730,6 +730,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   font-size: 20.7px;
   letter-spacing: -0.01em;
   text-decoration: underline;
+  min-width: 0;
 }
 
 .game-sub {
@@ -2105,6 +2106,25 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   if (saved === 'light') { toggle.checked = true; applyTheme(true); }
 })();
 
+// ─── Auto-shrink game titles to fit on one line (mobile) ─────────────────────
+function fitGameTitles() {
+  if (window.innerWidth > 900) return;
+  document.querySelectorAll('.game-title').forEach(el => {
+    el.style.fontSize = '20.7px';
+    el.style.whiteSpace = 'nowrap';
+    const maxW = el.closest('td').clientWidth - 20; // 10px padding each side
+    let size = 20.7;
+    while (el.scrollWidth > maxW && size > 9) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+    // If even at min size it still overflows, allow wrapping but at the fitted size
+    if (el.scrollWidth > maxW) {
+      el.style.whiteSpace = '';
+    }
+  });
+}
+
 // ─── Auto-shrink stat values to fit on one line ───────────────────────────────
 function fitStatValues() {
   document.querySelectorAll('.stat-value').forEach(el => {
@@ -2124,6 +2144,10 @@ function fitStatValues() {
 const _origRenderStats = renderStats;
 renderStats = function() { _origRenderStats.apply(this, arguments); requestAnimationFrame(fitStatValues); };
 window.addEventListener('resize', fitStatValues);
+
+const _origRender = render;
+render = function() { _origRender.apply(this, arguments); requestAnimationFrame(fitGameTitles); };
+window.addEventListener('resize', fitGameTitles);
 
 // ─── Sticky thead offset ──────────────────────────────────────────────────────
 function updateStickyTheadTop() {
