@@ -665,6 +665,9 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
   table { width: 100%; table-layout: fixed; }
   /* Show the inline mobile price + refresh button */
   .mobile-price-row { display: flex !important; }
+  /* Keep eBay + PriceCharting on one line */
+  .game-links { flex-wrap: nowrap !important; gap: 6px !important; }
+  .game-links .link { font-size: 9px !important; white-space: nowrap; }
 }
 table {
   width: 100%;
@@ -994,6 +997,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   /* Mobile: hide description, show inline price+refresh instead */
   .game-desc { display: none !important; }
   .mobile-price-row { display: flex !important; }
+  .game-links { flex-wrap: nowrap !important; gap: 6px !important; }
+  .game-links .link { font-size: 9px !important; white-space: nowrap; }
 }
 
 /* ── Image Lightbox ───────────────────────────────────────────────────────── */
