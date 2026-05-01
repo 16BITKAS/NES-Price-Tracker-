@@ -55,7 +55,7 @@ window.snesGames = [
   {"id":50,"title":"Bazooka Blitzkrieg","publisher":"Bandai","owned":false,"year":1992,"genre":"Action","description":"SNES action game released by Bandai in November 1992."},
   {"id":51,"title":"Beavis and Butt-Head","publisher":"Majesco","owned":false,"year":1994,"genre":"Action","description":"SNES action game released by Majesco in November 1994."},
   {"id":52,"title":"Bebe's Kids","publisher":"Mandingo","owned":false,"year":1994,"genre":"Action","description":"SNES action game released by Mandingo in April 1994."},
-  {"id":53,"title":"Beethoven's 2nd","publisher":"Hi-Tech","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Hi-Tech in December 1993."},
+  {"id":53,"title":"Beethoven - The Ultimate Canine Caper!","publisher":"Hi-Tech","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Hi-Tech in December 1993."},
   {"id":54,"title":"Best of the Best: Championship Karate","publisher":"Electro Brain","owned":false,"year":1992,"genre":"Sports","description":"SNES sports title released by Electro Brain in November 1992."},
   {"id":55,"title":"Big Sky Trooper","publisher":"JVC","owned":false,"year":1995,"genre":"Action","description":"SNES action game released by JVC in October 1995."},
   {"id":56,"title":"Biker Mice from Mars","publisher":"Konami","owned":false,"year":1994,"genre":"Racing","description":"SNES racing title released by Konami in December 1994."},
