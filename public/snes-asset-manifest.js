@@ -96,7 +96,7 @@ window.snesAssetManifest = {
     "boxback": "snes/boxbacks/Alien vs Predator (USA).png"
   },
   "Alien3": {
-    "boxfront": "snes/boxfronts/2020 Super Baseball (USA).png",
+    "boxfront": "snes/boxfronts/Alien3 (USA).png",
     "boxback": "snes/boxbacks/Alien3 (USA).png"
   },
   "American Gladiators": {
