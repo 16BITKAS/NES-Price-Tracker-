@@ -631,10 +631,11 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 @media (max-width: 640px) {
   .tablewrap-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .tablewrap { min-width: 0; }
-  #table-header { grid-template-columns: 40px 90px 1fr 80px !important; }
-  #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
-  td:nth-child(4), td:nth-child(5) { display: none; }
-  tr td:nth-child(3) { max-width: calc(100vw - 180px); overflow: hidden; }
+  #table-header { grid-template-columns: 52px 72px 1fr !important; }
+  #table-header span:nth-child(4), #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
+  td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; }
+  td:nth-child(2) { width: 72px; padding: 4px 6px !important; }
+  tr td:nth-child(3) { max-width: calc(100vw - 140px); overflow: hidden; }
   table { width: 100%; table-layout: fixed; }
 }
 
@@ -852,10 +853,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 /* Mobile: shrink cover art to fit column without overflowing */
 @media (max-width: 640px) {
   .cover-cell {
-    width: 56px;
+    width: 68px;
     padding: 4px 6px !important;
+    overflow: hidden;
+    vertical-align: middle;
   }
-  .cover-wrap,
+  .cover-wrap {
+    width: 56px;
+    height: 76px;
+    margin: 0;
+  }
   .cover-thumb,
   .cover-placeholder,
   .cover-loading {
@@ -866,8 +873,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   #tbody.snes-covers .cover-thumb,
   #tbody.snes-covers .cover-placeholder,
   #tbody.snes-covers .cover-loading {
-    width: 76px;
-    height: 54px;
+    width: 62px;
+    height: 44px;
   }
 }
 
