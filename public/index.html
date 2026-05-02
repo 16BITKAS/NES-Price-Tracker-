@@ -1136,6 +1136,23 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .lb-close-btn:hover { transform: scale(1.1); }
 
+/* ── Game Detail Modal – mobile layout ───────────────────────────────────── */
+@media (max-width: 700px) {
+  #gameModalInner {
+    margin: 12px !important;
+    border-radius: 14px !important;
+  }
+  #modalContent {
+    padding: 16px !important;
+  }
+  /* Collapse the 2×2 quadrant grid into a single column */
+  #modalContent > div {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    min-height: unset !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1278,7 +1295,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 <!-- Game Detail Modal -->
 <div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
-  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
+  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;position:relative;">
     <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
       <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
         <rect x="0" y="0" width="2" height="2" fill="white"/>
