@@ -918,11 +918,13 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   animation: spin 0.7s linear infinite;
 }
 
-/* SNES landscape box art overrides */
-#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
-#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
-#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
-#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+/* SNES landscape box art overrides – desktop only */
+@media (min-width: 901px) {
+  #tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
+  #tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+  #tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
+  #tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+}
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
