@@ -93,6 +93,12 @@ body.light-mode .game-sub .pill {
 .mobile-price-row {
   display: none;
 }
+.mobile-year {
+  display: none;
+}
+@media (max-width: 900px) {
+  .mobile-year { display: inline; }
+}
 .pixel-toggle-wrap {
   position: absolute;
   right: 20px;
@@ -1596,7 +1602,7 @@ function render() {
       </td>
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
-        <div class="game-sub">${esc(dev)}${pub}</div>
+        <div class="game-sub">${esc(dev)}${pub}<span class="mobile-year"> · ${esc(yearOf(g))}</span></div>
         ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
           <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
           <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
@@ -1607,8 +1613,8 @@ function render() {
         </div>` : ''}
         <div class="game-desc" ${g.description ? '' : 'style="display:none"'}><div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:min(280px,40vw);">${esc(g.description)}</div></div>
         <div class="mobile-price-row" style="margin-top:5px;align-items:center;gap:6px;">
-          <span class="mobile-price-val ${hasPrice ? 'has-price' : ''}" style="font-family:'Space Mono',monospace;font-size:12px;color:${hasPrice ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}</span>
-          <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">↻</button>
+          <span class="mobile-price-val ${hasPrice ? 'has-price' : ''}" style="font-family:'Space Mono',monospace;font-size:21px;color:${hasPrice ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}</span>
+          <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="background:none;border:none;color:var(--muted);font-size:24.5px;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">↻</button>
         </div>
         <div class="game-links" style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
