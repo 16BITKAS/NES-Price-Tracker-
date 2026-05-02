@@ -27,7 +27,7 @@ window.snesGames = [
   {"id":22,"title":"Al Unser Jr.'s Road To The Top","publisher":"Mindscape","owned":false,"year":1994,"genre":"Racing","description":"SNES racing title released by Mindscape in November 1994."},
   {"id":23,"title":"Alfred Chicken","publisher":"Mindscape","owned":false,"year":1994,"genre":"Action","description":"SNES action game released by Mindscape in February 1994."},
   {"id":24,"title":"Alien vs. Predator","publisher":"Activision","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Activision in September 1993."},
-  {"id":25,"title":"Alien3","publisher":"LJN","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by LJN in May 1993."},
+  {"id":25,"title":"Alien 3","publisher":"LJN","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by LJN in May 1993."},
   {"id":26,"title":"American Gladiators","publisher":"Gametek","owned":false,"year":1993,"genre":"Action","description":"SNES action game released by Gametek in April 1993."},
   {"id":27,"title":"An American Tail: Fievel Goes West","publisher":"Hudson Soft","owned":false,"year":1994,"genre":"Action","description":"SNES action game released by Hudson Soft in August 1994."},
   {"id":28,"title":"Andre Agassi Tennis","publisher":"TecMagik","owned":false,"year":1994,"genre":"Sports","description":"SNES sports title released by TecMagik in May 1994."},
