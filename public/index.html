@@ -528,65 +528,20 @@ h1 span { color: var(--accent); }
   min-width: 0;
 }
 
-@media (max-width: 900px) {
-  #table-header { display: none !important; }
-}
-
 @media (max-width: 700px) {
-  .controls { flex-wrap: wrap; gap: 6px; }
-  #search { flex: 1 1 auto; min-width: 0; }
-  #statusFilter, #developerFilter, #yearFilter, #refreshVisible { display: none; }
-
-  #mobileFilterDrawer {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.25s ease, opacity 0.2s ease;
-    opacity: 0;
-    pointer-events: none;
+  .controls {
+    flex-wrap: wrap;
   }
-  #mobileFilterDrawer.open {
-    max-height: 200px;
-    opacity: 1;
-    pointer-events: auto;
+  #search {
+    flex: 1 1 100%;
   }
-  #mobileFilterDrawer .drawer-row {
-    display: flex;
-    gap: 6px;
-    width: 100%;
-  }
-  #mobileFilterDrawer select {
+  #statusFilter, #developerFilter, #yearFilter {
     flex: 1 1 calc(33% - 6px);
     min-width: 0;
     font-size: 10px;
   }
-  #mobileFilterDrawer #refreshVisible {
-    display: flex !important;
+  #refreshVisible {
     flex: 1 1 auto;
-    justify-content: center;
-  }
-  #mobileFilterBtn {
-    display: flex;
-    position: relative;
-    flex-shrink: 0;
-  }
-  #mobileFilterBtn .filter-dot {
-    display: none;
-    position: absolute;
-    top: 4px; right: 4px;
-    width: 7px; height: 7px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(230,0,18,0.8);
-  }
-  #mobileFilterBtn.has-filters .filter-dot { display: block; }
-  #mobileFilterBtn.active {
-    background: var(--accent) !important;
-    border-color: var(--accent) !important;
-    color: #fff !important;
   }
 }
 
@@ -1282,34 +1237,6 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       <select id="developerFilter"><option value="all">All developers</option></select>
       <select id="yearFilter"><option value="all">All years</option></select>
       <button class="primary" id="refreshVisible">Refresh prices</button>
-      <!-- Mobile-only funnel button -->
-      <button id="mobileFilterBtn" class="secondary" title="Filters" style="display:none;align-items:center;justify-content:center;gap:5px;padding:7px 10px;">
-        <svg width="14" height="14" viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;flex-shrink:0;">
-          <rect x="0" y="0" width="7" height="1" fill="currentColor"/>
-          <rect x="1" y="2" width="5" height="1" fill="currentColor"/>
-          <rect x="2" y="4" width="3" height="1" fill="currentColor"/>
-          <rect x="3" y="6" width="1" height="1" fill="currentColor"/>
-        </svg>
-        <span style="font-size:10px;letter-spacing:0.06em;">FILTER</span>
-        <span class="filter-dot"></span>
-      </button>
-      <!-- Mobile filter drawer (mirrored selects + refresh) -->
-      <div id="mobileFilterDrawer">
-        <div class="drawer-row">
-          <select id="mStatusFilter">
-            <option value="all">All games</option>
-            <option value="owned">Owned</option>
-            <option value="missing">Missing</option>
-            <option value="priced">Priced</option>
-            <option value="unpriced">Unpriced</option>
-          </select>
-          <select id="mDeveloperFilter"><option value="all">All developers</option></select>
-          <select id="mYearFilter"><option value="all">All years</option></select>
-        </div>
-        <div class="drawer-row">
-          <button class="primary" id="mRefreshVisible" style="flex:1;">Refresh prices</button>
-        </div>
-      </div>
       <button class="floppy-btn" id="exportData" title="Export save">
         <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
           <!-- Body -->
@@ -2487,73 +2414,5 @@ document.getElementById('imageLightbox').addEventListener('click', e => {
 })();
 </script>
 
-
-<script>
-// ── Mobile filter drawer ──────────────────────────────────────────────────────
-(function () {
-  const btn        = document.getElementById('mobileFilterBtn');
-  const drawer     = document.getElementById('mobileFilterDrawer');
-
-  // Pairs: [mobile select, real select]
-  const pairs = [
-    [document.getElementById('mStatusFilter'),    document.getElementById('statusFilter')],
-    [document.getElementById('mDeveloperFilter'), document.getElementById('developerFilter')],
-    [document.getElementById('mYearFilter'),      document.getElementById('yearFilter')],
-  ];
-
-  // Show/hide funnel button only on mobile
-  function syncBtnVisibility() {
-    btn.style.display = window.innerWidth <= 700 ? 'flex' : 'none';
-  }
-  syncBtnVisibility();
-  window.addEventListener('resize', syncBtnVisibility);
-
-  // Toggle drawer
-  btn.addEventListener('click', () => {
-    const open = drawer.classList.toggle('open');
-    btn.classList.toggle('active', open);
-  });
-
-  // Sync mobile → real selects (triggers existing filter logic)
-  pairs.forEach(([mob, real]) => {
-    mob.addEventListener('change', () => {
-      real.value = mob.value;
-      real.dispatchEvent(new Event('change'));
-      updateDot();
-    });
-  });
-
-  // Sync real → mobile (e.g. if desktop changes)
-  pairs.forEach(([mob, real]) => {
-    real.addEventListener('change', () => {
-      mob.value = real.value;
-      updateDot();
-    });
-  });
-
-  // Mobile refresh button mirrors the real one
-  document.getElementById('mRefreshVisible').addEventListener('click', () => {
-    document.getElementById('refreshVisible').click();
-  });
-
-  // Populate developer + year options into mobile selects once filters are built
-  function mirrorOptions() {
-    pairs.slice(1).forEach(([mob, real]) => {
-      // copy all options except the first (already present)
-      while (mob.options.length > 1) mob.remove(1);
-      Array.from(real.options).slice(1).forEach(opt => {
-        mob.appendChild(opt.cloneNode(true));
-      });
-    });
-  }
-  // populateFilters() runs before this script — mirror right away
-  mirrorOptions();
-
-  function updateDot() {
-    const hasActive = pairs.some(([, real]) => real.value !== 'all');
-    btn.classList.toggle('has-filters', hasActive);
-  }
-})();
-</script>
 </body>
 </html>
