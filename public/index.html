@@ -1011,8 +1011,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 @media (max-width: 900px) {
   .lb-arrow { width: 36px; height: 36px; margin: 0 6px; flex-shrink: 0; }
-  .lb-stage { padding: 50px 0 10px; }
-  .lb-img-wrap { flex: 1; min-width: 0; height: auto; }
+  .lb-stage { padding: 50px 0 10px; align-items: center; }
+  .lb-img-wrap { flex: 1; min-width: 0; height: auto; max-height: 70vh; display: flex; align-items: center; justify-content: center; }
   #lbImg { max-height: 70vh; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 }
 
@@ -1078,6 +1078,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 #lbImg {
   max-width: 100%;
   max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
