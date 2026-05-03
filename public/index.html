@@ -1010,9 +1010,10 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 @media (max-width: 900px) {
-  .lb-arrow { width: 36px; height: 36px; margin: 0 6px; }
+  .lb-arrow { width: 36px; height: 36px; margin: 0 6px; flex-shrink: 0; }
   .lb-stage { padding: 50px 0 10px; }
-  #lbImg { max-height: 70vh; }
+  .lb-img-wrap { flex: 1; min-width: 0; height: auto; }
+  #lbImg { max-height: 70vh; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 }
 
 /* ── Image Lightbox ───────────────────────────────────────────────────────── */
