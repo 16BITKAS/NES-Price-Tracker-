@@ -1373,7 +1373,7 @@ const CONSOLE_CONFIG = {
     games:        () => window.snesGames || [],
     manifest:     () => window.snesAssetManifest || {},
     storageKey:   'snesTrackerSaveV1',
-    trailerBase:  '',   // archive.org SNES collection TBD
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-SNES/',   // archive.org SNES collection
     accent:       '#7b2fff',
     accent2:      '#9d5fff',
     glow:         'rgba(123,47,255,0.15)',
@@ -2241,7 +2241,7 @@ render();
     <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
     <div style="position:relative;">
       <video id="trailerVideo"
-        controls autoplay
+        controls autoplay loop
         style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
         onerror="showTrailerError()">
       </video>
