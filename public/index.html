@@ -93,10 +93,10 @@ body.light-mode .game-sub .pill {
 .mobile-price-row {
   display: none;
 }
-.mobile-year {
-  display: none;
-}
+#sortFilter { display: none; }
+.mobile-year { display: none; }
 @media (max-width: 900px) {
+  #sortFilter { display: block; }
   .mobile-year { display: inline; }
 }
 .pixel-toggle-wrap {
@@ -1010,8 +1010,10 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 @media (max-width: 900px) {
-  .lb-arrow { width: 36px; height: 36px; margin: 0 6px; flex-shrink: 0; }
-  .lb-stage { padding: 50px 0 10px; align-items: center; }
+  .lb-arrow { width: 44px; height: 44px; }
+  .lb-arrow:first-child { left: 4px; }
+  .lb-arrow:last-child  { right: 4px; }
+  .lb-stage { padding: 50px 0 10px; }
   .lb-img-wrap { flex: 1; min-width: 0; height: auto; max-height: 70vh; display: flex; align-items: center; justify-content: center; }
   #lbImg { max-height: 70vh; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 }
@@ -1039,9 +1041,15 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   flex: 1;
   min-height: 0;
   padding: 60px 0 16px;
+  overflow: hidden;
+  position: relative;
 }
 
 .lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
   flex-shrink: 0;
   width: 64px;
   height: 64px;
@@ -1054,9 +1062,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   justify-content: center;
   image-rendering: pixelated;
   transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  margin: 0 20px;
+  margin: 0;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
 }
+
+.lb-arrow:first-child { left: 8px; }
+.lb-arrow:last-child  { right: 8px; }
 
 .lb-arrow:hover {
   background: rgba(230,0,18,0.35);
@@ -1069,15 +1080,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .lb-img-wrap {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  overflow: hidden;
 }
 
 #lbImg {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 80vh;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -1251,6 +1263,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </select>
       <select id="developerFilter"><option value="all">All developers</option></select>
       <select id="yearFilter"><option value="all">All years</option></select>
+      <select id="sortFilter">
+        <option value="title|asc">Sort: A → Z</option>
+        <option value="title|desc">Sort: Z → A</option>
+        <option value="owned|desc">Sort: Owned first</option>
+        <option value="owned|asc">Sort: Missing first</option>
+        <option value="estimate|desc">Sort: Price ↓</option>
+        <option value="estimate|asc">Sort: Price ↑</option>
+        <option value="year|asc">Sort: Year ↑</option>
+        <option value="year|desc">Sort: Year ↓</option>
+      </select>
       <button class="primary" id="refreshVisible">Refresh prices</button>
       <button class="floppy-btn" id="exportData" title="Export save">
         <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
@@ -1938,6 +1960,7 @@ function switchConsole(console) {
   document.getElementById('statusFilter').value = 'all';
   document.getElementById('developerFilter').value = 'all';
   document.getElementById('yearFilter').value = 'all';
+  document.getElementById('sortFilter').value = 'title|asc';
   _prevMilestonesReached = new Set();
   populateFilters();
   render();
@@ -1957,7 +1980,15 @@ document.querySelectorAll('#table-header .sortable').forEach(el => {
   });
 });
 
-// ─── Chiptune collect sound ──────────────────────────────────────────────────
+// ─── Mobile sort dropdown ────────────────────────────────────────────────────
+document.getElementById('sortFilter').addEventListener('change', e => {
+  const [key, dir] = e.target.value.split('|');
+  sortKey = key;
+  sortDir = dir;
+  render();
+});
+
+
 function playCollectSound() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
