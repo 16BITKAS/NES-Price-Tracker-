@@ -8,6 +8,8 @@
 <script src="nes-asset-manifest.js"></script>
 <script src="snes-games.js"></script>
 <script src="snes-asset-manifest.js"></script>
+<script src="n64-games.js"></script>
+<script src="n64-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -90,6 +92,15 @@ body.light-mode .game-sub .pill {
 .row-play-btn:active {
   transform: scale(0.95);
 }
+.mobile-price-row {
+  display: none;
+}
+#sortFilter { display: none; }
+.mobile-year { display: none; }
+@media (max-width: 900px) {
+  #sortFilter { display: block; }
+  .mobile-year { display: inline; }
+}
 .pixel-toggle-wrap {
   position: absolute;
   right: 20px;
@@ -121,7 +132,7 @@ body.light-mode .game-sub .pill {
   position: absolute;
   inset: 0;
   background: var(--surface2);
-  border: 3px solid var(--border);
+  border: 3px solid var(--toggle-knob-dark, var(--border));
   box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
   transition: background 0.15s, border-color 0.15s;
 }
@@ -131,13 +142,20 @@ body.light-mode .game-sub .pill {
   border-color: #c0bcb8;
 }
 
+/* Console-themed toggle variables (set via JS) */
+:root {
+  --toggle-knob-dark: #e60012;
+  --toggle-track-checked-dark: #2a2a2a;
+  --toggle-track-checked-border: #444;
+}
+
 .pixel-knob {
   position: absolute;
   top: 3px;
   left: 3px;
   width: 16px;
   height: 16px;
-  background: #e60012;
+  background: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
   transition: transform 0.15s, background 0.15s;
   image-rendering: pixelated;
@@ -152,7 +170,7 @@ body.light-mode .game-sub .pill {
 .pixel-toggle input:checked ~ .pixel-track .pixel-knob {
   transform: translateX(26px);
   background: #ffffff;
-  color: #e60012;
+  color: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
@@ -268,8 +286,8 @@ h1 span { color: var(--accent); }
   top: 0;
   z-index: 40;
   background: var(--bg);
-  padding-top: 20px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 0px;
   border-bottom: 2px solid var(--border);
   margin-bottom: 0;
   backdrop-filter: blur(8px);
@@ -422,7 +440,7 @@ h1 span { color: var(--accent); }
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 
@@ -525,6 +543,23 @@ h1 span { color: var(--accent); }
   min-width: 0;
 }
 
+@media (max-width: 700px) {
+  .controls {
+    flex-wrap: wrap;
+  }
+  #search {
+    flex: 1 1 100%;
+  }
+  #statusFilter, #developerFilter, #yearFilter {
+    flex: 1 1 calc(33% - 6px);
+    min-width: 0;
+    font-size: 10px;
+  }
+  #refreshVisible {
+    flex: 1 1 auto;
+  }
+}
+
 .controls input,
 .controls select {
   background: var(--surface);
@@ -621,12 +656,33 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 .note .warn { color: var(--gold); }
 
 /* Table */
-/* tablewrap must NOT have any overflow set - it breaks position:sticky on thead */
+/* tablewrap handles horizontal scroll on mobile */
 .tablewrap { }
+
 
 /* Horizontal scroll clipping lives here instead - clip doesn't create a scroll container */
 .tablewrap-outer { overflow-x: clip; }
 
+@media (max-width: 900px) {
+  .tablewrap-outer { overflow-x: clip; }
+  .tablewrap { min-width: 0; width: 100%; }
+  #table-header { display: none !important; }
+  td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; border: none !important; padding: 0 !important; width: 0 !important; }
+  /* Force col widths on the actual table cells */
+  td:nth-child(1) { width: 60px !important; }
+  td:nth-child(2) { width: 140px !important; padding: 6px 10px !important; text-align: left !important; vertical-align: middle !important; }
+  td:nth-child(3) {
+    border-right: 1px solid var(--border) !important;
+    border-radius: 0 12px 12px 0 !important;
+    padding: 10px 10px !important;
+  }
+  table { width: 100%; table-layout: fixed; }
+  /* Show the inline mobile price + refresh button */
+  .mobile-price-row { display: flex !important; }
+  /* Keep eBay + PriceCharting on one line */
+  .game-links { flex-wrap: nowrap !important; gap: 6px !important; }
+  .game-links .link { font-size: 9px !important; white-space: nowrap; }
+}
 table {
   width: 100%;
   border-collapse: separate;
@@ -709,7 +765,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .price-val {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Press Start 2P', monospace;
   font-size: 15px;
   font-weight: 700;
   color: var(--ink);
@@ -780,8 +836,9 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 /* Cover art */
 .cover-cell {
-  width: 48px;
-  padding: 6px 10px !important;
+  width: 129px;
+  padding: 6px 8px !important;
+  overflow: hidden;
 }
 
 .cover-wrap {
@@ -789,7 +846,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   width: 113px;
   height: 155px;
   border-radius: 4px;
-  overflow: visible;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -837,6 +894,35 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   justify-content: center;
 }
 
+/* Mobile: cover art sized to fill the fixed column */
+@media (max-width: 900px) {
+  .cover-cell {
+    padding: 6px 10px !important;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  .cover-wrap {
+    width: 120px;
+    height: 165px;
+    margin: 0;
+    justify-content: flex-start;
+  }
+  .cover-thumb,
+  .cover-placeholder,
+  .cover-loading {
+    width: 120px;
+    height: 165px;
+    flex-shrink: 0;
+  }
+  #tbody.snes-covers .cover-wrap,
+  #tbody.snes-covers .cover-thumb,
+  #tbody.snes-covers .cover-placeholder,
+  #tbody.snes-covers .cover-loading {
+    width: 120px;
+    height: 85px;
+  }
+}
+
 .cover-loading::after {
   content: '';
   width: 14px; height: 14px;
@@ -846,11 +932,13 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   animation: spin 0.7s linear infinite;
 }
 
-/* SNES landscape box art overrides */
-#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; }
-#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
-#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
-#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+/* SNES landscape box art overrides – desktop only */
+@media (min-width: 901px) {
+  #tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
+  #tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+  #tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
+  #tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+}
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -903,15 +991,39 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   margin-bottom: 16px;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1100px) and (min-width: 641px) {
   .stats { grid-template-columns: 1fr 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
   table { min-width: 900px; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
+  body { overflow-x: hidden; }
+  .wrap { padding: 0 12px 12px; }
   .header-inner { flex-direction: column; align-items: flex-start; gap: 0; }
   .stat-value { font-size: clamp(8px, 5vw, 18px); }
+  .controls { flex-wrap: wrap; }
+  #search { flex: 1 1 100%; }
+  #statusFilter, #developerFilter, #yearFilter { flex: 1 1 calc(33% - 6px); min-width: 0; font-size: 9px; }
+  .tablewrap-outer { overflow-x: clip; }
+  .tablewrap { max-width: 100vw; }
+  table { min-width: 0; width: 100%; }
+  .game-title { white-space: normal; word-break: break-word; font-size: 14px; }
+  td:nth-child(4) .refresh-single-btn { display: none; }
+  /* Mobile: hide description, show inline price+refresh instead */
+  .game-desc { display: none !important; }
+  .mobile-price-row { display: flex !important; }
+  .game-links { flex-wrap: nowrap !important; gap: 6px !important; }
+  .game-links .link { font-size: 9px !important; white-space: nowrap; }
+}
+
+@media (max-width: 900px) {
+  .lb-arrow { width: 44px; height: 44px; }
+  .lb-arrow:first-child { left: 4px; }
+  .lb-arrow:last-child  { right: 4px; }
+  .lb-stage { padding: 50px 0 10px; }
+  .lb-img-wrap { flex: 1; min-width: 0; height: auto; max-height: 70vh; display: flex; align-items: center; justify-content: center; }
+  #lbImg { max-height: 70vh; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 }
 
 /* ── Image Lightbox ───────────────────────────────────────────────────────── */
@@ -937,9 +1049,15 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   flex: 1;
   min-height: 0;
   padding: 60px 0 16px;
+  overflow: hidden;
+  position: relative;
 }
 
 .lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
   flex-shrink: 0;
   width: 64px;
   height: 64px;
@@ -952,9 +1070,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   justify-content: center;
   image-rendering: pixelated;
   transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  margin: 0 20px;
+  margin: 0;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
 }
+
+.lb-arrow:first-child { left: 8px; }
+.lb-arrow:last-child  { right: 8px; }
 
 .lb-arrow:hover {
   background: rgba(230,0,18,0.35);
@@ -967,15 +1088,18 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .lb-img-wrap {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  overflow: hidden;
 }
 
 #lbImg {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
@@ -1049,6 +1173,23 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .lb-close-btn:hover { transform: scale(1.1); }
 
+/* ── Game Detail Modal – mobile layout ───────────────────────────────────── */
+@media (max-width: 700px) {
+  #gameModalInner {
+    margin: 12px !important;
+    border-radius: 14px !important;
+  }
+  #modalContent {
+    padding: 16px !important;
+  }
+  /* Collapse the 2×2 quadrant grid into a single column */
+  #modalContent > div {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    min-height: unset !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1066,9 +1207,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
-        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
-        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+      <div id="consoleCarousel" style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px;">
+        <button id="carouselPrev" onclick="carouselStep(-1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Previous console">◀</button>
+        <div style="position:relative;overflow:hidden;width:130px;height:34px;">
+          <div id="carouselLabel" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:12px;letter-spacing:0.08em;transition:transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s;"></div>
+        </div>
+        <button id="carouselNext" onclick="carouselStep(1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Next console">▶</button>
       </div>
     </div>
   </div>
@@ -1077,6 +1221,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 <main class="wrap">
 
   <div class="sticky-panel">
+
+    <!-- Stats collapse toggle -->
+    <button id="statsToggleBtn" onclick="toggleStats()" title="Toggle stats panel" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="statsToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span id="statsToggleLabel">Stats</span>
+    </button>
+
+    <div id="statsPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:600px;opacity:1;">
     <div class="stats">
 
       <!-- Stack 1: Owned + Missing -->
@@ -1118,7 +1272,19 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </div>
 
     </div>
+    </div>
 
+    <hr style="border:none;border-top:1px solid var(--border);margin:0;">
+
+    <!-- Filters collapse toggle -->
+    <button id="filtersToggleBtn" onclick="toggleFilters()" title="Toggle filters" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:4px 0 0 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="filtersToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span>Filters</span>
+    </button>
+
+    <div id="filtersPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:300px;opacity:1;">
     <div class="controls">
       <input id="search" placeholder="Search games, developer, year…">
       <select id="statusFilter">
@@ -1130,6 +1296,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </select>
       <select id="developerFilter"><option value="all">All developers</option></select>
       <select id="yearFilter"><option value="all">All years</option></select>
+      <select id="sortFilter">
+        <option value="title|asc">Sort: A → Z</option>
+        <option value="title|desc">Sort: Z → A</option>
+        <option value="owned|desc">Sort: Owned first</option>
+        <option value="owned|asc">Sort: Missing first</option>
+        <option value="estimate|desc">Sort: Price ↓</option>
+        <option value="estimate|asc">Sort: Price ↑</option>
+        <option value="year|asc">Sort: Year ↑</option>
+        <option value="year|desc">Sort: Year ↓</option>
+      </select>
       <button class="primary" id="refreshVisible">Refresh prices</button>
       <button class="floppy-btn" id="exportData" title="Export save">
         <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
@@ -1159,11 +1335,11 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
         </svg>
       </button>
     </div>
-
-    <p id="priceStatus"></p>
+    </div>
+    <p id="priceStatus" style="margin:0;padding:0;"></p>
   </div>
 
-  <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">
+  <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);max-width:100vw;overflow:hidden;box-sizing:border-box;">
     <span class="sortable" data-sort="owned" style="cursor:pointer;">Own</span>
     <span style="cursor:default;">Cover</span>
     <span class="sortable" data-sort="title" style="cursor:pointer;">Game</span>
@@ -1191,7 +1367,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 <!-- Game Detail Modal -->
 <div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
-  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
+  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;position:relative;">
     <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
       <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
         <rect x="0" y="0" width="2" height="2" fill="white"/>
@@ -1230,13 +1406,25 @@ const CONSOLE_CONFIG = {
     games:        () => window.snesGames || [],
     manifest:     () => window.snesAssetManifest || {},
     storageKey:   'snesTrackerSaveV1',
-    trailerBase:  '',   // archive.org SNES collection TBD
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-SNES/',   // archive.org SNES collection
     accent:       '#7b2fff',
     accent2:      '#9d5fff',
     glow:         'rgba(123,47,255,0.15)',
     glowLight:    'rgba(123,47,255,0.10)',
     label:        'SNES',
     tabId:        'tabSNES',
+  },
+  n64: {
+    games:        () => window.n64Games || [],
+    manifest:     () => window.n64AssetManifest || {},
+    storageKey:   'n64TrackerSaveV1',
+    trailerBase:  '',
+    accent:       '#00a84f',
+    accent2:      '#00d464',
+    glow:         'rgba(0,168,79,0.15)',
+    glowLight:    'rgba(0,168,79,0.10)',
+    label:        'N64',
+    tabId:        'tabN64',
   }
 };
 
@@ -1272,7 +1460,7 @@ function save() {
 }
 
 // ─── Image URL helper ─────────────────────────────────────────────────────────
-const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
+const BASE = 'https://16bitkas.github.io/RetroQuest/';
 
 function toImageName(title) {
   let name = title
@@ -1438,7 +1626,8 @@ function filtered() {
   });
 }
 
-const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t + ' NES cartridge') + '&_sop=12';
+const normalizeTitle = t => t.replace(/^(.*),\s*The$/i, 'The $1').trim();
+const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : activeConsole === 'n64' ? 'N64' : 'NES') + ' -CIB -sealed -complete -CGC -lot') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
 // ─── Trailer filename helper (global so row render can use it) ────────────────
@@ -1489,7 +1678,7 @@ function render() {
       </td>
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
-        <div class="game-sub">${esc(dev)}${pub}</div>
+        <div class="game-sub">${esc(dev)}${pub}<span class="mobile-year"> · ${esc(yearOf(g))}</span></div>
         ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
           <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
           <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
@@ -1498,8 +1687,12 @@ function render() {
             </svg>
           </button>
         </div>` : ''}
-        ${g.description ? `<div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:280px;">${esc(g.description)}</div>` : ''}
-        <div style="margin-top:6px;display:flex;gap:10px;">
+        <div class="game-desc" ${g.description ? '' : 'style="display:none"'}><div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:min(280px,40vw);">${esc(g.description)}</div></div>
+        <div class="mobile-price-row" style="margin-top:5px;align-items:center;gap:6px;">
+          <span class="mobile-price-val ${hasPrice ? 'has-price' : ''}" style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}</span>
+          <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="background:none;border:none;color:var(--muted);font-size:24.5px;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">↻</button>
+        </div>
+        <div class="game-links" style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
           <a class="link" href="${priceChartingUrl(g.title)}" target="_blank">PriceCharting</a>
         </div>
@@ -1508,6 +1701,7 @@ function render() {
       <td>
         <div class="price-val ${hasPrice ? 'has-price' : ''}">${fmt(g.estimate)}</div>
         <div class="price-sub">${g.resultCount ? g.resultCount + ' listings' : ''}</div>
+        <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="margin-top:4px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:1px 6px;font-size:9px;cursor:pointer;letter-spacing:0.05em;font-family:inherit;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">↻ refresh</button>
       </td>
       <td><span class="pill">${g.updatedAt ? new Date(g.updatedAt).toLocaleDateString() : 'never'}</span></td>
     </tr>`;
@@ -1750,7 +1944,7 @@ document.addEventListener('keydown', e => {
 
 // ─── Price refresh ────────────────────────────────────────────────────────────
 async function refreshGame(g) {
-  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title));
+  const res = await fetch('/api/price?title=' + encodeURIComponent(g.title) + '&console=' + activeConsole);
   if (!res.ok) throw new Error(await res.text());
   const data = await res.json();
   g.estimate = data.estimate;
@@ -1761,7 +1955,60 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
+// ─── Console carousel ─────────────────────────────────────────────────────────
+const CONSOLE_ORDER = ['nes', 'snes', 'n64'];
+
+function updateCarouselDisplay() {
+  const cfg = CONSOLE_CONFIG[activeConsole];
+  const label = document.getElementById('carouselLabel');
+  const prev  = document.getElementById('carouselPrev');
+  const next  = document.getElementById('carouselNext');
+  if (!label) return;
+
+  label.textContent = cfg.label;
+  label.style.color = cfg.accent;
+
+  // Arrow button accent colors
+  [prev, next].forEach(btn => {
+    if (!btn) return;
+    btn.style.borderColor = cfg.accent;
+    btn.style.color       = cfg.accent;
+    btn.style.boxShadow   = `3px 3px 0 rgba(0,0,0,0.4)`;
+  });
+}
+
+function carouselStep(dir) {
+  const idx     = CONSOLE_ORDER.indexOf(activeConsole);
+  const next    = CONSOLE_ORDER[(idx + dir + CONSOLE_ORDER.length) % CONSOLE_ORDER.length];
+  const label   = document.getElementById('carouselLabel');
+
+  // Slide out
+  if (label) {
+    label.style.transform = `translateX(${dir > 0 ? '-110%' : '110%'})`;
+    label.style.opacity   = '0';
+  }
+
+  setTimeout(() => {
+    switchConsole(next);
+    // Slide in from opposite side
+    if (label) {
+      label.style.transition = 'none';
+      label.style.transform  = `translateX(${dir > 0 ? '110%' : '-110%'})`;
+      label.style.opacity    = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        label.style.transition = 'transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s';
+        label.style.transform  = 'translateX(0)';
+        label.style.opacity    = '1';
+      }));
+    }
+  }, 160);
+}
+
 // ─── Console switcher ────────────────────────────────────────────────────────
+function updateToggleTheme(cfg) {
+  document.documentElement.style.setProperty('--toggle-knob-dark', cfg.accent);
+}
+
 function switchConsole(console) {
   if (console === activeConsole) return;
   activeConsole = console;
@@ -1774,25 +2021,14 @@ function switchConsole(console) {
   root.style.setProperty('--red',     cfg.accent);
   root.style.setProperty('--glow',    cfg.glow);
 
+  // Update toggle theme
+  updateToggleTheme(cfg);
+
   // Update trailer base URL
   TRAILER_BASE_URL = cfg.trailerBase;
 
-  // Update tab button styles
-  Object.values(CONSOLE_CONFIG).forEach(c => {
-    const btn = document.getElementById(c.tabId);
-    if (!btn) return;
-    if (c.tabId === cfg.tabId) {
-      btn.style.background   = cfg.accent;
-      btn.style.borderColor  = cfg.accent;
-      btn.style.color        = '#fff';
-      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
-    } else {
-      btn.style.background   = 'transparent';
-      btn.style.borderColor  = '#444';
-      btn.style.color        = '#888';
-      btn.style.boxShadow    = '3px 3px 0 #222';
-    }
-  });
+  // Update carousel display
+  updateCarouselDisplay();
 
   // Load games for this console
   const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
@@ -1811,6 +2047,7 @@ function switchConsole(console) {
   document.getElementById('statusFilter').value = 'all';
   document.getElementById('developerFilter').value = 'all';
   document.getElementById('yearFilter').value = 'all';
+  document.getElementById('sortFilter').value = 'title|asc';
   _prevMilestonesReached = new Set();
   populateFilters();
   render();
@@ -1830,7 +2067,15 @@ document.querySelectorAll('#table-header .sortable').forEach(el => {
   });
 });
 
-// ─── Chiptune collect sound ──────────────────────────────────────────────────
+// ─── Mobile sort dropdown ────────────────────────────────────────────────────
+document.getElementById('sortFilter').addEventListener('change', e => {
+  const [key, dir] = e.target.value.split('|');
+  sortKey = key;
+  sortDir = dir;
+  render();
+});
+
+
 function playCollectSound() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -1914,6 +2159,26 @@ document.getElementById('tbody').addEventListener('change', e => {
   document.getElementById(id).addEventListener(id === 'search' ? 'input' : 'change', render);
 });
 
+// ─── Refresh single game price ────────────────────────────────────────────────
+document.getElementById('tbody').addEventListener('click', async e => {
+  const btn = e.target.closest('.refresh-single-btn');
+  if (!btn) return;
+  const id = parseInt(btn.dataset.id);
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await refreshGame(g);
+    btn.textContent = '✓';
+    setTimeout(() => { btn.disabled = false; btn.textContent = '↻ refresh'; }, 1500);
+  } catch (err) {
+    btn.textContent = '✗';
+    btn.disabled = false;
+    console.error(g.title, err);
+  }
+});
+
 // ─── Refresh prices ───────────────────────────────────────────────────────────
 document.getElementById('refreshVisible').addEventListener('click', async () => {
   const btn = document.getElementById('refreshVisible');
@@ -1992,7 +2257,78 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   if (saved === 'light') { toggle.checked = true; applyTheme(true); }
 })();
 
-// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+// ─── Stats collapse ───────────────────────────────────────────────────────────
+let _statsOpen = localStorage.getItem('stats-collapsed') !== 'true';
+
+function toggleStats() {
+  _statsOpen = !_statsOpen;
+  const panel   = document.getElementById('statsPanel');
+  const chevron = document.getElementById('statsToggleChevron');
+  const label   = document.getElementById('statsToggleLabel');
+  if (_statsOpen) {
+    panel.style.maxHeight = '600px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+    label.textContent = 'Stats';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+    label.textContent = 'Stats';
+  }
+  localStorage.setItem('stats-collapsed', !_statsOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore collapse state on load
+(function() {
+  if (localStorage.getItem('stats-collapsed') === 'true') {
+    _statsOpen = false;
+    const panel   = document.getElementById('statsPanel');
+    const chevron = document.getElementById('statsToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
+})();
+
+// ─── Filters collapse ─────────────────────────────────────────────────────────
+let _filtersOpen = localStorage.getItem('filters-collapsed') !== 'true';
+
+function toggleFilters() {
+  _filtersOpen = !_filtersOpen;
+  const panel   = document.getElementById('filtersPanel');
+  const chevron = document.getElementById('filtersToggleChevron');
+  if (_filtersOpen) {
+    panel.style.maxHeight = '300px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+  }
+  localStorage.setItem('filters-collapsed', !_filtersOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore filters collapse state on load
+(function() {
+  if (localStorage.getItem('filters-collapsed') === 'true') {
+    _filtersOpen = false;
+    const panel   = document.getElementById('filtersPanel');
+    const chevron = document.getElementById('filtersToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
+})();
+
+
 function fitStatValues() {
   document.querySelectorAll('.stat-value').forEach(el => {
     el.style.fontSize = '18px';
@@ -2022,6 +2358,7 @@ function updateStickyTheadTop() {
 window.addEventListener('resize', updateStickyTheadTop);
 
 populateFilters();
+updateCarouselDisplay();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
 {
   const owned = games.filter(g => g.owned).length;
@@ -2063,12 +2400,12 @@ render();
     <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
     <div style="position:relative;">
       <video id="trailerVideo"
-        controls autoplay
+        controls autoplay loop
         style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
         onerror="showTrailerError()">
       </video>
       <img id="trailerClearLogo" alt=""
-        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
+        style="position:absolute;bottom:12px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
     </div>
   </div>
 </div>
@@ -2197,6 +2534,89 @@ document.addEventListener('keydown', e => {
 document.getElementById('imageLightbox').addEventListener('click', e => {
   if (e.target === document.getElementById('imageLightbox')) closeLightbox();
 });
+</script>
+
+<!-- Floating "Top" button (mobile only) -->
+<style>
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  z-index: 1500;
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #8b0000, inset -2px -2px 0 #8b0000, inset 2px 2px 0 #ff4444;
+  image-rendering: pixelated;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.2s, transform 0.2s;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #fff;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+}
+#scrollTopBtn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#scrollTopBtn:active {
+  transform: scale(0.93);
+}
+@media (max-width: 900px) {
+  #scrollTopBtn { display: flex; }
+}
+</style>
+
+<button id="scrollTopBtn" title="Back to top" aria-label="Scroll to top">
+  <svg width="18" height="14" viewBox="0 0 9 7" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;flex-shrink:0;">
+    <rect x="4" y="0" width="1" height="1" fill="white"/>
+    <rect x="3" y="1" width="1" height="1" fill="white"/>
+    <rect x="5" y="1" width="1" height="1" fill="white"/>
+    <rect x="2" y="2" width="1" height="1" fill="white"/>
+    <rect x="6" y="2" width="1" height="1" fill="white"/>
+    <rect x="1" y="3" width="1" height="1" fill="white"/>
+    <rect x="7" y="3" width="1" height="1" fill="white"/>
+    <rect x="3" y="5" width="3" height="2" fill="white"/>
+  </svg>
+  <span>TOP</span>
+</button>
+
+<script>
+(function () {
+  const btn = document.getElementById('scrollTopBtn');
+  const THRESHOLD = 300; // px scrolled before button appears
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > THRESHOLD);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    const start = window.scrollY;
+    const duration = Math.min(300, start * 0.15); // fast: ~150ms for typical list scroll
+    const startTime = performance.now();
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const ease = 1 - Math.pow(1 - progress, 3);
+      window.scrollTo(0, start * (1 - ease));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  });
+})();
 </script>
 
 </body>
