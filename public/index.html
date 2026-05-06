@@ -666,8 +666,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 @media (max-width: 900px) {
   .tablewrap-outer { overflow-x: clip; }
   .tablewrap { min-width: 0; width: 100%; }
-  #table-header { grid-template-columns: 60px 140px 1fr !important; }
-  #table-header span:nth-child(4), #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
+  #table-header { display: none !important; }
   td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; border: none !important; padding: 0 !important; width: 0 !important; }
   /* Force col widths on the actual table cells */
   td:nth-child(1) { width: 60px !important; }
