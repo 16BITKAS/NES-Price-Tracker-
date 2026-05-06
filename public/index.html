@@ -132,7 +132,7 @@ body.light-mode .game-sub .pill {
   position: absolute;
   inset: 0;
   background: var(--surface2);
-  border: 3px solid var(--border);
+  border: 3px solid var(--toggle-knob-dark, var(--border));
   box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
   transition: background 0.15s, border-color 0.15s;
 }
@@ -142,13 +142,20 @@ body.light-mode .game-sub .pill {
   border-color: #c0bcb8;
 }
 
+/* Console-themed toggle variables (set via JS) */
+:root {
+  --toggle-knob-dark: #e60012;
+  --toggle-track-checked-dark: #2a2a2a;
+  --toggle-track-checked-border: #444;
+}
+
 .pixel-knob {
   position: absolute;
   top: 3px;
   left: 3px;
   width: 16px;
   height: 16px;
-  background: #e60012;
+  background: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
   transition: transform 0.15s, background 0.15s;
   image-rendering: pixelated;
@@ -163,7 +170,7 @@ body.light-mode .game-sub .pill {
 .pixel-toggle input:checked ~ .pixel-track .pixel-knob {
   transform: translateX(26px);
   background: #ffffff;
-  color: #e60012;
+  color: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
@@ -1926,6 +1933,10 @@ async function refreshGame(g) {
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
 // ─── Console switcher ────────────────────────────────────────────────────────
+function updateToggleTheme(cfg) {
+  document.documentElement.style.setProperty('--toggle-knob-dark', cfg.accent);
+}
+
 function switchConsole(console) {
   if (console === activeConsole) return;
   activeConsole = console;
@@ -1937,6 +1948,9 @@ function switchConsole(console) {
   root.style.setProperty('--accent2', cfg.accent2);
   root.style.setProperty('--red',     cfg.accent);
   root.style.setProperty('--glow',    cfg.glow);
+
+  // Update toggle theme
+  updateToggleTheme(cfg);
 
   // Update trailer base URL
   TRAILER_BASE_URL = cfg.trailerBase;
