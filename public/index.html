@@ -917,7 +917,11 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   #tbody.snes-covers .cover-wrap,
   #tbody.snes-covers .cover-thumb,
   #tbody.snes-covers .cover-placeholder,
-  #tbody.snes-covers .cover-loading {
+  #tbody.snes-covers .cover-loading,
+  #tbody.n64-covers .cover-wrap,
+  #tbody.n64-covers .cover-thumb,
+  #tbody.n64-covers .cover-placeholder,
+  #tbody.n64-covers .cover-loading {
     width: 120px;
     height: 85px;
   }
@@ -932,12 +936,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   animation: spin 0.7s linear infinite;
 }
 
-/* SNES landscape box art overrides – desktop only */
+/* SNES/N64 landscape box art overrides – desktop only */
 @media (min-width: 901px) {
-  #tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
-  #tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
-  #tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
-  #tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+  #tbody.snes-covers .cover-wrap,
+  #tbody.n64-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
+  #tbody.snes-covers .cover-thumb,
+  #tbody.n64-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+  #tbody.snes-covers .cover-placeholder,
+  #tbody.n64-covers .cover-placeholder { width: 170px; height: 120px; }
+  #tbody.snes-covers .cover-loading,
+  #tbody.n64-covers .cover-loading  { width: 170px; height: 120px; }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -1799,16 +1807,16 @@ function openModal(gameId) {
         </div>
       </div>
 
-      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES) -->
-      <div style="display:flex;flex-direction:${activeConsole === 'snes' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' ? 'auto' : 'visible'};">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES/N64) -->
+      <div style="display:flex;flex-direction:${activeConsole === 'snes' || activeConsole === 'n64' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' || activeConsole === 'n64' ? 'auto' : 'visible'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' || activeConsole === 'n64' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
-          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' || activeConsole === 'n64' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' || activeConsole === 'n64' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
-          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' || activeConsole === 'n64' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
       </div>
@@ -2038,6 +2046,7 @@ function switchConsole(console) {
   const tbody = document.getElementById('tbody');
   if (tbody) {
     tbody.classList.toggle('snes-covers', console === 'snes');
+    tbody.classList.toggle('n64-covers', console === 'n64');
   }
 
   // Reset filters and re-render
