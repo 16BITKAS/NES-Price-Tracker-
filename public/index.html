@@ -1221,6 +1221,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 <main class="wrap">
 
   <div class="sticky-panel">
+
+    <!-- Stats collapse toggle -->
+    <button id="statsToggleBtn" onclick="toggleStats()" title="Toggle stats panel" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0 0 8px 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="statsToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span id="statsToggleLabel">Stats</span>
+    </button>
+
+    <div id="statsPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:600px;opacity:1;">
     <div class="stats">
 
       <!-- Stack 1: Owned + Missing -->
@@ -1261,6 +1271,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
         <div class="milestone-achieved" id="milestoneAchieved" style="min-height:0;margin-top:0;"></div>
       </div>
 
+    </div>
     </div>
 
     <div class="controls">
@@ -2233,6 +2244,43 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   // Restore saved preference
   const saved = localStorage.getItem('nes-theme');
   if (saved === 'light') { toggle.checked = true; applyTheme(true); }
+})();
+
+// ─── Stats collapse ───────────────────────────────────────────────────────────
+let _statsOpen = localStorage.getItem('stats-collapsed') !== 'true';
+
+function toggleStats() {
+  _statsOpen = !_statsOpen;
+  const panel   = document.getElementById('statsPanel');
+  const chevron = document.getElementById('statsToggleChevron');
+  const label   = document.getElementById('statsToggleLabel');
+  if (_statsOpen) {
+    panel.style.maxHeight = '600px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+    label.textContent = 'Stats';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+    label.textContent = 'Stats';
+  }
+  localStorage.setItem('stats-collapsed', !_statsOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore collapse state on load
+(function() {
+  if (localStorage.getItem('stats-collapsed') === 'true') {
+    _statsOpen = false;
+    const panel   = document.getElementById('statsPanel');
+    const chevron = document.getElementById('statsToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
 })();
 
 // ─── Auto-shrink stat values to fit on one line ───────────────────────────────
