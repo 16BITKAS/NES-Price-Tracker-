@@ -1274,6 +1274,15 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     </div>
 
+    <!-- Filters collapse toggle -->
+    <button id="filtersToggleBtn" onclick="toggleFilters()" title="Toggle filters" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0 0 8px 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="filtersToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span>Filters</span>
+    </button>
+
+    <div id="filtersPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:300px;opacity:1;">
     <div class="controls">
       <input id="search" placeholder="Search games, developer, year…">
       <select id="statusFilter">
@@ -1323,6 +1332,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
           <rect x="13" y="1" width="1" height="1" fill="#8b0000"/>
         </svg>
       </button>
+    </div>
     </div>
 
     <p id="priceStatus"></p>
@@ -2283,7 +2293,41 @@ function toggleStats() {
   }
 })();
 
-// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+// ─── Filters collapse ─────────────────────────────────────────────────────────
+let _filtersOpen = localStorage.getItem('filters-collapsed') !== 'true';
+
+function toggleFilters() {
+  _filtersOpen = !_filtersOpen;
+  const panel   = document.getElementById('filtersPanel');
+  const chevron = document.getElementById('filtersToggleChevron');
+  if (_filtersOpen) {
+    panel.style.maxHeight = '300px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+  }
+  localStorage.setItem('filters-collapsed', !_filtersOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore filters collapse state on load
+(function() {
+  if (localStorage.getItem('filters-collapsed') === 'true') {
+    _filtersOpen = false;
+    const panel   = document.getElementById('filtersPanel');
+    const chevron = document.getElementById('filtersToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
+})();
+
+
 function fitStatValues() {
   document.querySelectorAll('.stat-value').forEach(el => {
     el.style.fontSize = '18px';
