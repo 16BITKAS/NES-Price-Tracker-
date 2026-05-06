@@ -1207,10 +1207,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
-        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
-        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
-        <button id="tabN64" onclick="switchConsole('n64')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">N64</button>
+      <div id="consoleCarousel" style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px;">
+        <button id="carouselPrev" onclick="carouselStep(-1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Previous console">◀</button>
+        <div style="position:relative;overflow:hidden;width:130px;height:34px;">
+          <div id="carouselLabel" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:12px;letter-spacing:0.08em;transition:transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s;"></div>
+        </div>
+        <button id="carouselNext" onclick="carouselStep(1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Next console">▶</button>
       </div>
     </div>
   </div>
@@ -1931,6 +1933,55 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
+// ─── Console carousel ─────────────────────────────────────────────────────────
+const CONSOLE_ORDER = ['nes', 'snes', 'n64'];
+
+function updateCarouselDisplay() {
+  const cfg = CONSOLE_CONFIG[activeConsole];
+  const label = document.getElementById('carouselLabel');
+  const prev  = document.getElementById('carouselPrev');
+  const next  = document.getElementById('carouselNext');
+  if (!label) return;
+
+  label.textContent = cfg.label;
+  label.style.color = cfg.accent;
+
+  // Arrow button accent colors
+  [prev, next].forEach(btn => {
+    if (!btn) return;
+    btn.style.borderColor = cfg.accent;
+    btn.style.color       = cfg.accent;
+    btn.style.boxShadow   = `3px 3px 0 rgba(0,0,0,0.4)`;
+  });
+}
+
+function carouselStep(dir) {
+  const idx     = CONSOLE_ORDER.indexOf(activeConsole);
+  const next    = CONSOLE_ORDER[(idx + dir + CONSOLE_ORDER.length) % CONSOLE_ORDER.length];
+  const label   = document.getElementById('carouselLabel');
+
+  // Slide out
+  if (label) {
+    label.style.transform = `translateX(${dir > 0 ? '-110%' : '110%'})`;
+    label.style.opacity   = '0';
+  }
+
+  setTimeout(() => {
+    switchConsole(next);
+    // Slide in from opposite side
+    if (label) {
+      label.style.transition = 'none';
+      label.style.transform  = `translateX(${dir > 0 ? '110%' : '-110%'})`;
+      label.style.opacity    = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        label.style.transition = 'transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s';
+        label.style.transform  = 'translateX(0)';
+        label.style.opacity    = '1';
+      }));
+    }
+  }, 160);
+}
+
 // ─── Console switcher ────────────────────────────────────────────────────────
 function updateToggleTheme(cfg) {
   document.documentElement.style.setProperty('--toggle-knob-dark', cfg.accent);
@@ -1954,22 +2005,8 @@ function switchConsole(console) {
   // Update trailer base URL
   TRAILER_BASE_URL = cfg.trailerBase;
 
-  // Update tab button styles
-  Object.values(CONSOLE_CONFIG).forEach(c => {
-    const btn = document.getElementById(c.tabId);
-    if (!btn) return;
-    if (c.tabId === cfg.tabId) {
-      btn.style.background   = cfg.accent;
-      btn.style.borderColor  = cfg.accent;
-      btn.style.color        = '#fff';
-      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
-    } else {
-      btn.style.background   = 'transparent';
-      btn.style.borderColor  = '#444';
-      btn.style.color        = '#888';
-      btn.style.boxShadow    = '3px 3px 0 #222';
-    }
-  });
+  // Update carousel display
+  updateCarouselDisplay();
 
   // Load games for this console
   const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
@@ -2228,6 +2265,7 @@ function updateStickyTheadTop() {
 window.addEventListener('resize', updateStickyTheadTop);
 
 populateFilters();
+updateCarouselDisplay();
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
 {
   const owned = games.filter(g => g.owned).length;
