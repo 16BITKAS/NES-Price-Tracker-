@@ -286,8 +286,8 @@ h1 span { color: var(--accent); }
   top: 0;
   z-index: 40;
   background: var(--bg);
-  padding-top: 20px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 0;
   border-bottom: 2px solid var(--border);
   margin-bottom: 0;
   backdrop-filter: blur(8px);
@@ -1223,7 +1223,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   <div class="sticky-panel">
 
     <!-- Stats collapse toggle -->
-    <button id="statsToggleBtn" onclick="toggleStats()" title="Toggle stats panel" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0 0 8px 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+    <button id="statsToggleBtn" onclick="toggleStats()" title="Toggle stats panel" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
       <svg id="statsToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
         <polygon points="1,2 5,8 9,2" fill="currentColor"/>
       </svg>
@@ -1275,7 +1275,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
 
     <!-- Filters collapse toggle -->
-    <button id="filtersToggleBtn" onclick="toggleFilters()" title="Toggle filters" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0 0 8px 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+    <button id="filtersToggleBtn" onclick="toggleFilters()" title="Toggle filters" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
       <svg id="filtersToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
         <polygon points="1,2 5,8 9,2" fill="currentColor"/>
       </svg>
