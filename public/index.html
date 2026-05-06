@@ -1215,12 +1215,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-      <div id="consoleCarousel" style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px;">
-        <button id="carouselPrev" onclick="carouselStep(-1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Previous console">◀</button>
-        <div style="position:relative;overflow:hidden;width:130px;height:34px;">
-          <div id="carouselLabel" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:12px;letter-spacing:0.08em;transition:transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s;"></div>
+      <div id="consoleCarousel" style="display:flex;justify-content:center;align-items:center;margin-top:14px;position:relative;">
+        <div id="consolePicker" onclick="toggleConsoleDropdown()" style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;padding:6px 14px;border:2px solid #444;background:transparent;user-select:none;transition:border-color 0.15s;box-shadow:3px 3px 0 #222;">
+          <div id="carouselLabel" style="font-family:'Press Start 2P',monospace;font-size:12px;letter-spacing:0.08em;transition:color 0.2s;"></div>
+          <svg id="consoleDropChevron" width="10" height="7" viewBox="0 0 10 7" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;flex-shrink:0;transition:transform 0.2s;"><polygon points="0,0 10,0 5,7" fill="currentColor"/></svg>
         </div>
-        <button id="carouselNext" onclick="carouselStep(1)" style="font-family:'Press Start 2P',monospace;font-size:12px;padding:6px 10px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;box-shadow:3px 3px 0 #222;transition:all 0.15s;line-height:1;" title="Next console">▶</button>
+        <div id="consoleDropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--surface);border:2px solid #444;box-shadow:4px 4px 0 rgba(0,0,0,0.5);z-index:200;min-width:160px;overflow:hidden;"></div>
       </div>
     </div>
   </div>
@@ -1967,50 +1967,71 @@ async function refreshGame(g) {
 const CONSOLE_ORDER = ['nes', 'snes', 'n64'];
 
 function updateCarouselDisplay() {
-  const cfg = CONSOLE_CONFIG[activeConsole];
-  const label = document.getElementById('carouselLabel');
-  const prev  = document.getElementById('carouselPrev');
-  const next  = document.getElementById('carouselNext');
+  const cfg     = CONSOLE_CONFIG[activeConsole];
+  const label   = document.getElementById('carouselLabel');
+  const picker  = document.getElementById('consolePicker');
+  const chevron = document.getElementById('consoleDropChevron');
   if (!label) return;
 
   label.textContent = cfg.label;
   label.style.color = cfg.accent;
-
-  // Arrow button accent colors
-  [prev, next].forEach(btn => {
-    if (!btn) return;
-    btn.style.borderColor = cfg.accent;
-    btn.style.color       = cfg.accent;
-    btn.style.boxShadow   = `3px 3px 0 rgba(0,0,0,0.4)`;
-  });
-}
-
-function carouselStep(dir) {
-  const idx     = CONSOLE_ORDER.indexOf(activeConsole);
-  const next    = CONSOLE_ORDER[(idx + dir + CONSOLE_ORDER.length) % CONSOLE_ORDER.length];
-  const label   = document.getElementById('carouselLabel');
-
-  // Slide out
-  if (label) {
-    label.style.transform = `translateX(${dir > 0 ? '-110%' : '110%'})`;
-    label.style.opacity   = '0';
+  if (picker) {
+    picker.style.borderColor = cfg.accent;
+    picker.style.color       = cfg.accent;
+    picker.style.boxShadow   = `3px 3px 0 rgba(0,0,0,0.4)`;
   }
+  if (chevron) chevron.style.color = cfg.accent;
 
-  setTimeout(() => {
-    switchConsole(next);
-    // Slide in from opposite side
-    if (label) {
-      label.style.transition = 'none';
-      label.style.transform  = `translateX(${dir > 0 ? '110%' : '-110%'})`;
-      label.style.opacity    = '0';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        label.style.transition = 'transform 0.18s cubic-bezier(0.4,0,0.2,1),opacity 0.18s';
-        label.style.transform  = 'translateX(0)';
-        label.style.opacity    = '1';
-      }));
-    }
-  }, 160);
+  // Rebuild dropdown items
+  const dd = document.getElementById('consoleDropdown');
+  if (dd) {
+    dd.innerHTML = '';
+    CONSOLE_ORDER.forEach(key => {
+      const c   = CONSOLE_CONFIG[key];
+      const row = document.createElement('div');
+      row.textContent = c.label;
+      const isActive = key === activeConsole;
+      row.style.cssText = `font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:0.08em;padding:10px 20px;cursor:${isActive ? 'default' : 'pointer'};color:${isActive ? cfg.accent : 'var(--ink)'};background:${isActive ? 'rgba(255,255,255,0.05)' : 'transparent'};border-left:3px solid ${isActive ? c.accent : 'transparent'};transition:background 0.12s,color 0.12s;white-space:nowrap;`;
+      if (!isActive) {
+        row.onmouseenter = () => { row.style.background = 'rgba(255,255,255,0.07)'; row.style.color = c.accent; };
+        row.onmouseleave = () => { row.style.background = 'transparent'; row.style.color = 'var(--ink)'; };
+        row.onclick = (e) => { e.stopPropagation(); closeConsoleDropdown(); switchConsole(key); };
+      }
+      dd.appendChild(row);
+    });
+  }
 }
+
+let _consoleDropOpen = false;
+
+function toggleConsoleDropdown() {
+  _consoleDropOpen ? closeConsoleDropdown() : openConsoleDropdown();
+}
+
+function openConsoleDropdown() {
+  const dd      = document.getElementById('consoleDropdown');
+  const chevron = document.getElementById('consoleDropChevron');
+  if (!dd) return;
+  _consoleDropOpen = true;
+  dd.style.display = 'block';
+  if (chevron) chevron.style.transform = 'rotate(180deg)';
+}
+
+function closeConsoleDropdown() {
+  const dd      = document.getElementById('consoleDropdown');
+  const chevron = document.getElementById('consoleDropChevron');
+  if (!dd) return;
+  _consoleDropOpen = false;
+  dd.style.display = 'none';
+  if (chevron) chevron.style.transform = 'rotate(0deg)';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (_consoleDropOpen && !document.getElementById('consolePicker').contains(e.target) && !document.getElementById('consoleDropdown').contains(e.target)) {
+    closeConsoleDropdown();
+  }
+});
 
 // ─── Console switcher ────────────────────────────────────────────────────────
 function updateToggleTheme(cfg) {
