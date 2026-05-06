@@ -8,6 +8,8 @@
 <script src="nes-asset-manifest.js"></script>
 <script src="snes-games.js"></script>
 <script src="snes-asset-manifest.js"></script>
+<script src="n64-games.js"></script>
+<script src="n64-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -1202,6 +1204,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
         <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
         <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+        <button id="tabN64" onclick="switchConsole('n64')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">N64</button>
       </div>
     </div>
   </div>
@@ -1380,6 +1383,18 @@ const CONSOLE_CONFIG = {
     glowLight:    'rgba(123,47,255,0.10)',
     label:        'SNES',
     tabId:        'tabSNES',
+  },
+  n64: {
+    games:        () => window.n64Games || [],
+    manifest:     () => window.n64AssetManifest || {},
+    storageKey:   'n64TrackerSaveV1',
+    trailerBase:  '',
+    accent:       '#00a84f',
+    accent2:      '#00d464',
+    glow:         'rgba(0,168,79,0.15)',
+    glowLight:    'rgba(0,168,79,0.10)',
+    label:        'N64',
+    tabId:        'tabN64',
   }
 };
 
