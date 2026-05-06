@@ -56,7 +56,7 @@ app.get("/api/price", async (req, res) => {
   try {
     const title = String(req.query.title || "").trim();
     if (!title) return res.status(400).json({ error: "Missing title" });
-    const consoleName = req.query.console === 'snes' ? 'SNES' : 'NES';
+    const consoleName = req.query.console === 'snes' ? 'SNES' : req.query.console === 'n64' ? 'N64' : 'NES';
     const cacheKey = (title + consoleName).toLowerCase();
     const cached = priceCache.get(cacheKey);
     if (cached && Date.now() - cached.cachedAt < CACHE_MS) return res.json({ ...cached.data, cached: true });
