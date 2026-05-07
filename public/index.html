@@ -2,8 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NES Collection Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RetroQuest</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e60012">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RetroQuest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+
+<!-- SEO / Social -->
+<meta name="description" content="Track and manage your retro game collection across NES, SNES, N64 and more.">
+<meta property="og:title" content="RetroQuest">
+<meta property="og:description" content="Track and manage your retro game collection.">
+<meta property="og:type" content="website">
 <script src="nes-games.js"></script>
 <script src="nes-asset-manifest.js"></script>
 <script src="snes-games.js"></script>
@@ -1226,6 +1244,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   </div>
 </header>
 
+<!-- Page nav -->
+<nav id="pageNav" style="display:flex;justify-content:center;gap:0;border-bottom:2px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:90;">
+  <button class="page-tab page-tab--active" id="tabCollection" onclick="switchPage('collection')" style="font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:0.1em;padding:12px 24px;background:none;border:none;border-bottom:3px solid var(--accent);color:var(--accent);cursor:pointer;transition:all 0.15s;">COLLECTION</button>
+  <button class="page-tab" id="tabAchievements" onclick="switchPage('achievements')" style="font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:0.1em;padding:12px 24px;background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;">ACHIEVEMENTS</button>
+</nav>
+
 <main class="wrap">
 
   <div class="sticky-panel">
@@ -2022,6 +2046,287 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// ─── Page switcher ───────────────────────────────────────────────────────────
+let activePage = 'collection';
+
+function switchPage(page) {
+  activePage = page;
+  const collectionEl  = document.querySelector('main.wrap');
+  const achievementsEl = document.getElementById('achievementsPage');
+  const tabCol  = document.getElementById('tabCollection');
+  const tabAch  = document.getElementById('tabAchievements');
+  const accent  = CONSOLE_CONFIG[activeConsole].accent;
+
+  if (page === 'collection') {
+    collectionEl.style.display  = '';
+    achievementsEl.style.display = 'none';
+    tabCol.style.borderBottomColor = accent;
+    tabCol.style.color             = accent;
+    tabAch.style.borderBottomColor = 'transparent';
+    tabAch.style.color             = 'var(--muted)';
+  } else {
+    collectionEl.style.display  = 'none';
+    achievementsEl.style.display = '';
+    tabAch.style.borderBottomColor = accent;
+    tabAch.style.color             = accent;
+    tabCol.style.borderBottomColor = 'transparent';
+    tabCol.style.color             = 'var(--muted)';
+    renderAchievements();
+  }
+}
+
+// ─── Achievements engine ──────────────────────────────────────────────────────
+
+const ACHIEVEMENT_DEFS = [
+
+  // ── Console Completion ──────────────────────────────────────────────────────
+  { id:'nes_complete',  cat:'console', console:'nes',  label:'NES Master',         desc:'Own every NES game in the library',          icon:'🏆', color:'#e60012', check: (owned,_,all) => owned.nes.size >= all.nes  },
+  { id:'snes_complete', cat:'console', console:'snes', label:'SNES Champion',      desc:'Own every SNES game in the library',         icon:'🏆', color:'#7b2fff', check: (owned,_,all) => owned.snes.size >= all.snes },
+  { id:'n64_complete',  cat:'console', console:'n64',  label:'N64 Legend',         desc:'Own every N64 game in the library',          icon:'🏆', color:'#00a84f', check: (owned,_,all) => owned.n64.size >= all.n64  },
+
+  { id:'nes_half',   cat:'console', console:'nes',  label:'Halfway There (NES)',  desc:'Own 50% of all NES games',  icon:'⭐', color:'#e60012', check: (owned,_,all) => owned.nes.size  >= Math.ceil(all.nes  * 0.5) },
+  { id:'snes_half',  cat:'console', console:'snes', label:'Halfway There (SNES)', desc:'Own 50% of all SNES games', icon:'⭐', color:'#7b2fff', check: (owned,_,all) => owned.snes.size >= Math.ceil(all.snes * 0.5) },
+  { id:'n64_half',   cat:'console', console:'n64',  label:'Halfway There (N64)',  desc:'Own 50% of all N64 games',  icon:'⭐', color:'#00a84f', check: (owned,_,all) => owned.n64.size  >= Math.ceil(all.n64  * 0.5) },
+
+  { id:'nes_10',  cat:'console', console:'nes',  label:'NES Starter',   desc:'Own at least 10 NES games',  icon:'🎮', color:'#e60012', check: (owned) => owned.nes.size  >= 10 },
+  { id:'snes_10', cat:'console', console:'snes', label:'SNES Starter',  desc:'Own at least 10 SNES games', icon:'🎮', color:'#7b2fff', check: (owned) => owned.snes.size >= 10 },
+  { id:'n64_10',  cat:'console', console:'n64',  label:'N64 Starter',   desc:'Own at least 10 N64 games',  icon:'🎮', color:'#00a84f', check: (owned) => owned.n64.size  >= 10 },
+
+  { id:'nes_50',  cat:'console', console:'nes',  label:'NES Collector',  desc:'Own at least 50 NES games',  icon:'🎯', color:'#e60012', check: (owned) => owned.nes.size  >= 50 },
+  { id:'snes_50', cat:'console', console:'snes', label:'SNES Collector', desc:'Own at least 50 SNES games', icon:'🎯', color:'#7b2fff', check: (owned) => owned.snes.size >= 50 },
+  { id:'n64_50',  cat:'console', console:'n64',  label:'N64 Collector',  desc:'Own at least 50 N64 games',  icon:'🎯', color:'#00a84f', check: (owned) => owned.n64.size  >= 50 },
+
+  // ── Cross-console ───────────────────────────────────────────────────────────
+  { id:'all_started',  cat:'console', label:'Triple Threat',   desc:'Own at least 1 game on NES, SNES, and N64',            icon:'🎖️', color:'#ffd700', check:(owned)=>owned.nes.size>=1&&owned.snes.size>=1&&owned.n64.size>=1 },
+  { id:'all_10',       cat:'console', label:'Retro Enthusiast',desc:'Own at least 10 games across all three consoles',       icon:'🥈', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=10  },
+  { id:'all_100',      cat:'console', label:'Retro Fanatic',   desc:'Own at least 100 games across all three consoles',      icon:'🥇', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=100 },
+  { id:'all_250',      cat:'console', label:'Retro Obsessed',  desc:'Own at least 250 games across all three consoles',      icon:'💎', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=250 },
+
+  // ── NES Publisher/Developer ─────────────────────────────────────────────────
+  { id:'nes_capcom',    cat:'publisher', console:'nes',  label:'Capcom NES Set',    desc:'Own all NES Capcom games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Capcom')    },
+  { id:'nes_konami',    cat:'publisher', console:'nes',  label:'Konami NES Set',    desc:'Own all NES Konami games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Konami')    },
+  { id:'nes_nintendo',  cat:'publisher', console:'nes',  label:'Nintendo NES Set',  desc:'Own all NES Nintendo games',   icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Nintendo')  },
+  { id:'nes_namco',     cat:'publisher', console:'nes',  label:'Namco NES Set',     desc:'Own all NES Namco games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Namco')     },
+  { id:'nes_hudson',    cat:'publisher', console:'nes',  label:'Hudson NES Set',    desc:'Own all NES Hudson games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Hudson')    },
+  { id:'nes_tecmo',     cat:'publisher', console:'nes',  label:'Tecmo NES Set',     desc:'Own all NES Tecmo games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Tecmo')     },
+  { id:'nes_taito',     cat:'publisher', console:'nes',  label:'Taito NES Set',     desc:'Own all NES Taito games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Taito')     },
+  { id:'nes_sunsoft',   cat:'publisher', console:'nes',  label:'Sunsoft NES Set',   desc:'Own all NES Sunsoft games',    icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Sunsoft')   },
+
+  // ── SNES Publisher/Developer ────────────────────────────────────────────────
+  { id:'snes_capcom',   cat:'publisher', console:'snes', label:'Capcom SNES Set',   desc:'Own all SNES Capcom games',    icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Capcom')   },
+  { id:'snes_konami',   cat:'publisher', console:'snes', label:'Konami SNES Set',   desc:'Own all SNES Konami games',    icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Konami')   },
+  { id:'snes_nintendo', cat:'publisher', console:'snes', label:'Nintendo SNES Set', desc:'Own all SNES Nintendo games',  icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Nintendo') },
+  { id:'snes_squaresoft',cat:'publisher',console:'snes', label:'Squaresoft Set',    desc:'Own all SNES Squaresoft games',icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Squaresoft') },
+  { id:'snes_enix',     cat:'publisher', console:'snes', label:'Enix SNES Set',     desc:'Own all SNES Enix games',      icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Enix')     },
+  { id:'snes_rare',     cat:'publisher', console:'snes', label:'Rare SNES Set',     desc:'Own all SNES Rare games',      icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Rare')     },
+
+  // ── N64 Publisher/Developer ─────────────────────────────────────────────────
+  { id:'n64_nintendo',  cat:'publisher', console:'n64',  label:'Nintendo N64 Set',  desc:'Own all N64 Nintendo games',   icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Nintendo')  },
+  { id:'n64_rare',      cat:'publisher', console:'n64',  label:'Rare N64 Set',      desc:'Own all N64 Rare games',       icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Rare')      },
+  { id:'n64_midway',    cat:'publisher', console:'n64',  label:'Midway N64 Set',    desc:'Own all N64 Midway games',     icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Midway')    },
+  { id:'n64_acclaim',   cat:'publisher', console:'n64',  label:'Acclaim N64 Set',   desc:'Own all N64 Acclaim games',    icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Acclaim')   },
+
+  // ── Genre achievements ──────────────────────────────────────────────────────
+  { id:'rpg_5',   cat:'genre', label:'RPG Apprentice',  desc:'Own at least 5 RPGs across all consoles',   icon:'⚔️',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=5   },
+  { id:'rpg_15',  cat:'genre', label:'RPG Warrior',     desc:'Own at least 15 RPGs across all consoles',  icon:'🗡️',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=15  },
+  { id:'rpg_30',  cat:'genre', label:'RPG Master',      desc:'Own at least 30 RPGs across all consoles',  icon:'🧙',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=30  },
+
+  { id:'platformer_10', cat:'genre', label:'Platformer Rookie',  desc:'Own at least 10 platformers',  icon:'🍄', color:'#00bcd4', check:(owned,games)=>countGenre(owned,games,'Platform')>=10 },
+  { id:'platformer_25', cat:'genre', label:'Platformer Pro',     desc:'Own at least 25 platformers',  icon:'⭐', color:'#00bcd4', check:(owned,games)=>countGenre(owned,games,'Platform')>=25 },
+
+  { id:'fighter_5',  cat:'genre', label:'Street Fighter',  desc:'Own at least 5 fighting games',   icon:'👊', color:'#ff5722', check:(owned,games)=>countGenre(owned,games,'Fight')>=5  },
+  { id:'fighter_15', cat:'genre', label:'Tournament Arc',  desc:'Own at least 15 fighting games',  icon:'🥋', color:'#ff5722', check:(owned,games)=>countGenre(owned,games,'Fight')>=15 },
+
+  { id:'sports_10', cat:'genre', label:'Sports Fan',    desc:'Own at least 10 sports games',   icon:'🏈', color:'#4caf50', check:(owned,games)=>countGenre(owned,games,'Sport')>=10 },
+  { id:'sports_25', cat:'genre', label:'Sports Addict', desc:'Own at least 25 sports games',   icon:'🏆', color:'#4caf50', check:(owned,games)=>countGenre(owned,games,'Sport')>=25 },
+
+  { id:'shooter_5',  cat:'genre', label:'Trigger Happy',   desc:'Own at least 5 shooters',   icon:'🔫', color:'#f44336', check:(owned,games)=>countGenre(owned,games,'Shoot')>=5  },
+  { id:'shooter_15', cat:'genre', label:'Gun Enthusiast',  desc:'Own at least 15 shooters',  icon:'💥', color:'#f44336', check:(owned,games)=>countGenre(owned,games,'Shoot')>=15 },
+
+  { id:'puzzle_5',  cat:'genre', label:'Puzzle Solver',  desc:'Own at least 5 puzzle games',   icon:'🧩', color:'#9c27b0', check:(owned,games)=>countGenre(owned,games,'Puzzle')>=5  },
+  { id:'puzzle_15', cat:'genre', label:'Puzzle Master',  desc:'Own at least 15 puzzle games',  icon:'🔮', color:'#9c27b0', check:(owned,games)=>countGenre(owned,games,'Puzzle')>=15 },
+
+  { id:'racing_5',  cat:'genre', label:'Pole Position',  desc:'Own at least 5 racing games',  icon:'🏎️', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=5  },
+  { id:'racing_15', cat:'genre', label:'Speed Demon',    desc:'Own at least 15 racing games', icon:'🏁', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=15 },
+];
+
+// ── Achievement helper functions ──────────────────────────────────────────────
+
+function getAllOwnedSets() {
+  const sets = { nes: new Set(), snes: new Set(), n64: new Set() };
+  ['nes','snes','n64'].forEach(con => {
+    const key = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const gameList = CONSOLE_CONFIG[con].games();
+    gameList.forEach(g => { if (saved[g.id]?.owned) sets[con].add(g.id); });
+  });
+  return sets;
+}
+
+function getAllGameLists() {
+  const lists = { nes: [], snes: [], n64: [] };
+  ['nes','snes','n64'].forEach(con => {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    lists[con]  = CONSOLE_CONFIG[con].games().map(g => ({ ...g, ...(saved[g.id] || {}) }));
+  });
+  return lists;
+}
+
+function checkPublisher(owned, gameLists, con, publisher) {
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const pub   = publisher.toLowerCase();
+  const matches = gameLists[con].filter(g =>
+    (g.developer || '').toLowerCase().includes(pub) ||
+    (g.publisher || '').toLowerCase().includes(pub)
+  );
+  if (matches.length === 0) return false;
+  return matches.every(g => saved[g.id]?.owned);
+}
+
+function checkPublisherProgress(gameLists, con, publisher) {
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const pub   = publisher.toLowerCase();
+  const matches = gameLists[con].filter(g =>
+    (g.developer || '').toLowerCase().includes(pub) ||
+    (g.publisher || '').toLowerCase().includes(pub)
+  );
+  const have = matches.filter(g => saved[g.id]?.owned).length;
+  return { have, total: matches.length };
+}
+
+function countGenre(owned, gameLists, genreKeyword) {
+  const kw = genreKeyword.toLowerCase();
+  let count = 0;
+  ['nes','snes','n64'].forEach(con => {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    gameLists[con].forEach(g => {
+      if (saved[g.id]?.owned && (g.genre || '').toLowerCase().includes(kw)) count++;
+    });
+  });
+  return count;
+}
+
+function getAchievementProgress(def, ownedSets, gameLists, totals) {
+  // Returns { have, total } for progress bar
+  if (def.cat === 'console' && def.id.endsWith('_complete')) {
+    const con = def.console;
+    return { have: ownedSets[con].size, total: totals[con] };
+  }
+  if (def.cat === 'console' && def.id.endsWith('_half')) {
+    const con = def.console;
+    return { have: ownedSets[con].size, total: Math.ceil(totals[con] * 0.5) };
+  }
+  if (def.cat === 'console' && /_\d+$/.test(def.id)) {
+    const match = def.id.match(/_(\d+)$/);
+    const target = parseInt(match[1]);
+    const con = def.console;
+    if (con) return { have: ownedSets[con].size, total: target };
+    // cross-console
+    return { have: ownedSets.nes.size + ownedSets.snes.size + ownedSets.n64.size, total: target };
+  }
+  if (def.cat === 'publisher') {
+    const pub = def.label.split(' ')[0]; // extract publisher name
+    const conKey = def.console;
+    return checkPublisherProgress(gameLists, conKey, pub);
+  }
+  if (def.cat === 'genre') {
+    const kws = { rpg:['RPG'], platformer:['Platform'], fighter:['Fight'], sports:['Sport'], shooter:['Shoot'], puzzle:['Puzzle'], racing:['Rac'] };
+    const match = def.id.match(/^([a-z]+)_\d+$/);
+    const target = parseInt(def.id.match(/_(\d+)$/)[1]);
+    if (match) {
+      const kw = (kws[match[1]] || [match[1]])[0];
+      return { have: countGenre(null, gameLists, kw), total: target };
+    }
+  }
+  return null;
+}
+
+let achActiveCat = 'all';
+
+function renderAchievements() {
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+
+  const evaluated = ACHIEVEMENT_DEFS.map(def => ({
+    ...def,
+    earned: def.check(ownedSets, gameLists, totals),
+    progress: getAchievementProgress(def, ownedSets, gameLists, totals),
+  }));
+
+  const total  = evaluated.length;
+  const earned = evaluated.filter(a => a.earned).length;
+
+  // Progress bar
+  document.getElementById('achProgressLabel').textContent = `${earned} / ${total}`;
+  document.getElementById('achProgressBar').style.width   = `${total ? (earned/total*100) : 0}%`;
+  document.getElementById('achProgressBar').style.background = CONSOLE_CONFIG[activeConsole].accent;
+
+  // Category tabs
+  const cats = ['all', 'console', 'publisher', 'genre'];
+  const catLabels = { all:'All', console:'Console', publisher:'Publisher', genre:'Genre' };
+  const tabsEl = document.getElementById('achCatTabs');
+  tabsEl.innerHTML = '';
+  cats.forEach(cat => {
+    const count = cat === 'all' ? evaluated.filter(a=>a.earned).length : evaluated.filter(a=>a.cat===cat&&a.earned).length;
+    const total2 = cat === 'all' ? evaluated.length : evaluated.filter(a=>a.cat===cat).length;
+    const btn = document.createElement('button');
+    const isActive = achActiveCat === cat;
+    const accent = CONSOLE_CONFIG[activeConsole].accent;
+    btn.style.cssText = `font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:0.08em;padding:7px 14px;background:${isActive ? accent : 'transparent'};border:2px solid ${isActive ? accent : 'var(--border)'};color:${isActive ? '#fff' : 'var(--muted)'};cursor:pointer;transition:all 0.15s;white-space:nowrap;`;
+    btn.textContent = `${catLabels[cat]} (${count}/${total2})`;
+    btn.onclick = () => { achActiveCat = cat; renderAchievements(); };
+    tabsEl.appendChild(btn);
+  });
+
+  // Grid
+  const grid = document.getElementById('achGrid');
+  grid.innerHTML = '';
+  const filtered = achActiveCat === 'all' ? evaluated : evaluated.filter(a => a.cat === achActiveCat);
+
+  // Sort: earned first, then by progress %
+  filtered.sort((a,b) => {
+    if (a.earned !== b.earned) return a.earned ? -1 : 1;
+    const ap = a.progress ? a.progress.have / (a.progress.total || 1) : 0;
+    const bp = b.progress ? b.progress.have / (b.progress.total || 1) : 0;
+    return bp - ap;
+  });
+
+  filtered.forEach(ach => {
+    const pct = ach.progress && ach.progress.total ? Math.min(ach.progress.have / ach.progress.total * 100, 100) : (ach.earned ? 100 : 0);
+    const card = document.createElement('div');
+    card.style.cssText = `background:var(--surface);border:2px solid ${ach.earned ? ach.color : 'var(--border)'};padding:16px;position:relative;transition:border-color 0.2s;box-shadow:${ach.earned ? `0 0 12px ${ach.color}44` : 'none'};`;
+
+    const progressBar = ach.progress ? `
+      <div style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);">${ach.progress.have} / ${ach.progress.total}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};">${Math.round(pct)}%</div>
+        </div>
+        <div style="height:4px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${ach.earned ? ach.color : '#555'};transition:width 0.5s;"></div>
+        </div>
+      </div>` : '';
+
+    card.innerHTML = `
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:28px;line-height:1;filter:${ach.earned ? 'none' : 'grayscale(1) opacity(0.3)'};">${ach.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};margin-bottom:6px;line-height:1.5;">${ach.label}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.4;">${ach.desc}</div>
+          ${progressBar}
+        </div>
+        ${ach.earned ? `<div style="font-size:14px;flex-shrink:0;">✅</div>` : ''}
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
 // ─── Console switcher ────────────────────────────────────────────────────────
 function updateToggleTheme(cfg) {
   document.documentElement.style.setProperty('--toggle-knob-dark', cfg.accent);
@@ -2636,6 +2941,44 @@ document.getElementById('imageLightbox').addEventListener('click', e => {
     requestAnimationFrame(step);
   });
 })();
+</script>
+
+<!-- PWA Service Worker Registration -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('[RetroQuest] Service worker registered:', reg.scope);
+
+        // Check for updates every time the app loads
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available — could show a toast here in future
+              console.log('[RetroQuest] New version available.');
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[RetroQuest] Service worker registration failed:', err));
+  });
+}
+
+// PWA install prompt — store for use in a future "Install App" button
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Future: show a custom "Add to Home Screen" banner
+  console.log('[RetroQuest] Install prompt ready.');
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  console.log('[RetroQuest] App installed successfully.');
+});
 </script>
 
 </body>
