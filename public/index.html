@@ -1572,6 +1572,7 @@ function valueOf(g) { return Number(g.estimate) || 0; }
 // 7 milestones: 10%, 25%, 50%, 75%, 90% (10% left), last-5, 100%
 // last-5 and 90% positions are computed from total at runtime
 let _prevMilestonesReached = new Set();
+let _prevAchievementsEarned = new Set();
 
 function getMilestones(total) {
   const last5pct = ((total - 5) / total * 100);
@@ -1642,6 +1643,41 @@ function renderStats() {
   document.getElementById('collectionValue').textContent = fmt(owned.reduce((s,g) => s + valueOf(g), 0));
   document.getElementById('setValue').textContent = fmt(games.reduce((s,g) => s + valueOf(g), 0));
   renderMilestoneBar(owned.length, total);
+}
+
+function checkAchievementUnlocks() {
+  if (!window.ACHIEVEMENTS || !window.ACHIEVEMENTS.length) return;
+  const cons = ['nes','snes','n64'];
+  const ownedSets = {};
+  cons.forEach(c => {
+    const saved = JSON.parse(localStorage.getItem(CONSOLE_CONFIG[c].storageKey) || '{}');
+    ownedSets[c] = new Set((gameLists[c] || []).filter(g => saved[g.id]?.owned).map(g => g.id));
+  });
+  const totals = {};
+  cons.forEach(c => { totals[c] = (gameLists[c] || []).length; });
+
+  let newlyEarned = null;
+  for (const def of ACHIEVEMENTS) {
+    if (_prevAchievementsEarned.has(def.id)) continue;
+    let earned = false;
+    try { earned = def.check(ownedSets, gameLists, totals); } catch(e) {}
+    if (earned) {
+      _prevAchievementsEarned.add(def.id);
+      newlyEarned = def;
+    }
+  }
+
+  if (newlyEarned) {
+    const el = document.getElementById('milestoneAchieved');
+    if (el) {
+      el.textContent = '🏆 ' + newlyEarned.label + ' UNLOCKED!';
+      el.classList.remove('flash');
+      void el.offsetWidth;
+      el.classList.add('flash');
+      playCollectSound && playCollectSound();
+    }
+    if (typeof renderAchievements === 'function') renderAchievements();
+  }
 }
 
 // ─── Filters ──────────────────────────────────────────────────────────────────
@@ -3178,13 +3214,26 @@ window.addEventListener('resize', updateStickyTheadTop);
 populateFilters();
 updateCarouselDisplay();
 buildYearAchievements(); // inject year/decade achievements from real game data
-// Pre-seed reached milestones so initial render doesn't trigger achievement flashes
+// Pre-seed reached milestones and achievements so initial render doesn't trigger flashes
 {
   const owned = games.filter(g => g.owned).length;
   const total = games.length;
   const pct = owned / total * 100;
   getMilestones(total).forEach(m => {
     if (pct >= m.pct) _prevMilestonesReached.add(m.label.replace(/\s/g,'_'));
+  });
+
+  // Pre-seed already-earned achievements
+  const cons2 = ['nes','snes','n64'];
+  const ownedSets2 = {};
+  cons2.forEach(c => {
+    const sv = JSON.parse(localStorage.getItem(CONSOLE_CONFIG[c].storageKey) || '{}');
+    ownedSets2[c] = new Set((gameLists[c] || []).filter(g => sv[g.id]?.owned).map(g => g.id));
+  });
+  const totals2 = {};
+  cons2.forEach(c => { totals2[c] = (gameLists[c] || []).length; });
+  ACHIEVEMENTS.forEach(def => {
+    try { if (def.check(ownedSets2, gameLists, totals2)) _prevAchievementsEarned.add(def.id); } catch(e) {}
   });
 }
 render();
