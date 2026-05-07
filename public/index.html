@@ -2691,11 +2691,17 @@ function getAllGameLists() {
 
 // ─── Achievement unlock notifications ─────────────────────────────────────────
 let _toastTimer = null;
-function showAchievementToast(def) {
+let _toastQueue = [];
+let _toastBusy  = false;
+
+function _processToastQueue() {
+  if (_toastBusy || _toastQueue.length === 0) return;
+  _toastBusy = true;
+  const def   = _toastQueue.shift();
   const toast = document.getElementById('achievementToast');
   const icon  = document.getElementById('toastIcon');
   const title = document.getElementById('toastTitle');
-  if (!toast) return;
+  if (!toast) { _toastBusy = false; return; }
 
   // Colour the border to match the achievement
   toast.style.borderColor = def.color;
@@ -2705,11 +2711,22 @@ function showAchievementToast(def) {
   title.style.color = def.color;
 
   // Slide up
-  clearTimeout(_toastTimer);
   toast.classList.add('show');
 
-  // Slide back down after 4 s
-  _toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+  // Slide back down after 5 s, then show next in queue
+  _toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+    // Wait for slide-out transition before showing next
+    setTimeout(() => {
+      _toastBusy = false;
+      _processToastQueue();
+    }, 400);
+  }, 5000);
+}
+
+function showAchievementToast(def) {
+  _toastQueue.push(def);
+  _processToastQueue();
 }
 
 function checkAchievementUnlocks() {
@@ -2718,19 +2735,19 @@ function checkAchievementUnlocks() {
   const gameLists = getAllGameLists();
   const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
 
-  let newlyEarned = null;
+  let anyNewlyEarned = false;
   for (const def of ACHIEVEMENT_DEFS) {
     if (_prevAchievementsEarned.has(def.id)) continue;
     let earned = false;
     try { earned = def.check(ownedSets, gameLists, totals); } catch(e) {}
     if (earned) {
       _prevAchievementsEarned.add(def.id);
-      newlyEarned = def;
+      showAchievementToast(def);
+      anyNewlyEarned = true;
     }
   }
 
-  if (newlyEarned) {
-    showAchievementToast(newlyEarned);
+  if (anyNewlyEarned) {
     playCollectSound && playCollectSound();
     if (typeof renderAchievements === 'function') renderAchievements();
   }
