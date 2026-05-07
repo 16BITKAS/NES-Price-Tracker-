@@ -1199,147 +1199,6 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .lb-close-btn:hover { transform: scale(1.1); }
 
-/* ── Achievement unlock popup ─────────────────────────────────────────────── */
-#achUnlockStack {
-  position: fixed;
-  bottom: 24px;
-  right: 20px;
-  z-index: 9000;
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 10px;
-  pointer-events: none;
-  align-items: flex-end;
-}
-
-.ach-popup {
-  pointer-events: auto;
-  width: 290px;
-  background: var(--surface);
-  border: 3px solid var(--accent);
-  box-shadow:
-    4px 4px 0 rgba(0,0,0,0.6),
-    0 0 24px var(--glow),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-  image-rendering: pixelated;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transform: translateX(calc(100% + 28px));
-  opacity: 0;
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity   0.22s ease;
-  will-change: transform, opacity;
-}
-
-.ach-popup.ach-popup--in {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.ach-popup.ach-popup--out {
-  transform: translateX(calc(100% + 28px));
-  opacity: 0;
-}
-
-/* Top banner */
-.ach-popup-banner {
-  background: var(--accent);
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.ach-popup-banner-text {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: #fff;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  line-height: 1;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
-}
-
-/* Blinking pixel trophy icon in banner */
-.ach-popup-trophy {
-  font-size: 13px;
-  line-height: 1;
-  animation: achTrophyBlink 0.7s step-end infinite;
-}
-
-@keyframes achTrophyBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-/* Body */
-.ach-popup-body {
-  padding: 11px 12px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.ach-popup-icon {
-  font-size: 26px;
-  line-height: 1;
-  flex-shrink: 0;
-  filter: drop-shadow(0 0 6px var(--accent));
-}
-
-.ach-popup-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.ach-popup-label {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
-  color: var(--ink);
-  letter-spacing: 0.05em;
-  line-height: 1.5;
-  margin-bottom: 4px;
-  word-break: break-word;
-}
-
-.ach-popup-desc {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-
-/* Pixel scanline progress bar at bottom */
-.ach-popup-bar {
-  height: 4px;
-  background: var(--border);
-  position: relative;
-  overflow: hidden;
-}
-
-.ach-popup-bar-fill {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--accent) 0px, var(--accent) 4px,
-    rgba(0,0,0,0.25) 4px, rgba(0,0,0,0.25) 8px
-  );
-  transform-origin: left;
-  animation: achBarDrain linear forwards;
-}
-
-@keyframes achBarDrain {
-  from { transform: scaleX(1); }
-  to   { transform: scaleX(0); }
-}
-
-@media (max-width: 480px) {
-  #achUnlockStack { right: 10px; bottom: 70px; }
-  .ach-popup { width: calc(100vw - 20px); }
-}
-
 /* ── Game Detail Modal – mobile layout ───────────────────────────────────── */
 @media (max-width: 700px) {
   #gameModalInner {
@@ -2320,9 +2179,130 @@ const ACHIEVEMENT_DEFS = [
 
   // ── Black Box ───────────────────────────────────────────────────────────────
   { id:'nes_blackbox', cat:'console', console:'nes', label:'NES Black Box OG', desc:'Collect all 30 original Black Box NES games', icon:'🖤', color:'#e60012', check:(owned,games)=>checkBlackBox(owned,games) },
+
+  // ── Year achievements (generated below after game data is available) ─────────
+  // Injected dynamically by buildYearAchievements() at init time
 ];
 
-// ── Black Box NES game titles (all 30 originals) ─────────────────────────────
+// ── Year achievement helpers ──────────────────────────────────────────────────
+
+const YEAR_ACH_ICONS = ['📅','🗓️','⏳','🕹️','📼','💾','🎞️','🖥️'];
+const DECADE_ACH_ICONS = { 80:'📼', 90:'💿', 2000:'💿' };
+
+// Returns a check fn for "own all games on `con` released in `year`"
+function makeYearCheck(con, year) {
+  return function(_ownedSets, gameLists) {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const matches = (gameLists[con] || []).filter(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      return y === year;
+    });
+    if (matches.length === 0) return false;
+    return matches.every(g => saved[g.id]?.owned);
+  };
+}
+
+// Returns a check fn for "own all games on `con` in decade `startYear`–`endYear`"
+function makeDecadeCheck(con, startYear, endYear) {
+  return function(_ownedSets, gameLists) {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const matches = (gameLists[con] || []).filter(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      return y >= startYear && y <= endYear;
+    });
+    if (matches.length === 0) return false;
+    return matches.every(g => saved[g.id]?.owned);
+  };
+}
+
+// Returns progress for year/decade achievement
+function getYearAchProgress(def, gameLists) {
+  const con   = def.console;
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const matches = (gameLists[con] || []).filter(g => {
+    const y = Number(g.year || g.releaseYear || g.release_year);
+    if (def._decade) return y >= def._decade[0] && y <= def._decade[1];
+    return y === def._year;
+  });
+  const have = matches.filter(g => saved[g.id]?.owned).length;
+  return { have, total: matches.length };
+}
+
+// Build and inject year achievements from real game lists
+function buildYearAchievements() {
+  const conDefs = [
+    { con:'nes',  color:'#e60012', circleIcon:'🔴' },
+    { con:'snes', color:'#7b2fff', circleIcon:'🟣' },
+    { con:'n64',  color:'#00a84f', circleIcon:'🟢' },
+  ];
+
+  conDefs.forEach(({ con, color, circleIcon }) => {
+    const gameList = CONSOLE_CONFIG[con].games();
+    const label    = CONSOLE_CONFIG[con].label;
+
+    // Collect distinct years that actually exist in this console's library
+    const yearSet = new Set();
+    gameList.forEach(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      if (y >= 1980 && y <= 2010) yearSet.add(y);
+    });
+    const years = [...yearSet].sort();
+
+    // Per-year achievements (skip years with 0 games — impossible — already filtered above)
+    years.forEach((year, i) => {
+      const count = gameList.filter(g => {
+        const y = Number(g.year || g.releaseYear || g.release_year);
+        return y === year;
+      }).length;
+      if (count === 0) return; // safety
+
+      const def = {
+        id:      `${con}_year_${year}`,
+        cat:     'year',
+        console: con,
+        label:   `${label} ${year}`,
+        desc:    `Own all ${count} ${label} game${count===1?'':'s'} from ${year}`,
+        icon:    circleIcon,
+        color,
+        _year:   year,
+        check:   makeYearCheck(con, year),
+      };
+      ACHIEVEMENT_DEFS.push(def);
+    });
+
+    // Decade achievements — only if real games span that decade
+    const decades = [
+      { start:1983, end:1989, labelSuffix:"80s Decade", icon:'📼' },
+      { start:1990, end:1999, labelSuffix:"90s Decade", icon:'💿' },
+      { start:2000, end:2009, labelSuffix:"2000s Decade", icon:'💾' },
+    ];
+    decades.forEach(({ start, end, labelSuffix, icon }) => {
+      const count = gameList.filter(g => {
+        const y = Number(g.year || g.releaseYear || g.release_year);
+        return y >= start && y <= end;
+      }).length;
+      if (count === 0) return;
+
+      const def = {
+        id:      `${con}_decade_${start}`,
+        cat:     'year',
+        console: con,
+        label:   `${label} ${labelSuffix}`,
+        desc:    `Own all ${count} ${label} games released in the ${labelSuffix.replace(' Decade','')} (${start}–${end})`,
+        icon,
+        color,
+        _decade: [start, end],
+        check:   makeDecadeCheck(con, start, end),
+      };
+      ACHIEVEMENT_DEFS.push(def);
+    });
+  });
+}
+
+
 const NES_BLACK_BOX_TITLES = [
   '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
   'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
@@ -2467,10 +2447,14 @@ function getAchievementProgress(def, ownedSets, gameLists, totals) {
   if (def.id === 'nes_blackbox') {
     return getBlackBoxProgress(gameLists);
   }
+  if (def.cat === 'year') {
+    return getYearAchProgress(def, gameLists);
+  }
   return null;
 }
 
-let achActiveCat = 'all';
+let achActiveCat     = 'all';
+let achConsoleFilter = 'all'; // 'all' | 'nes' | 'snes' | 'n64'
 
 function renderAchievements() {
   const ownedSets = getAllOwnedSets();
@@ -2486,45 +2470,106 @@ function renderAchievements() {
   const total  = evaluated.length;
   const earned = evaluated.filter(a => a.earned).length;
 
-  // Progress bar
+  // Overall progress bar
   document.getElementById('achProgressLabel').textContent = `${earned} / ${total}`;
   document.getElementById('achProgressBar').style.width   = `${total ? (earned/total*100) : 0}%`;
   document.getElementById('achProgressBar').style.background = CONSOLE_CONFIG[activeConsole].accent;
 
-  // Category tabs
-  const cats = ['all', 'console', 'publisher', 'genre'];
-  const catLabels = { all:'All', console:'Console', publisher:'Publisher', genre:'Genre' };
+  // ── Console filter row ──────────────────────────────────────────────────────
+  const consoleFilters = [
+    { key:'all',  label:'All Consoles' },
+    { key:'nes',  label:'NES',  color:'#e60012' },
+    { key:'snes', label:'SNES', color:'#7b2fff' },
+    { key:'n64',  label:'N64',  color:'#00a84f' },
+  ];
+
+  let consoleFilterEl = document.getElementById('achConsoleFilterRow');
+  if (!consoleFilterEl) {
+    consoleFilterEl = document.createElement('div');
+    consoleFilterEl.id = 'achConsoleFilterRow';
+    consoleFilterEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;';
+    const tabsEl = document.getElementById('achCatTabs');
+    tabsEl.parentNode.insertBefore(consoleFilterEl, tabsEl);
+  }
+  consoleFilterEl.innerHTML = '';
+
+  consoleFilters.forEach(({ key, label, color }) => {
+    const isActive = achConsoleFilter === key;
+    const dotColor = color || 'var(--muted)';
+    const activeColor = color || CONSOLE_CONFIG[activeConsole].accent;
+    const btn = document.createElement('button');
+    btn.style.cssText = `font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;padding:5px 11px;background:${isActive ? activeColor+'22' : 'transparent'};border:2px solid ${isActive ? activeColor : 'var(--border)'};color:${isActive ? activeColor : 'var(--muted)'};cursor:pointer;transition:all 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;border-radius:0;`;
+    if (color) {
+      const dot = document.createElement('span');
+      dot.style.cssText = `width:7px;height:7px;background:${dotColor};display:inline-block;flex-shrink:0;image-rendering:pixelated;`;
+      btn.appendChild(dot);
+    }
+    btn.appendChild(document.createTextNode(label));
+    btn.onclick = () => { achConsoleFilter = key; renderAchievements(); };
+    consoleFilterEl.appendChild(btn);
+  });
+
+  // ── Category tabs ───────────────────────────────────────────────────────────
+  // Apply console filter first so counts are scoped correctly
+  const consoleFiltered = achConsoleFilter === 'all'
+    ? evaluated
+    : evaluated.filter(a => !a.console || a.console === achConsoleFilter);
+
+  const cats = ['all', 'console', 'publisher', 'genre', 'year'];
+  const catLabels = { all:'All', console:'Console', publisher:'Publisher', genre:'Genre', year:'Year' };
   const tabsEl = document.getElementById('achCatTabs');
   tabsEl.innerHTML = '';
+  const accent = CONSOLE_CONFIG[activeConsole].accent;
+
   cats.forEach(cat => {
-    const count = cat === 'all' ? evaluated.filter(a=>a.earned).length : evaluated.filter(a=>a.cat===cat&&a.earned).length;
-    const total2 = cat === 'all' ? evaluated.length : evaluated.filter(a=>a.cat===cat).length;
+    const pool  = cat === 'all' ? consoleFiltered : consoleFiltered.filter(a => a.cat === cat);
+    const count = pool.filter(a => a.earned).length;
+    const total2 = pool.length;
     const btn = document.createElement('button');
     const isActive = achActiveCat === cat;
-    const accent = CONSOLE_CONFIG[activeConsole].accent;
     btn.style.cssText = `font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:0.08em;padding:7px 14px;background:${isActive ? accent : 'transparent'};border:2px solid ${isActive ? accent : 'var(--border)'};color:${isActive ? '#fff' : 'var(--muted)'};cursor:pointer;transition:all 0.15s;white-space:nowrap;`;
     btn.textContent = `${catLabels[cat]} (${count}/${total2})`;
     btn.onclick = () => { achActiveCat = cat; renderAchievements(); };
     tabsEl.appendChild(btn);
   });
 
-  // Grid
+  // ── Grid ────────────────────────────────────────────────────────────────────
   const grid = document.getElementById('achGrid');
   grid.innerHTML = '';
-  const filtered = achActiveCat === 'all' ? evaluated : evaluated.filter(a => a.cat === achActiveCat);
+
+  let display = achActiveCat === 'all'
+    ? consoleFiltered
+    : consoleFiltered.filter(a => a.cat === achActiveCat);
 
   // Sort: earned first, then by progress %
-  filtered.sort((a,b) => {
+  display.sort((a, b) => {
     if (a.earned !== b.earned) return a.earned ? -1 : 1;
     const ap = a.progress ? a.progress.have / (a.progress.total || 1) : 0;
     const bp = b.progress ? b.progress.have / (b.progress.total || 1) : 0;
-    return bp - ap;
+    if (bp !== ap) return bp - ap;
+    // Secondary: year achievements sorted by year/decade
+    if (a.cat === 'year' && b.cat === 'year') {
+      const ay = a._year || a._decade?.[0] || 0;
+      const by = b._year || b._decade?.[0] || 0;
+      return ay - by;
+    }
+    return 0;
   });
 
-  filtered.forEach(ach => {
+  if (display.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:24px 0;">No achievements in this view.</div>`;
+    return;
+  }
+
+  display.forEach(ach => {
     const pct = ach.progress && ach.progress.total ? Math.min(ach.progress.have / ach.progress.total * 100, 100) : (ach.earned ? 100 : 0);
     const card = document.createElement('div');
     card.style.cssText = `background:var(--surface);border:2px solid ${ach.earned ? ach.color : 'var(--border)'};padding:16px;position:relative;transition:border-color 0.2s;box-shadow:${ach.earned ? `0 0 12px ${ach.color}44` : 'none'};`;
+
+    // Console badge for year achievements when "All Consoles" is selected
+    const consoleBadge = (ach.cat === 'year' && achConsoleFilter === 'all' && ach.console)
+      ? `<span style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};border:1px solid ${ach.color}44;padding:1px 5px;margin-bottom:6px;display:inline-block;letter-spacing:0.08em;">${CONSOLE_CONFIG[ach.console].label}</span><br>`
+      : '';
 
     const progressBar = ach.progress ? `
       <div style="margin-top:10px;">
@@ -2541,6 +2586,7 @@ function renderAchievements() {
       <div style="display:flex;align-items:flex-start;gap:12px;">
         <div style="font-size:28px;line-height:1;filter:${ach.earned ? 'none' : 'grayscale(1) opacity(0.3)'};">${ach.icon}</div>
         <div style="flex:1;min-width:0;">
+          ${consoleBadge}
           <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};margin-bottom:6px;line-height:1.5;">${ach.label}</div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.4;">${ach.desc}</div>
           ${progressBar}
@@ -2677,140 +2723,6 @@ function playUncheckSound() {
   setTimeout(() => ctx.close(), 300);
 }
 
-// ─── Achievement unlock popup ─────────────────────────────────────────────────
-
-// Fanfare: a grander 8-bit jingle distinct from the collect blip
-function playAchievementFanfare() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [
-      { freq: 523.3, start: 0.00, dur: 0.08 },  // C5
-      { freq: 659.3, start: 0.09, dur: 0.08 },  // E5
-      { freq: 784.0, start: 0.18, dur: 0.08 },  // G5
-      { freq: 1046.5,start: 0.27, dur: 0.08 },  // C6
-      { freq: 784.0, start: 0.36, dur: 0.06 },  // G5
-      { freq: 1046.5,start: 0.43, dur: 0.22 },  // C6 — long hold
-    ];
-    notes.forEach(({ freq, start, dur }) => {
-      const osc  = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
-      gain.gain.setValueAtTime(0.14, ctx.currentTime + start);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + start);
-      osc.stop(ctx.currentTime + start + dur + 0.01);
-    });
-    setTimeout(() => ctx.close(), 900);
-  } catch (e) { /* audio not available */ }
-}
-
-// Queue of popups to show one at a time
-const _achPopupQueue = [];
-let   _achPopupBusy  = false;
-const ACH_POPUP_DURATION = 4200; // ms the popup stays visible
-
-function showAchievementPopup(def) {
-  _achPopupQueue.push(def);
-  if (!_achPopupBusy) _drainAchPopupQueue();
-}
-
-function _drainAchPopupQueue() {
-  if (_achPopupQueue.length === 0) { _achPopupBusy = false; return; }
-  _achPopupBusy = true;
-  const def = _achPopupQueue.shift();
-  _showOneAchPopup(def, _drainAchPopupQueue);
-}
-
-function _showOneAchPopup(def, onDone) {
-  const stack = document.getElementById('achUnlockStack');
-
-  const popup = document.createElement('div');
-  popup.className = 'ach-popup';
-  popup.style.setProperty('--accent', def.color || 'var(--console-nes)');
-  popup.style.setProperty('--glow',   (def.color || '#e60012') + '33');
-  popup.style.borderColor = def.color || 'var(--accent)';
-
-  popup.innerHTML = `
-    <div class="ach-popup-banner" style="background:${def.color || 'var(--accent)'};">
-      <span class="ach-popup-trophy">🏅</span>
-      <span class="ach-popup-banner-text">Achievement Unlocked!</span>
-    </div>
-    <div class="ach-popup-body">
-      <div class="ach-popup-icon">${def.icon}</div>
-      <div class="ach-popup-text">
-        <div class="ach-popup-label">${def.label}</div>
-        <div class="ach-popup-desc">${def.desc}</div>
-      </div>
-    </div>
-    <div class="ach-popup-bar">
-      <div class="ach-popup-bar-fill" style="animation-duration:${ACH_POPUP_DURATION}ms;"></div>
-    </div>`;
-
-  // Dismiss on click
-  popup.addEventListener('click', () => dismiss(true));
-
-  stack.appendChild(popup);
-
-  // Slide in
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => popup.classList.add('ach-popup--in'));
-  });
-
-  playAchievementFanfare();
-
-  let dismissed = false;
-  const timer = setTimeout(() => dismiss(false), ACH_POPUP_DURATION);
-
-  function dismiss(immediate) {
-    if (dismissed) return;
-    dismissed = true;
-    clearTimeout(timer);
-    popup.classList.remove('ach-popup--in');
-    popup.classList.add('ach-popup--out');
-    const delay = immediate ? 280 : 300;
-    setTimeout(() => {
-      popup.remove();
-      // Small gap between stacked popups
-      setTimeout(onDone, 120);
-    }, delay);
-  }
-}
-
-// ─── Achievement unlock diffing ───────────────────────────────────────────────
-// Tracks which achievements were already earned so we only fire on new unlocks.
-// Initialised lazily on first call so all game data is loaded.
-let _prevEarnedAchIds = null;
-
-function _initPrevEarned() {
-  if (_prevEarnedAchIds !== null) return;
-  _prevEarnedAchIds = new Set();
-  const ownedSets = getAllOwnedSets();
-  const gameLists = getAllGameLists();
-  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
-  ACHIEVEMENT_DEFS.forEach(def => {
-    if (def.check(ownedSets, gameLists, totals)) _prevEarnedAchIds.add(def.id);
-  });
-}
-
-function checkAchievementUnlocks() {
-  _initPrevEarned();
-  const ownedSets = getAllOwnedSets();
-  const gameLists = getAllGameLists();
-  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
-  ACHIEVEMENT_DEFS.forEach(def => {
-    const earned = def.check(ownedSets, gameLists, totals);
-    if (earned && !_prevEarnedAchIds.has(def.id)) {
-      _prevEarnedAchIds.add(def.id);
-      showAchievementPopup(def);
-    }
-    // If un-earned (unchecking a game), allow it to fire again later
-    if (!earned) _prevEarnedAchIds.delete(def.id);
-  });
-}
-
 // ─── Owned toggle ─────────────────────────────────────────────────────────────
 document.getElementById('tbody').addEventListener('click', e => {
   const pc = e.target.closest('.pixel-check');
@@ -2826,7 +2738,6 @@ document.getElementById('tbody').addEventListener('click', e => {
   if (g.owned) playCollectSound(); else playUncheckSound();
   save();
   renderStats();
-  checkAchievementUnlocks();
 });
 
 document.getElementById('tbody').addEventListener('change', e => {
@@ -2836,7 +2747,6 @@ document.getElementById('tbody').addEventListener('change', e => {
   if (e.target.classList.contains('owned-check')) g.owned = e.target.checked;
   save();
   renderStats();
-  checkAchievementUnlocks();
 });
 
 // ─── Filter listeners ─────────────────────────────────────────────────────────
@@ -3044,6 +2954,7 @@ window.addEventListener('resize', updateStickyTheadTop);
 
 populateFilters();
 updateCarouselDisplay();
+buildYearAchievements(); // inject year/decade achievements from real game data
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
 {
   const owned = games.filter(g => g.owned).length;
@@ -3066,9 +2977,6 @@ render();
   }
 })();
 </script>
-<!-- Achievement unlock popup stack -->
-<div id="achUnlockStack" aria-live="polite" aria-label="Achievement notifications"></div>
-
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
   <div style="position:relative;width:min(860px,94vw);">
