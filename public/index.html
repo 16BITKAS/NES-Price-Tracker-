@@ -1957,7 +1957,6 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
   const pct = matchingGames.length ? Math.round(ownedCount / matchingGames.length * 100) : 0;
 
   const rows = matchingGames.map(g => {
-    const coverSrc = localImgUrl('boxfronts', g.title);
     const hasPrice = Number(g.estimate) > 0;
     const yr = g.year || g.releaseYear || g.release_year || '—';
     const dev = g.developer || g.publisher || '—';
@@ -1974,8 +1973,8 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
             <rect x="0" y="6" width="1" height="1" fill="white"/>
           </svg>
         </div>
-        <img src="${coverSrc}" alt="${esc(g.title)}"
-          style="width:36px;height:50px;object-fit:cover;border-radius:3px;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);"
+        <img src="${localImgUrl('boxfronts', g.title)}" alt="${esc(g.title)}"
+          style="width:54px;height:50px;object-fit:contain;flex-shrink:0;background:var(--surface2);border:1px solid var(--border);"
           onerror="this.style.opacity='0.2'">
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
@@ -2736,9 +2735,9 @@ function renderAchievements() {
       });
     }
 
-    // Console badge for year achievements when "All Consoles" is selected
-    const consoleBadge = (ach.cat === 'year' && achConsoleFilter === 'all' && ach.console)
-      ? `<span style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};border:1px solid ${ach.color}44;padding:1px 5px;margin-bottom:6px;display:inline-block;letter-spacing:0.08em;">${CONSOLE_CONFIG[ach.console].label}</span><br>`
+    // Console badge — absolute top-right corner (always shown for year achievements)
+    const consoleBadge = (ach.cat === 'year' && ach.console)
+      ? `<div style="position:absolute;top:8px;right:8px;font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};border:1px solid ${ach.color}66;padding:2px 6px;letter-spacing:0.08em;background:${ach.color}11;">${CONSOLE_CONFIG[ach.console].label}</div>`
       : '';
 
     const progressBar = ach.progress ? `
@@ -2753,11 +2752,11 @@ function renderAchievements() {
       </div>` : '';
 
     card.innerHTML = `
+      ${consoleBadge}
       <div style="display:flex;align-items:flex-start;gap:12px;">
         <div style="font-size:28px;line-height:1;filter:${ach.earned ? 'none' : 'grayscale(1) opacity(0.3)'};">${ach.icon}</div>
         <div style="flex:1;min-width:0;">
-          ${consoleBadge}
-          <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};margin-bottom:6px;line-height:1.5;">${ach.label}</div>
+          <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};margin-bottom:6px;line-height:1.5;${ach.cat === 'year' ? 'padding-right:44px;' : ''}">${ach.label}</div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.4;">${ach.desc}</div>
           ${progressBar}
           ${isYearCard ? `<div style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};opacity:0.6;margin-top:8px;letter-spacing:0.1em;">▶ VIEW GAMES</div>` : ''}
