@@ -2762,8 +2762,20 @@ function renderAchievements() {
           ${progressBar}
           ${isYearCard ? `<div style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};opacity:0.6;margin-top:8px;letter-spacing:0.1em;">▶ VIEW GAMES</div>` : ''}
         </div>
-        ${ach.earned ? `<div style="font-size:14px;flex-shrink:0;">✅</div>` : ''}
-      </div>`;
+      </div>
+      ${ach.earned ? `
+      <div style="position:absolute;bottom:8px;right:8px;">
+        <svg width="20" height="20" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="display:block;image-rendering:pixelated;">
+          <rect x="0" y="3" width="1" height="1" fill="${ach.color}"/>
+          <rect x="1" y="4" width="1" height="1" fill="${ach.color}"/>
+          <rect x="2" y="5" width="1" height="1" fill="${ach.color}"/>
+          <rect x="3" y="6" width="1" height="1" fill="${ach.color}"/>
+          <rect x="4" y="5" width="1" height="1" fill="${ach.color}"/>
+          <rect x="5" y="4" width="1" height="1" fill="${ach.color}"/>
+          <rect x="6" y="3" width="1" height="1" fill="${ach.color}"/>
+          <rect x="7" y="2" width="1" height="1" fill="${ach.color}"/>
+        </svg>
+      </div>` : ''}`;
 
     grid.appendChild(card);
   });
