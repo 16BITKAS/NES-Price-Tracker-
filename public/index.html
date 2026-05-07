@@ -1199,6 +1199,147 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .lb-close-btn:hover { transform: scale(1.1); }
 
+/* ── Achievement unlock popup ─────────────────────────────────────────────── */
+#achUnlockStack {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  pointer-events: none;
+  align-items: flex-end;
+}
+
+.ach-popup {
+  pointer-events: auto;
+  width: 290px;
+  background: var(--surface);
+  border: 3px solid var(--accent);
+  box-shadow:
+    4px 4px 0 rgba(0,0,0,0.6),
+    0 0 24px var(--glow),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  image-rendering: pixelated;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateX(calc(100% + 28px));
+  opacity: 0;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity   0.22s ease;
+  will-change: transform, opacity;
+}
+
+.ach-popup.ach-popup--in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.ach-popup.ach-popup--out {
+  transform: translateX(calc(100% + 28px));
+  opacity: 0;
+}
+
+/* Top banner */
+.ach-popup-banner {
+  background: var(--accent);
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ach-popup-banner-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #fff;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+}
+
+/* Blinking pixel trophy icon in banner */
+.ach-popup-trophy {
+  font-size: 13px;
+  line-height: 1;
+  animation: achTrophyBlink 0.7s step-end infinite;
+}
+
+@keyframes achTrophyBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Body */
+.ach-popup-body {
+  padding: 11px 12px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ach-popup-icon {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+.ach-popup-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.ach-popup-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.ach-popup-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Pixel scanline progress bar at bottom */
+.ach-popup-bar {
+  height: 4px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.ach-popup-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0px, var(--accent) 4px,
+    rgba(0,0,0,0.25) 4px, rgba(0,0,0,0.25) 8px
+  );
+  transform-origin: left;
+  animation: achBarDrain linear forwards;
+}
+
+@keyframes achBarDrain {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+@media (max-width: 480px) {
+  #achUnlockStack { right: 10px; bottom: 70px; }
+  .ach-popup { width: calc(100vw - 20px); }
+}
+
 /* ── Game Detail Modal – mobile layout ───────────────────────────────────── */
 @media (max-width: 700px) {
   #gameModalInner {
@@ -2181,7 +2322,19 @@ const ACHIEVEMENT_DEFS = [
   { id:'nes_blackbox', cat:'console', console:'nes', label:'NES Black Box OG', desc:'Collect all 30 original Black Box NES games', icon:'🖤', color:'#e60012', check:(owned,games)=>checkBlackBox(owned,games) },
 ];
 
-// ── Black Box NES canonical set of 30 unique titles ──────────────────────────
+// ── Black Box NES game titles (all 30 originals) ─────────────────────────────
+const NES_BLACK_BOX_TITLES = [
+  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
+  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
+  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
+  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
+  'Popeye', 'Pro Wrestling', 'R.O.B. - Gyromite', 'Slalom',
+  'Soccer', 'Stack-Up', 'Super Mario Bros.', 'Tennis',
+  'Track & Field', 'Urban Champion', 'Volleyball', 'Wild Gunman',
+  'Wrecking Crew', 'Excitebike'
+];
+
+// Deduplicated canonical set of 30 unique titles
 const BLACK_BOX_SET = new Set([
   '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
   'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
@@ -2524,6 +2677,140 @@ function playUncheckSound() {
   setTimeout(() => ctx.close(), 300);
 }
 
+// ─── Achievement unlock popup ─────────────────────────────────────────────────
+
+// Fanfare: a grander 8-bit jingle distinct from the collect blip
+function playAchievementFanfare() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [
+      { freq: 523.3, start: 0.00, dur: 0.08 },  // C5
+      { freq: 659.3, start: 0.09, dur: 0.08 },  // E5
+      { freq: 784.0, start: 0.18, dur: 0.08 },  // G5
+      { freq: 1046.5,start: 0.27, dur: 0.08 },  // C6
+      { freq: 784.0, start: 0.36, dur: 0.06 },  // G5
+      { freq: 1046.5,start: 0.43, dur: 0.22 },  // C6 — long hold
+    ];
+    notes.forEach(({ freq, start, dur }) => {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+      gain.gain.setValueAtTime(0.14, ctx.currentTime + start);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + start);
+      osc.stop(ctx.currentTime + start + dur + 0.01);
+    });
+    setTimeout(() => ctx.close(), 900);
+  } catch (e) { /* audio not available */ }
+}
+
+// Queue of popups to show one at a time
+const _achPopupQueue = [];
+let   _achPopupBusy  = false;
+const ACH_POPUP_DURATION = 4200; // ms the popup stays visible
+
+function showAchievementPopup(def) {
+  _achPopupQueue.push(def);
+  if (!_achPopupBusy) _drainAchPopupQueue();
+}
+
+function _drainAchPopupQueue() {
+  if (_achPopupQueue.length === 0) { _achPopupBusy = false; return; }
+  _achPopupBusy = true;
+  const def = _achPopupQueue.shift();
+  _showOneAchPopup(def, _drainAchPopupQueue);
+}
+
+function _showOneAchPopup(def, onDone) {
+  const stack = document.getElementById('achUnlockStack');
+
+  const popup = document.createElement('div');
+  popup.className = 'ach-popup';
+  popup.style.setProperty('--accent', def.color || 'var(--console-nes)');
+  popup.style.setProperty('--glow',   (def.color || '#e60012') + '33');
+  popup.style.borderColor = def.color || 'var(--accent)';
+
+  popup.innerHTML = `
+    <div class="ach-popup-banner" style="background:${def.color || 'var(--accent)'};">
+      <span class="ach-popup-trophy">🏅</span>
+      <span class="ach-popup-banner-text">Achievement Unlocked!</span>
+    </div>
+    <div class="ach-popup-body">
+      <div class="ach-popup-icon">${def.icon}</div>
+      <div class="ach-popup-text">
+        <div class="ach-popup-label">${def.label}</div>
+        <div class="ach-popup-desc">${def.desc}</div>
+      </div>
+    </div>
+    <div class="ach-popup-bar">
+      <div class="ach-popup-bar-fill" style="animation-duration:${ACH_POPUP_DURATION}ms;"></div>
+    </div>`;
+
+  // Dismiss on click
+  popup.addEventListener('click', () => dismiss(true));
+
+  stack.appendChild(popup);
+
+  // Slide in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => popup.classList.add('ach-popup--in'));
+  });
+
+  playAchievementFanfare();
+
+  let dismissed = false;
+  const timer = setTimeout(() => dismiss(false), ACH_POPUP_DURATION);
+
+  function dismiss(immediate) {
+    if (dismissed) return;
+    dismissed = true;
+    clearTimeout(timer);
+    popup.classList.remove('ach-popup--in');
+    popup.classList.add('ach-popup--out');
+    const delay = immediate ? 280 : 300;
+    setTimeout(() => {
+      popup.remove();
+      // Small gap between stacked popups
+      setTimeout(onDone, 120);
+    }, delay);
+  }
+}
+
+// ─── Achievement unlock diffing ───────────────────────────────────────────────
+// Tracks which achievements were already earned so we only fire on new unlocks.
+// Initialised lazily on first call so all game data is loaded.
+let _prevEarnedAchIds = null;
+
+function _initPrevEarned() {
+  if (_prevEarnedAchIds !== null) return;
+  _prevEarnedAchIds = new Set();
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+  ACHIEVEMENT_DEFS.forEach(def => {
+    if (def.check(ownedSets, gameLists, totals)) _prevEarnedAchIds.add(def.id);
+  });
+}
+
+function checkAchievementUnlocks() {
+  _initPrevEarned();
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+  ACHIEVEMENT_DEFS.forEach(def => {
+    const earned = def.check(ownedSets, gameLists, totals);
+    if (earned && !_prevEarnedAchIds.has(def.id)) {
+      _prevEarnedAchIds.add(def.id);
+      showAchievementPopup(def);
+    }
+    // If un-earned (unchecking a game), allow it to fire again later
+    if (!earned) _prevEarnedAchIds.delete(def.id);
+  });
+}
+
 // ─── Owned toggle ─────────────────────────────────────────────────────────────
 document.getElementById('tbody').addEventListener('click', e => {
   const pc = e.target.closest('.pixel-check');
@@ -2539,6 +2826,7 @@ document.getElementById('tbody').addEventListener('click', e => {
   if (g.owned) playCollectSound(); else playUncheckSound();
   save();
   renderStats();
+  checkAchievementUnlocks();
 });
 
 document.getElementById('tbody').addEventListener('change', e => {
@@ -2548,6 +2836,7 @@ document.getElementById('tbody').addEventListener('change', e => {
   if (e.target.classList.contains('owned-check')) g.owned = e.target.checked;
   save();
   renderStats();
+  checkAchievementUnlocks();
 });
 
 // ─── Filter listeners ─────────────────────────────────────────────────────────
@@ -2777,6 +3066,9 @@ render();
   }
 })();
 </script>
+<!-- Achievement unlock popup stack -->
+<div id="achUnlockStack" aria-live="polite" aria-label="Achievement notifications"></div>
+
 <!-- Video Trailer Overlay -->
 <div id="trailerOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;">
   <div style="position:relative;width:min(860px,94vw);">
