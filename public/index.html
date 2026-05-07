@@ -1645,37 +1645,6 @@ function renderStats() {
   renderMilestoneBar(owned.length, total);
 }
 
-// ─── Achievement unlock notifications ─────────────────────────────────────────
-function checkAchievementUnlocks() {
-  if (!window.ACHIEVEMENT_DEFS || !ACHIEVEMENT_DEFS.length) return;
-  const ownedSets = getAllOwnedSets();
-  const gameLists = getAllGameLists();
-  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
-
-  let newlyEarned = null;
-  for (const def of ACHIEVEMENT_DEFS) {
-    if (_prevAchievementsEarned.has(def.id)) continue;
-    let earned = false;
-    try { earned = def.check(ownedSets, gameLists, totals); } catch(e) {}
-    if (earned) {
-      _prevAchievementsEarned.add(def.id);
-      newlyEarned = def;
-    }
-  }
-
-  if (newlyEarned) {
-    const el = document.getElementById('milestoneAchieved');
-    if (el) {
-      el.textContent = '🏆 ' + newlyEarned.label + ' UNLOCKED!';
-      el.classList.remove('flash');
-      void el.offsetWidth;
-      el.classList.add('flash');
-      playCollectSound && playCollectSound();
-    }
-    if (typeof renderAchievements === 'function') renderAchievements();
-  }
-}
-
 // ─── Filters ──────────────────────────────────────────────────────────────────
 const developerOf = g => g.developer || g.publisher || '';
 const yearOf = g => g.year || g.releaseYear || g.release_year || 'Unknown';
@@ -2658,6 +2627,37 @@ function getAllGameLists() {
     lists[con]  = CONSOLE_CONFIG[con].games().map(g => ({ ...g, ...(saved[g.id] || {}) }));
   });
   return lists;
+}
+
+// ─── Achievement unlock notifications ─────────────────────────────────────────
+function checkAchievementUnlocks() {
+  if (!ACHIEVEMENT_DEFS || !ACHIEVEMENT_DEFS.length) return;
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+
+  let newlyEarned = null;
+  for (const def of ACHIEVEMENT_DEFS) {
+    if (_prevAchievementsEarned.has(def.id)) continue;
+    let earned = false;
+    try { earned = def.check(ownedSets, gameLists, totals); } catch(e) {}
+    if (earned) {
+      _prevAchievementsEarned.add(def.id);
+      newlyEarned = def;
+    }
+  }
+
+  if (newlyEarned) {
+    const el = document.getElementById('milestoneAchieved');
+    if (el) {
+      el.textContent = '🏆 ' + newlyEarned.label + ' UNLOCKED!';
+      el.classList.remove('flash');
+      void el.offsetWidth;
+      el.classList.add('flash');
+      playCollectSound && playCollectSound();
+    }
+    if (typeof renderAchievements === 'function') renderAchievements();
+  }
 }
 
 function checkPublisher(owned, gameLists, con, publisher) {
