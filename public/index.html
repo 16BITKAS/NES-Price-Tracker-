@@ -2679,28 +2679,29 @@ function renderAchievements() {
     ? consoleFiltered
     : consoleFiltered.filter(a => a.cat === achActiveCat);
 
-  // Sort within a group: year tab → chronological; otherwise pinned first, then earned first then progress %
+  // Sort within a group: pinned first, then year achievements in sequential order (years then decade), then earned first then progress %
   const sortGroup = (a, b) => {
     // Pinned achievements (journey set) always come first, in their defined order
     const aPin = a._pin != null ? a._pin : Infinity;
     const bPin = b._pin != null ? b._pin : Infinity;
     if (aPin !== bPin) return aPin - bPin;
-    if (achActiveCat === 'year') {
-      const decadeOf = def => def._decade ? def._decade[0] : Math.floor((def._year || 0) / 10) * 10;
-      const ad = decadeOf(a), bd = decadeOf(b);
-      if (ad !== bd) return ad - bd;
-      const aIsDecade = a._decade ? 0 : 1;
-      const bIsDecade = b._decade ? 0 : 1;
-      if (aIsDecade !== bIsDecade) return aIsDecade - bIsDecade;
-      return (a._year || 0) - (b._year || 0);
+
+    // Year/decade achievements always follow pinned items, in chronological order (years first, decade last)
+    const aIsYear = a.cat === 'year';
+    const bIsYear = b.cat === 'year';
+    if (aIsYear !== bIsYear) return aIsYear ? -1 : 1;
+    if (aIsYear && bIsYear) {
+      // Sort years chronologically; decade comes after all individual years
+      const aIsDecade = !!a._decade;
+      const bIsDecade = !!b._decade;
+      if (aIsDecade !== bIsDecade) return aIsDecade ? 1 : -1;
+      return (a._year || a._decade?.[0] || 0) - (b._year || b._decade?.[0] || 0);
     }
+
     if (a.earned !== b.earned) return a.earned ? -1 : 1;
     const ap = a.progress ? a.progress.have / (a.progress.total || 1) : 0;
     const bp = b.progress ? b.progress.have / (b.progress.total || 1) : 0;
     if (bp !== ap) return bp - ap;
-    if (a.cat === 'year' && b.cat === 'year') {
-      return (a._year || a._decade?.[0] || 0) - (b._year || b._decade?.[0] || 0);
-    }
     return 0;
   };
 
