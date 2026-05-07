@@ -1920,15 +1920,23 @@ function openModal(gameId) {
 // ─── Year Achievement Game List Modal ────────────────────────────────────────
 
 function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
-  // Gather the right game list for this console
-  const cfg    = CONSOLE_CONFIG[con];
-  const key    = cfg.storageKey;
-  const saved  = JSON.parse(localStorage.getItem(key) || '{}');
+  const cfg      = CONSOLE_CONFIG[con];
+  const key      = cfg.storageKey;
+  const saved    = JSON.parse(localStorage.getItem(key) || '{}');
   const conLabel = cfg.label;
+  const manifest = cfg.manifest();
 
-  // Temporarily switch imgUrl context to the right console
-  const prevConsole = activeConsole;
-  activeConsole = con;
+  // Local image URL builder that doesn't touch activeConsole
+  function localImgUrl(folder, title) {
+    const folderKeyMap = { boxfronts:'boxfront', boxbacks:'boxback', cartridges:'cartridge', clearlogos:'clearlogo', snaps:'snap', titles:'title' };
+    const key2 = folderKeyMap[folder];
+    const entry = manifest[title];
+    if (entry && entry[key2]) {
+      return BASE + entry[key2].split('/').map(encodeURIComponent).join('/');
+    }
+    const name = title.replace(/:/g,' - ').replace(/\s+/g,' ').trim() + ' (USA)';
+    return BASE + con + '/' + folder + '/' + encodeURIComponent(name) + '.png';
+  }
 
   const allGames = cfg.games().map(g => ({ ...g, ...(saved[g.id] || {}) }));
   const isDecade = decadeEnd != null;
@@ -1937,7 +1945,6 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
     const y = Number(g.year || g.releaseYear || g.release_year);
     return isDecade ? (y >= yearOrDecade && y <= decadeEnd) : (y === yearOrDecade);
   }).sort((a, b) => {
-    // Within decade, sort by year then title
     if (isDecade) {
       const ay = Number(a.year || a.releaseYear || a.release_year) || 0;
       const by = Number(b.year || b.releaseYear || b.release_year) || 0;
@@ -1949,82 +1956,64 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
   const ownedCount = matchingGames.filter(g => g.owned).length;
   const pct = matchingGames.length ? Math.round(ownedCount / matchingGames.length * 100) : 0;
 
-  // Build rows
   const rows = matchingGames.map(g => {
-    const coverSrc = imgUrl('boxfronts', g.title);
-    const hasPrice = valueOf(g) > 0;
+    const coverSrc = localImgUrl('boxfronts', g.title);
+    const hasPrice = Number(g.estimate) > 0;
     const yr = g.year || g.releaseYear || g.release_year || '—';
+    const dev = g.developer || g.publisher || '—';
     return `
-      <div class="yrm-row ${g.owned ? 'yrm-row--owned' : ''}" data-id="${g.id}" data-con="${con}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--border);transition:background 0.12s;cursor:default;">
-        <!-- Checkbox -->
+      <div class="yrm-row ${g.owned ? 'yrm-row--owned' : ''}" data-id="${g.id}" data-con="${con}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--border);transition:background 0.12s;">
         <div class="yrm-check pixel-check ${g.owned ? 'is-checked' : ''}" data-id="${g.id}" data-con="${con}" role="checkbox" style="width:28px;height:28px;flex-shrink:0;border-width:2px;">
           <svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" style="shape-rendering:crispEdges;width:18px;height:18px;">
-            <rect x="0" y="0" width="1" height="1" fill="white"/>
-            <rect x="1" y="1" width="1" height="1" fill="white"/>
-            <rect x="2" y="2" width="1" height="1" fill="white"/>
-            <rect x="3" y="3" width="1" height="1" fill="white"/>
-            <rect x="4" y="4" width="1" height="1" fill="white"/>
-            <rect x="5" y="5" width="1" height="1" fill="white"/>
-            <rect x="6" y="6" width="1" height="1" fill="white"/>
-            <rect x="6" y="0" width="1" height="1" fill="white"/>
-            <rect x="5" y="1" width="1" height="1" fill="white"/>
-            <rect x="4" y="2" width="1" height="1" fill="white"/>
-            <rect x="2" y="4" width="1" height="1" fill="white"/>
-            <rect x="1" y="5" width="1" height="1" fill="white"/>
+            <rect x="0" y="0" width="1" height="1" fill="white"/><rect x="1" y="1" width="1" height="1" fill="white"/>
+            <rect x="2" y="2" width="1" height="1" fill="white"/><rect x="3" y="3" width="1" height="1" fill="white"/>
+            <rect x="4" y="4" width="1" height="1" fill="white"/><rect x="5" y="5" width="1" height="1" fill="white"/>
+            <rect x="6" y="6" width="1" height="1" fill="white"/><rect x="6" y="0" width="1" height="1" fill="white"/>
+            <rect x="5" y="1" width="1" height="1" fill="white"/><rect x="4" y="2" width="1" height="1" fill="white"/>
+            <rect x="2" y="4" width="1" height="1" fill="white"/><rect x="1" y="5" width="1" height="1" fill="white"/>
             <rect x="0" y="6" width="1" height="1" fill="white"/>
           </svg>
         </div>
-        <!-- Cover thumbnail -->
         <img src="${coverSrc}" alt="${esc(g.title)}"
           style="width:36px;height:50px;object-fit:cover;border-radius:3px;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);"
           onerror="this.style.opacity='0.2'">
-        <!-- Title + meta -->
         <div style="flex:1;min-width:0;">
-          <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:color 0.15s;"
-            onclick="closeModal();setTimeout(()=>{switchPage('collection');switchConsole('${con}');setTimeout(()=>{openModal(${g.id})},80)},80)"
-            onmouseover="this.style.color='${color}'" onmouseout="this.style.color='var(--ink)'">${esc(g.title)}</div>
-          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;">${esc(developerOf(g) || '—')}${isDecade ? ' · ' + yr : ''}</div>
+          <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+            >${esc(g.title)}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;">${esc(dev)}${isDecade ? ' · ' + yr : ''}</div>
         </div>
-        <!-- Price -->
         <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? color : 'var(--muted)'};flex-shrink:0;text-align:right;">${hasPrice ? fmt(g.estimate) : '—'}</div>
       </div>`;
   }).join('');
 
+  const decadeIcon = yearOrDecade < 1990 ? '📼' : yearOrDecade < 2000 ? '💿' : '💾';
+  const cardIcon   = conLabel === 'NES' ? '🔴' : conLabel === 'SNES' ? '🟣' : '🟢';
+
   document.getElementById('modalContent').innerHTML = `
     <div style="display:flex;flex-direction:column;max-height:80vh;">
-
-      <!-- Header -->
       <div style="display:flex;align-items:center;gap:14px;padding:0 0 16px;border-bottom:1px solid var(--border);margin-bottom:0;flex-shrink:0;">
-        <div style="font-size:32px;line-height:1;">${isDecade ? (yearOrDecade < 1990 ? '📼' : yearOrDecade < 2000 ? '💿' : '💾') : (CONSOLE_CONFIG[con].label === 'NES' ? '🔴' : CONSOLE_CONFIG[con].label === 'SNES' ? '🟣' : '🟢')}</div>
+        <div style="font-size:32px;line-height:1;">${isDecade ? decadeIcon : cardIcon}</div>
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:${color};letter-spacing:0.06em;margin-bottom:6px;">${esc(label)}</div>
-          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">${ownedCount} / ${matchingGames.length} owned</div>
-          <!-- Mini progress bar -->
+          <div id="yrmHeaderCount" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">${ownedCount} / ${matchingGames.length} owned</div>
           <div style="height:4px;background:var(--border);margin-top:6px;overflow:hidden;">
-            <div style="height:100%;width:${pct}%;background:${color};transition:width 0.4s;"></div>
+            <div id="yrmBarFill" style="height:100%;width:${pct}%;background:${color};transition:width 0.4s;"></div>
           </div>
         </div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:14px;color:${color};flex-shrink:0;">${pct}%</div>
+        <div id="yrmPctLabel" style="font-family:'Press Start 2P',monospace;font-size:14px;color:${color};flex-shrink:0;">${pct}%</div>
       </div>
-
-      <!-- Scrollable game list -->
       <div id="yrmList" style="overflow-y:auto;flex:1;margin:0 -32px;padding:0 32px;">
         ${rows}
       </div>
-
     </div>`;
 
-  // Restore console context
-  activeConsole = prevConsole;
-
-  // Wire checkbox toggles inside modal
+  // Wire checkbox toggles
   document.getElementById('yrmList').addEventListener('click', e => {
     const check = e.target.closest('.yrm-check');
     if (!check) return;
     const gId  = parseInt(check.dataset.id);
     const gCon = check.dataset.con;
 
-    // Toggle in the console's own save
     const gKey   = CONSOLE_CONFIG[gCon].storageKey;
     const gSaved = JSON.parse(localStorage.getItem(gKey) || '{}');
     const wasOwned = !!(gSaved[gId]?.owned);
@@ -2034,30 +2023,28 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
     if (!Object.keys(gSaved[gId]).length) delete gSaved[gId];
     localStorage.setItem(gKey, JSON.stringify(gSaved));
 
-    // Update visual
     check.classList.toggle('is-checked', !wasOwned);
     const row = check.closest('.yrm-row');
     if (row) row.classList.toggle('yrm-row--owned', !wasOwned);
 
-    // Sync to active games array if same console
     if (gCon === activeConsole) {
       const gObj = games.find(x => x.id === gId);
       if (gObj) gObj.owned = !wasOwned;
       renderStats();
     }
 
-    // Update header counts live
-    const listEl  = document.getElementById('yrmList');
-    const allRows = listEl.querySelectorAll('.yrm-row');
+    // Update header live
+    const listEl   = document.getElementById('yrmList');
+    const allRows  = listEl ? listEl.querySelectorAll('.yrm-row') : [];
     const newOwned = [...allRows].filter(r => r.classList.contains('yrm-row--owned')).length;
     const newTotal = allRows.length;
     const newPct   = newTotal ? Math.round(newOwned / newTotal * 100) : 0;
-    const headerOwned = document.querySelector('#modalContent [style*="owned"]');
-    if (headerOwned) headerOwned.textContent = `${newOwned} / ${newTotal} owned`;
-    const barFill = document.querySelector('#modalContent [style*="transition:width"]');
-    if (barFill) barFill.style.width = newPct + '%';
-    const pctLabel = document.querySelector('#modalContent [style*="font-size:14px"]');
-    if (pctLabel) pctLabel.textContent = newPct + '%';
+    const hc = document.getElementById('yrmHeaderCount');
+    const bf = document.getElementById('yrmBarFill');
+    const pl = document.getElementById('yrmPctLabel');
+    if (hc) hc.textContent = `${newOwned} / ${newTotal} owned`;
+    if (bf) bf.style.width = newPct + '%';
+    if (pl) pl.textContent = newPct + '%';
 
     if (!wasOwned) playCollectSound(); else playUncheckSound();
     checkAchievementUnlocks();
