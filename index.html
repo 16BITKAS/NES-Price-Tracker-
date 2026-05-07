@@ -2,12 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NES Collection Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RetroQuest</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e60012">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RetroQuest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+
+<!-- SEO / Social -->
+<meta name="description" content="Track and manage your retro game collection across NES, SNES, N64 and more.">
+<meta property="og:title" content="RetroQuest">
+<meta property="og:description" content="Track and manage your retro game collection.">
+<meta property="og:type" content="website">
 <script src="nes-games.js"></script>
 <script src="nes-asset-manifest.js"></script>
 <script src="snes-games.js"></script>
 <script src="snes-asset-manifest.js"></script>
+<script src="n64-games.js"></script>
+<script src="n64-asset-manifest.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -93,6 +113,12 @@ body.light-mode .game-sub .pill {
 .mobile-price-row {
   display: none;
 }
+#sortFilter { display: none; }
+.mobile-year { display: none; }
+@media (max-width: 900px) {
+  #sortFilter { display: block; }
+  .mobile-year { display: inline; }
+}
 .pixel-toggle-wrap {
   position: absolute;
   right: 20px;
@@ -124,7 +150,7 @@ body.light-mode .game-sub .pill {
   position: absolute;
   inset: 0;
   background: var(--surface2);
-  border: 3px solid var(--border);
+  border: 3px solid var(--toggle-knob-dark, var(--border));
   box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2), 3px 3px 0 rgba(0,0,0,0.3);
   transition: background 0.15s, border-color 0.15s;
 }
@@ -134,13 +160,20 @@ body.light-mode .game-sub .pill {
   border-color: #c0bcb8;
 }
 
+/* Console-themed toggle variables (set via JS) */
+:root {
+  --toggle-knob-dark: #e60012;
+  --toggle-track-checked-dark: #2a2a2a;
+  --toggle-track-checked-border: #444;
+}
+
 .pixel-knob {
   position: absolute;
   top: 3px;
   left: 3px;
   width: 16px;
   height: 16px;
-  background: #e60012;
+  background: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
   transition: transform 0.15s, background 0.15s;
   image-rendering: pixelated;
@@ -155,7 +188,7 @@ body.light-mode .game-sub .pill {
 .pixel-toggle input:checked ~ .pixel-track .pixel-knob {
   transform: translateX(26px);
   background: #ffffff;
-  color: #e60012;
+  color: var(--toggle-knob-dark, #e60012);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
 
@@ -196,7 +229,7 @@ body::after {
 
 header {
   position: relative;
-  z-index: 1;
+  z-index: 100;
   padding: 13px 0 8px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(230,0,18,0.05) 0%, transparent 100%);
@@ -271,8 +304,8 @@ h1 span { color: var(--accent); }
   top: 0;
   z-index: 40;
   background: var(--bg);
-  padding-top: 20px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 0px;
   border-bottom: 2px solid var(--border);
   margin-bottom: 0;
   backdrop-filter: blur(8px);
@@ -425,7 +458,7 @@ h1 span { color: var(--accent); }
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 
@@ -651,8 +684,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important;
 @media (max-width: 900px) {
   .tablewrap-outer { overflow-x: clip; }
   .tablewrap { min-width: 0; width: 100%; }
-  #table-header { grid-template-columns: 60px 140px 1fr !important; }
-  #table-header span:nth-child(4), #table-header span:nth-child(5), #table-header span:nth-child(6) { display: none; }
+  #table-header { display: none !important; }
   td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; border: none !important; padding: 0 !important; width: 0 !important; }
   /* Force col widths on the actual table cells */
   td:nth-child(1) { width: 60px !important; }
@@ -751,7 +783,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 .price-val {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Press Start 2P', monospace;
   font-size: 15px;
   font-weight: 700;
   color: var(--ink);
@@ -903,7 +935,11 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   #tbody.snes-covers .cover-wrap,
   #tbody.snes-covers .cover-thumb,
   #tbody.snes-covers .cover-placeholder,
-  #tbody.snes-covers .cover-loading {
+  #tbody.snes-covers .cover-loading,
+  #tbody.n64-covers .cover-wrap,
+  #tbody.n64-covers .cover-thumb,
+  #tbody.n64-covers .cover-placeholder,
+  #tbody.n64-covers .cover-loading {
     width: 120px;
     height: 85px;
   }
@@ -918,11 +954,17 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   animation: spin 0.7s linear infinite;
 }
 
-/* SNES landscape box art overrides */
-#tbody.snes-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
-#tbody.snes-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
-#tbody.snes-covers .cover-placeholder { width: 170px; height: 120px; }
-#tbody.snes-covers .cover-loading  { width: 170px; height: 120px; }
+/* SNES/N64 landscape box art overrides – desktop only */
+@media (min-width: 901px) {
+  #tbody.snes-covers .cover-wrap,
+  #tbody.n64-covers .cover-wrap     { width: 170px; height: 120px; overflow: hidden; }
+  #tbody.snes-covers .cover-thumb,
+  #tbody.n64-covers .cover-thumb    { width: 170px; height: 120px; object-fit: cover; }
+  #tbody.snes-covers .cover-placeholder,
+  #tbody.n64-covers .cover-placeholder { width: 170px; height: 120px; }
+  #tbody.snes-covers .cover-loading,
+  #tbody.n64-covers .cover-loading  { width: 170px; height: 120px; }
+}
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -992,13 +1034,22 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   .tablewrap-outer { overflow-x: clip; }
   .tablewrap { max-width: 100vw; }
   table { min-width: 0; width: 100%; }
-  .game-title { white-space: normal; word-break: break-word; }
+  .game-title { white-space: normal; word-break: break-word; font-size: 14px; }
   td:nth-child(4) .refresh-single-btn { display: none; }
   /* Mobile: hide description, show inline price+refresh instead */
   .game-desc { display: none !important; }
   .mobile-price-row { display: flex !important; }
   .game-links { flex-wrap: nowrap !important; gap: 6px !important; }
   .game-links .link { font-size: 9px !important; white-space: nowrap; }
+}
+
+@media (max-width: 900px) {
+  .lb-arrow { width: 44px; height: 44px; }
+  .lb-arrow:first-child { left: 4px; }
+  .lb-arrow:last-child  { right: 4px; }
+  .lb-stage { padding: 50px 0 10px; }
+  .lb-img-wrap { flex: 1; min-width: 0; height: auto; max-height: 70vh; display: flex; align-items: center; justify-content: center; }
+  #lbImg { max-height: 70vh; max-width: 100%; width: auto; height: auto; object-fit: contain; }
 }
 
 /* ── Image Lightbox ───────────────────────────────────────────────────────── */
@@ -1024,9 +1075,15 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   flex: 1;
   min-height: 0;
   padding: 60px 0 16px;
+  overflow: hidden;
+  position: relative;
 }
 
 .lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
   flex-shrink: 0;
   width: 64px;
   height: 64px;
@@ -1039,9 +1096,12 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
   justify-content: center;
   image-rendering: pixelated;
   transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  margin: 0 20px;
+  margin: 0;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
 }
+
+.lb-arrow:first-child { left: 8px; }
+.lb-arrow:last-child  { right: 8px; }
 
 .lb-arrow:hover {
   background: rgba(230,0,18,0.35);
@@ -1054,15 +1114,18 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 .lb-img-wrap {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  overflow: hidden;
 }
 
 #lbImg {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
@@ -1136,6 +1199,23 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 .lb-close-btn:hover { transform: scale(1.1); }
 
+/* ── Game Detail Modal – mobile layout ───────────────────────────────────── */
+@media (max-width: 700px) {
+  #gameModalInner {
+    margin: 12px !important;
+    border-radius: 14px !important;
+  }
+  #modalContent {
+    padding: 16px !important;
+  }
+  /* Collapse the 2×2 quadrant grid into a single column */
+  #modalContent > div {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    min-height: unset !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1153,17 +1233,36 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
     </div>
     <div>
       <h1 id="retroTitle" style="font-family:'Press Start 2P', monospace;font-size:5.6vw;letter-spacing:0.02em;line-height:1;width:100%;text-align:center;white-space:nowrap;">Retro<span>Quest</span></h1>
-      <div id="consoleTabs" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
-        <button id="tabNES" onclick="switchConsole('nes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #e60012;background:#e60012;color:#fff;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #8b0000;transition:all 0.15s;">NES</button>
-        <button id="tabSNES" onclick="switchConsole('snes')" style="font-family:'Press Start 2P',monospace;font-size:10px;padding:7px 18px;border:2px solid #444;background:transparent;color:#888;cursor:pointer;letter-spacing:0.08em;box-shadow:3px 3px 0 #222;transition:all 0.15s;">SNES</button>
+      <div id="consoleCarousel" style="display:flex;justify-content:center;align-items:center;margin-top:14px;position:relative;">
+        <div id="consolePicker" onclick="toggleConsoleDropdown()" style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;padding:6px 14px;border:2px solid #444;background:transparent;user-select:none;transition:border-color 0.15s;box-shadow:3px 3px 0 #222;">
+          <div id="carouselLabel" style="font-family:'Press Start 2P',monospace;font-size:12px;letter-spacing:0.08em;transition:color 0.2s;"></div>
+          <svg id="consoleDropChevron" width="10" height="7" viewBox="0 0 10 7" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;flex-shrink:0;transition:transform 0.2s;"><polygon points="0,0 10,0 5,7" fill="currentColor"/></svg>
+        </div>
+        <div id="consoleDropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--surface);border:2px solid #444;box-shadow:4px 4px 0 rgba(0,0,0,0.5);z-index:200;min-width:160px;overflow:hidden;"></div>
       </div>
     </div>
   </div>
 </header>
 
+<!-- Page nav -->
+<nav id="pageNav" style="display:flex;justify-content:center;gap:0;border-bottom:2px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:90;">
+  <button class="page-tab page-tab--active" id="tabCollection" onclick="switchPage('collection')" style="font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:0.1em;padding:12px 24px;background:none;border:none;border-bottom:3px solid var(--accent);color:var(--accent);cursor:pointer;transition:all 0.15s;">COLLECTION</button>
+  <button class="page-tab" id="tabAchievements" onclick="switchPage('achievements')" style="font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:0.1em;padding:12px 24px;background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;">ACHIEVEMENTS</button>
+</nav>
+
 <main class="wrap">
 
   <div class="sticky-panel">
+
+    <!-- Stats collapse toggle -->
+    <button id="statsToggleBtn" onclick="toggleStats()" title="Toggle stats panel" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="statsToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span id="statsToggleLabel">Stats</span>
+    </button>
+
+    <div id="statsPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:600px;opacity:1;">
     <div class="stats">
 
       <!-- Stack 1: Owned + Missing -->
@@ -1205,7 +1304,19 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </div>
 
     </div>
+    </div>
 
+    <hr style="border:none;border-top:1px solid var(--border);margin:0;">
+
+    <!-- Filters collapse toggle -->
+    <button id="filtersToggleBtn" onclick="toggleFilters()" title="Toggle filters" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:4px 0 0 0;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-radius:0;transition:color 0.15s;">
+      <svg id="filtersToggleChevron" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;transition:transform 0.2s;flex-shrink:0;">
+        <polygon points="1,2 5,8 9,2" fill="currentColor"/>
+      </svg>
+      <span>Filters</span>
+    </button>
+
+    <div id="filtersPanel" style="overflow:hidden;transition:max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s;max-height:300px;opacity:1;">
     <div class="controls">
       <input id="search" placeholder="Search games, developer, year…">
       <select id="statusFilter">
@@ -1217,6 +1328,16 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
       </select>
       <select id="developerFilter"><option value="all">All developers</option></select>
       <select id="yearFilter"><option value="all">All years</option></select>
+      <select id="sortFilter">
+        <option value="title|asc">Sort: A → Z</option>
+        <option value="title|desc">Sort: Z → A</option>
+        <option value="owned|desc">Sort: Owned first</option>
+        <option value="owned|asc">Sort: Missing first</option>
+        <option value="estimate|desc">Sort: Price ↓</option>
+        <option value="estimate|asc">Sort: Price ↑</option>
+        <option value="year|asc">Sort: Year ↑</option>
+        <option value="year|desc">Sort: Year ↓</option>
+      </select>
       <button class="primary" id="refreshVisible">Refresh prices</button>
       <button class="floppy-btn" id="exportData" title="Export save">
         <svg width="28" height="28" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;image-rendering:pixelated;">
@@ -1246,8 +1367,8 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
         </svg>
       </button>
     </div>
-
-    <p id="priceStatus"></p>
+    </div>
+    <p id="priceStatus" style="margin:0;padding:0;"></p>
   </div>
 
   <div id="table-header" style="display:grid;grid-template-columns:52px 110px 1fr 90px 120px 110px;position:sticky;top:var(--sticky-panel-height,280px);z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 14px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);max-width:100vw;overflow:hidden;box-sizing:border-box;">
@@ -1270,6 +1391,34 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 </main>
 
+<!-- Achievements Page -->
+<div id="achievementsPage" style="display:none;max-width:1380px;margin:0 auto;padding:28px;position:relative;z-index:1;">
+
+  <!-- Header -->
+  <div style="margin-bottom:24px;">
+    <div style="font-family:'Press Start 2P',monospace;font-size:13px;color:var(--ink);letter-spacing:0.08em;margin-bottom:8px;">ACHIEVEMENTS</div>
+    <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);">Track your collection milestones across all three consoles.</div>
+  </div>
+
+  <!-- Overall progress bar -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);letter-spacing:0.1em;">PROGRESS</div>
+      <div id="achProgressLabel" style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);">0 / 0</div>
+    </div>
+    <div style="height:8px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;">
+      <div id="achProgressBar" style="height:100%;width:0%;background:var(--accent);transition:width 0.6s cubic-bezier(0.4,0,0.2,1);"></div>
+    </div>
+  </div>
+
+  <!-- Category filter tabs -->
+  <div id="achCatTabs" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
+
+  <!-- Achievement grid -->
+  <div id="achGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;"></div>
+
+</div>
+
 <!-- Art hover popup -->
 <div id="artPopup">
   <img id="artPopupImg" src="" alt="">
@@ -1278,7 +1427,7 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 <!-- Game Detail Modal -->
 <div id="gameModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;">
-  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative;">
+  <div id="gameModalInner" style="max-width:900px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;position:relative;">
     <button onclick="closeModal()" title="Close" style="position:absolute;top:16px;right:16px;background:#e60012;border:none;border-radius:0;width:32px;height:32px;padding:0;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;image-rendering:pixelated;box-shadow:inset -2px -2px 0 #8b0000,inset 2px 2px 0 #ff4444;">
       <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;">
         <rect x="0" y="0" width="2" height="2" fill="white"/>
@@ -1317,13 +1466,25 @@ const CONSOLE_CONFIG = {
     games:        () => window.snesGames || [],
     manifest:     () => window.snesAssetManifest || {},
     storageKey:   'snesTrackerSaveV1',
-    trailerBase:  '',   // archive.org SNES collection TBD
+    trailerBase:  'https://archive.org/download/RetroQuest-Trailers-SNES/',   // archive.org SNES collection
     accent:       '#7b2fff',
     accent2:      '#9d5fff',
     glow:         'rgba(123,47,255,0.15)',
     glowLight:    'rgba(123,47,255,0.10)',
     label:        'SNES',
     tabId:        'tabSNES',
+  },
+  n64: {
+    games:        () => window.n64Games || [],
+    manifest:     () => window.n64AssetManifest || {},
+    storageKey:   'n64TrackerSaveV1',
+    trailerBase:  '',
+    accent:       '#00a84f',
+    accent2:      '#00d464',
+    glow:         'rgba(0,168,79,0.15)',
+    glowLight:    'rgba(0,168,79,0.10)',
+    label:        'N64',
+    tabId:        'tabN64',
   }
 };
 
@@ -1359,7 +1520,7 @@ function save() {
 }
 
 // ─── Image URL helper ─────────────────────────────────────────────────────────
-const BASE = 'https://16bitkas.github.io/NES-Price-Tracker-/';
+const BASE = 'https://16bitkas.github.io/RetroQuest/';
 
 function toImageName(title) {
   let name = title
@@ -1526,7 +1687,7 @@ function filtered() {
 }
 
 const normalizeTitle = t => t.replace(/^(.*),\s*The$/i, 'The $1').trim();
-const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : 'NES') + ' -CIB -sealed -complete -CGC -lot') + '&_sop=12';
+const ebayUrl = t => 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(normalizeTitle(t) + ' ' + (activeConsole === 'snes' ? 'SNES' : activeConsole === 'n64' ? 'N64' : 'NES') + ' -CIB -sealed -complete -CGC -lot') + '&_sop=12';
 const priceChartingUrl = t => 'https://www.pricecharting.com/search-products?q=' + encodeURIComponent(t);
 
 // ─── Trailer filename helper (global so row render can use it) ────────────────
@@ -1577,7 +1738,7 @@ function render() {
       </td>
       <td>
         <div class="game-title" onclick="openModal(${g.id})" style="cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">${esc(g.title)}</div>
-        <div class="game-sub">${esc(dev)}${pub}</div>
+        <div class="game-sub">${esc(dev)}${pub}<span class="mobile-year"> · ${esc(yearOf(g))}</span></div>
         ${g.genre ? `<div class="game-sub" style="margin-top:2px;display:flex;align-items:center;gap:5px;">
           <span class="pill" style="font-size:9px;padding:1px 5px;">${esc(g.genre)}</span>
           <button class="row-play-btn" onclick="event.stopPropagation();openTrailer('${esc(trailerName(g.title))}','${esc(g.title)}')" title="Play trailer">
@@ -1588,8 +1749,8 @@ function render() {
         </div>` : ''}
         <div class="game-desc" ${g.description ? '' : 'style="display:none"'}><div class="game-sub" style="margin-top:3px;font-style:italic;opacity:0.6;font-size:10px;max-width:min(280px,40vw);">${esc(g.description)}</div></div>
         <div class="mobile-price-row" style="margin-top:5px;align-items:center;gap:6px;">
-          <span class="mobile-price-val ${hasPrice ? 'has-price' : ''}" style="font-family:'Space Mono',monospace;font-size:12px;color:${hasPrice ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}</span>
-          <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">↻</button>
+          <span class="mobile-price-val ${hasPrice ? 'has-price' : ''}" style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? 'var(--accent)' : 'var(--muted)'};">${fmt(g.estimate)}</span>
+          <button class="refresh-single-btn" data-id="${g.id}" title="Refresh price" style="background:none;border:none;color:var(--muted);font-size:24.5px;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">↻</button>
         </div>
         <div class="game-links" style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;">
           <a class="link" href="${ebayUrl(g.title)}" target="_blank">eBay</a>
@@ -1698,16 +1859,16 @@ function openModal(gameId) {
         </div>
       </div>
 
-      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES) -->
-      <div style="display:flex;flex-direction:${activeConsole === 'snes' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' ? 'auto' : 'visible'};">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+      <!-- BOTTOM LEFT: Box front and back - side by side (NES) or stacked (SNES/N64) -->
+      <div style="display:flex;flex-direction:${activeConsole === 'snes' || activeConsole === 'n64' ? 'column' : 'row'};gap:12px;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;overflow-y:${activeConsole === 'snes' || activeConsole === 'n64' ? 'auto' : 'visible'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' || activeConsole === 'n64' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Front</div>
-          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${front}" alt="Box Front" style="max-width:100%;max-height:${activeConsole === 'snes' || activeConsole === 'n64' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' ? 'width:100%' : 'flex:1'};">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;${activeConsole === 'snes' || activeConsole === 'n64' ? 'width:100%' : 'flex:1'};">
           <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Back</div>
-          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
+          <img src="${back}" alt="Box Back" style="max-width:100%;max-height:${activeConsole === 'snes' || activeConsole === 'n64' ? '160px' : '280px'};object-fit:contain;border-radius:8px;border:1px solid var(--border);"
             onerror="this.style.opacity='0.2'">
         </div>
       </div>
@@ -1756,7 +1917,157 @@ function openModal(gameId) {
   document.body.style.overflow = 'hidden';
 }
 
-// ─── Lightbox ─────────────────────────────────────────────────────────────────
+// ─── Year Achievement Game List Modal ────────────────────────────────────────
+
+function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
+  // Gather the right game list for this console
+  const cfg    = CONSOLE_CONFIG[con];
+  const key    = cfg.storageKey;
+  const saved  = JSON.parse(localStorage.getItem(key) || '{}');
+  const conLabel = cfg.label;
+
+  // Temporarily switch imgUrl context to the right console
+  const prevConsole = activeConsole;
+  activeConsole = con;
+
+  const allGames = cfg.games().map(g => ({ ...g, ...(saved[g.id] || {}) }));
+  const isDecade = decadeEnd != null;
+
+  const matchingGames = allGames.filter(g => {
+    const y = Number(g.year || g.releaseYear || g.release_year);
+    return isDecade ? (y >= yearOrDecade && y <= decadeEnd) : (y === yearOrDecade);
+  }).sort((a, b) => {
+    // Within decade, sort by year then title
+    if (isDecade) {
+      const ay = Number(a.year || a.releaseYear || a.release_year) || 0;
+      const by = Number(b.year || b.releaseYear || b.release_year) || 0;
+      if (ay !== by) return ay - by;
+    }
+    return (a.title || '').localeCompare(b.title || '');
+  });
+
+  const ownedCount = matchingGames.filter(g => g.owned).length;
+  const pct = matchingGames.length ? Math.round(ownedCount / matchingGames.length * 100) : 0;
+
+  // Build rows
+  const rows = matchingGames.map(g => {
+    const coverSrc = imgUrl('boxfronts', g.title);
+    const hasPrice = valueOf(g) > 0;
+    const yr = g.year || g.releaseYear || g.release_year || '—';
+    return `
+      <div class="yrm-row ${g.owned ? 'yrm-row--owned' : ''}" data-id="${g.id}" data-con="${con}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--border);transition:background 0.12s;cursor:default;">
+        <!-- Checkbox -->
+        <div class="yrm-check pixel-check ${g.owned ? 'is-checked' : ''}" data-id="${g.id}" data-con="${con}" role="checkbox" style="width:28px;height:28px;flex-shrink:0;border-width:2px;">
+          <svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" style="shape-rendering:crispEdges;width:18px;height:18px;">
+            <rect x="0" y="0" width="1" height="1" fill="white"/>
+            <rect x="1" y="1" width="1" height="1" fill="white"/>
+            <rect x="2" y="2" width="1" height="1" fill="white"/>
+            <rect x="3" y="3" width="1" height="1" fill="white"/>
+            <rect x="4" y="4" width="1" height="1" fill="white"/>
+            <rect x="5" y="5" width="1" height="1" fill="white"/>
+            <rect x="6" y="6" width="1" height="1" fill="white"/>
+            <rect x="6" y="0" width="1" height="1" fill="white"/>
+            <rect x="5" y="1" width="1" height="1" fill="white"/>
+            <rect x="4" y="2" width="1" height="1" fill="white"/>
+            <rect x="2" y="4" width="1" height="1" fill="white"/>
+            <rect x="1" y="5" width="1" height="1" fill="white"/>
+            <rect x="0" y="6" width="1" height="1" fill="white"/>
+          </svg>
+        </div>
+        <!-- Cover thumbnail -->
+        <img src="${coverSrc}" alt="${esc(g.title)}"
+          style="width:36px;height:50px;object-fit:cover;border-radius:3px;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);"
+          onerror="this.style.opacity='0.2'">
+        <!-- Title + meta -->
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:color 0.15s;"
+            onclick="closeModal();setTimeout(()=>{switchPage('collection');switchConsole('${con}');setTimeout(()=>{openModal(${g.id})},80)},80)"
+            onmouseover="this.style.color='${color}'" onmouseout="this.style.color='var(--ink)'">${esc(g.title)}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;">${esc(developerOf(g) || '—')}${isDecade ? ' · ' + yr : ''}</div>
+        </div>
+        <!-- Price -->
+        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? color : 'var(--muted)'};flex-shrink:0;text-align:right;">${hasPrice ? fmt(g.estimate) : '—'}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('modalContent').innerHTML = `
+    <div style="display:flex;flex-direction:column;max-height:80vh;">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;gap:14px;padding:0 0 16px;border-bottom:1px solid var(--border);margin-bottom:0;flex-shrink:0;">
+        <div style="font-size:32px;line-height:1;">${isDecade ? (yearOrDecade < 1990 ? '📼' : yearOrDecade < 2000 ? '💿' : '💾') : (CONSOLE_CONFIG[con].label === 'NES' ? '🔴' : CONSOLE_CONFIG[con].label === 'SNES' ? '🟣' : '🟢')}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:${color};letter-spacing:0.06em;margin-bottom:6px;">${esc(label)}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">${ownedCount} / ${matchingGames.length} owned</div>
+          <!-- Mini progress bar -->
+          <div style="height:4px;background:var(--border);margin-top:6px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:${color};transition:width 0.4s;"></div>
+          </div>
+        </div>
+        <div style="font-family:'Press Start 2P',monospace;font-size:14px;color:${color};flex-shrink:0;">${pct}%</div>
+      </div>
+
+      <!-- Scrollable game list -->
+      <div id="yrmList" style="overflow-y:auto;flex:1;margin:0 -32px;padding:0 32px;">
+        ${rows}
+      </div>
+
+    </div>`;
+
+  // Restore console context
+  activeConsole = prevConsole;
+
+  // Wire checkbox toggles inside modal
+  document.getElementById('yrmList').addEventListener('click', e => {
+    const check = e.target.closest('.yrm-check');
+    if (!check) return;
+    const gId  = parseInt(check.dataset.id);
+    const gCon = check.dataset.con;
+
+    // Toggle in the console's own save
+    const gKey   = CONSOLE_CONFIG[gCon].storageKey;
+    const gSaved = JSON.parse(localStorage.getItem(gKey) || '{}');
+    const wasOwned = !!(gSaved[gId]?.owned);
+    if (!gSaved[gId]) gSaved[gId] = {};
+    gSaved[gId].owned = !wasOwned;
+    if (!gSaved[gId].owned) delete gSaved[gId].owned;
+    if (!Object.keys(gSaved[gId]).length) delete gSaved[gId];
+    localStorage.setItem(gKey, JSON.stringify(gSaved));
+
+    // Update visual
+    check.classList.toggle('is-checked', !wasOwned);
+    const row = check.closest('.yrm-row');
+    if (row) row.classList.toggle('yrm-row--owned', !wasOwned);
+
+    // Sync to active games array if same console
+    if (gCon === activeConsole) {
+      const gObj = games.find(x => x.id === gId);
+      if (gObj) gObj.owned = !wasOwned;
+      renderStats();
+    }
+
+    // Update header counts live
+    const listEl  = document.getElementById('yrmList');
+    const allRows = listEl.querySelectorAll('.yrm-row');
+    const newOwned = [...allRows].filter(r => r.classList.contains('yrm-row--owned')).length;
+    const newTotal = allRows.length;
+    const newPct   = newTotal ? Math.round(newOwned / newTotal * 100) : 0;
+    const headerOwned = document.querySelector('#modalContent [style*="owned"]');
+    if (headerOwned) headerOwned.textContent = `${newOwned} / ${newTotal} owned`;
+    const barFill = document.querySelector('#modalContent [style*="transition:width"]');
+    if (barFill) barFill.style.width = newPct + '%';
+    const pctLabel = document.querySelector('#modalContent [style*="font-size:14px"]');
+    if (pctLabel) pctLabel.textContent = newPct + '%';
+
+    if (!wasOwned) playCollectSound(); else playUncheckSound();
+    checkAchievementUnlocks();
+  });
+
+  document.getElementById('gameModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+
 let _lbIndex = 0;
 
 function openLightbox(index) {
@@ -1792,26 +2103,15 @@ function _renderLightbox() {
   ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
 
   // Force identical dimensions for box art only
-  const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
-  const isSNES   = activeConsole === 'snes';
-  if (isBoxArt) {
-    if (isSNES) {
-      // SNES boxes are landscape (~170×120 ratio)
-      img.style.width      = '560px';
-      img.style.height     = '395px';
-    } else {
-      // NES boxes are portrait (~113×155 ratio)
-      img.style.width      = '400px';
-      img.style.height     = '560px';
-    }
-    img.style.objectFit  = 'fill';
-    img.style.flexShrink = '0';
-  } else {
-    img.style.width      = '';
-    img.style.height     = '';
-    img.style.objectFit  = 'contain';
-    img.style.flexShrink = '';
-  }
+  const isBoxArt    = item.label === 'Box Front' || item.label === 'Box Back';
+  const isLandscape = activeConsole === 'snes' || activeConsole === 'n64';
+  // All images use the same responsive sizing — let CSS handle dimensions
+  img.style.width      = '';
+  img.style.height     = '';
+  img.style.objectFit  = 'contain';
+  img.style.flexShrink = '';
+  img.style.maxWidth   = '100%';
+  img.style.maxHeight  = isBoxArt && !isLandscape ? '80vh' : '70vh';
 
   // Update dot indicators
   document.querySelectorAll('.lb-dot').forEach((d, i) => {
@@ -1854,7 +2154,639 @@ async function refreshGame(g) {
 }
 
 // ─── Sort ─────────────────────────────────────────────────────────────────────
+// ─── Console carousel ─────────────────────────────────────────────────────────
+const CONSOLE_ORDER = ['nes', 'snes', 'n64'];
+
+function updateCarouselDisplay() {
+  const cfg     = CONSOLE_CONFIG[activeConsole];
+  const label   = document.getElementById('carouselLabel');
+  const picker  = document.getElementById('consolePicker');
+  const chevron = document.getElementById('consoleDropChevron');
+  if (!label) return;
+
+  label.textContent = cfg.label;
+  label.style.color = cfg.accent;
+  if (picker) {
+    picker.style.borderColor = cfg.accent;
+    picker.style.color       = cfg.accent;
+    picker.style.boxShadow   = `3px 3px 0 rgba(0,0,0,0.4)`;
+  }
+  if (chevron) chevron.style.color = cfg.accent;
+
+  // Rebuild dropdown items
+  const dd = document.getElementById('consoleDropdown');
+  if (dd) {
+    dd.innerHTML = '';
+    CONSOLE_ORDER.forEach(key => {
+      const c   = CONSOLE_CONFIG[key];
+      const row = document.createElement('div');
+      row.textContent = c.label;
+      const isActive = key === activeConsole;
+      row.style.cssText = `font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:0.08em;padding:10px 20px;cursor:${isActive ? 'default' : 'pointer'};color:${isActive ? cfg.accent : 'var(--ink)'};background:${isActive ? 'rgba(255,255,255,0.05)' : 'transparent'};border-left:3px solid ${isActive ? c.accent : 'transparent'};transition:background 0.12s,color 0.12s;white-space:nowrap;`;
+      if (!isActive) {
+        row.onmouseenter = () => { row.style.background = 'rgba(255,255,255,0.07)'; row.style.color = c.accent; };
+        row.onmouseleave = () => { row.style.background = 'transparent'; row.style.color = 'var(--ink)'; };
+        row.onclick = (e) => { e.stopPropagation(); closeConsoleDropdown(); switchConsole(key); };
+      }
+      dd.appendChild(row);
+    });
+  }
+}
+
+let _consoleDropOpen = false;
+
+function toggleConsoleDropdown() {
+  _consoleDropOpen ? closeConsoleDropdown() : openConsoleDropdown();
+}
+
+function openConsoleDropdown() {
+  const dd      = document.getElementById('consoleDropdown');
+  const chevron = document.getElementById('consoleDropChevron');
+  if (!dd) return;
+  _consoleDropOpen = true;
+  dd.style.display = 'block';
+  if (chevron) chevron.style.transform = 'rotate(180deg)';
+}
+
+function closeConsoleDropdown() {
+  const dd      = document.getElementById('consoleDropdown');
+  const chevron = document.getElementById('consoleDropChevron');
+  if (!dd) return;
+  _consoleDropOpen = false;
+  dd.style.display = 'none';
+  if (chevron) chevron.style.transform = 'rotate(0deg)';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (_consoleDropOpen && !document.getElementById('consolePicker').contains(e.target) && !document.getElementById('consoleDropdown').contains(e.target)) {
+    closeConsoleDropdown();
+  }
+});
+
+// ─── Page switcher ───────────────────────────────────────────────────────────
+let activePage = 'collection';
+
+function switchPage(page) {
+  activePage = page;
+  const collectionEl  = document.querySelector('main.wrap');
+  const achievementsEl = document.getElementById('achievementsPage');
+  const tabCol  = document.getElementById('tabCollection');
+  const tabAch  = document.getElementById('tabAchievements');
+  const accent  = CONSOLE_CONFIG[activeConsole].accent;
+
+  if (page === 'collection') {
+    collectionEl.style.display  = '';
+    achievementsEl.style.display = 'none';
+    tabCol.style.borderBottomColor = accent;
+    tabCol.style.color             = accent;
+    tabAch.style.borderBottomColor = 'transparent';
+    tabAch.style.color             = 'var(--muted)';
+  } else {
+    collectionEl.style.display  = 'none';
+    achievementsEl.style.display = '';
+    tabAch.style.borderBottomColor = accent;
+    tabAch.style.color             = accent;
+    tabCol.style.borderBottomColor = 'transparent';
+    tabCol.style.color             = 'var(--muted)';
+    renderAchievements();
+  }
+}
+
+// ─── Achievements engine ──────────────────────────────────────────────────────
+
+const ACHIEVEMENT_DEFS = [
+
+  // ── Console Completion ──────────────────────────────────────────────────────
+  { id:'nes_complete',  cat:'console', console:'nes',  label:'NES Master',         desc:'Own every NES game in the library',          icon:'🏆', color:'#e60012', check: (owned,_,all) => owned.nes.size >= all.nes  },
+  { id:'snes_complete', cat:'console', console:'snes', label:'SNES Champion',      desc:'Own every SNES game in the library',         icon:'🏆', color:'#7b2fff', check: (owned,_,all) => owned.snes.size >= all.snes },
+  { id:'n64_complete',  cat:'console', console:'n64',  label:'N64 Legend',         desc:'Own every N64 game in the library',          icon:'🏆', color:'#00a84f', check: (owned,_,all) => owned.n64.size >= all.n64  },
+
+  { id:'nes_half',   cat:'console', console:'nes',  label:'Halfway There (NES)',  desc:'Own 50% of all NES games',  icon:'⭐', color:'#e60012', check: (owned,_,all) => owned.nes.size  >= Math.ceil(all.nes  * 0.5) },
+  { id:'snes_half',  cat:'console', console:'snes', label:'Halfway There (SNES)', desc:'Own 50% of all SNES games', icon:'⭐', color:'#7b2fff', check: (owned,_,all) => owned.snes.size >= Math.ceil(all.snes * 0.5) },
+  { id:'n64_half',   cat:'console', console:'n64',  label:'Halfway There (N64)',  desc:'Own 50% of all N64 games',  icon:'⭐', color:'#00a84f', check: (owned,_,all) => owned.n64.size  >= Math.ceil(all.n64  * 0.5) },
+
+  { id:'nes_10',  cat:'console', console:'nes',  label:'NES Starter',   desc:'Own at least 10 NES games',  icon:'🎮', color:'#e60012', check: (owned) => owned.nes.size  >= 10 },
+  { id:'snes_10', cat:'console', console:'snes', label:'SNES Starter',  desc:'Own at least 10 SNES games', icon:'🎮', color:'#7b2fff', check: (owned) => owned.snes.size >= 10 },
+  { id:'n64_10',  cat:'console', console:'n64',  label:'N64 Starter',   desc:'Own at least 10 N64 games',  icon:'🎮', color:'#00a84f', check: (owned) => owned.n64.size  >= 10 },
+
+  { id:'nes_50',  cat:'console', console:'nes',  label:'NES Collector',  desc:'Own at least 50 NES games',  icon:'🎯', color:'#e60012', check: (owned) => owned.nes.size  >= 50 },
+  { id:'snes_50', cat:'console', console:'snes', label:'SNES Collector', desc:'Own at least 50 SNES games', icon:'🎯', color:'#7b2fff', check: (owned) => owned.snes.size >= 50 },
+  { id:'n64_50',  cat:'console', console:'n64',  label:'N64 Collector',  desc:'Own at least 50 N64 games',  icon:'🎯', color:'#00a84f', check: (owned) => owned.n64.size  >= 50 },
+
+  // ── Cross-console ───────────────────────────────────────────────────────────
+  { id:'all_started',  cat:'console', label:'Triple Threat',   desc:'Own at least 1 game on NES, SNES, and N64',            icon:'🎖️', color:'#ffd700', check:(owned)=>owned.nes.size>=1&&owned.snes.size>=1&&owned.n64.size>=1 },
+  { id:'all_10',       cat:'console', label:'Retro Enthusiast',desc:'Own at least 10 games across all three consoles',       icon:'🥈', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=10  },
+  { id:'all_100',      cat:'console', label:'Retro Fanatic',   desc:'Own at least 100 games across all three consoles',      icon:'🥇', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=100 },
+  { id:'all_250',      cat:'console', label:'Retro Obsessed',  desc:'Own at least 250 games across all three consoles',      icon:'💎', color:'#ffd700', check:(owned)=>owned.nes.size+owned.snes.size+owned.n64.size>=250 },
+
+  // ── NES Publisher/Developer ─────────────────────────────────────────────────
+  { id:'nes_capcom',    cat:'publisher', console:'nes',  label:'Capcom NES Set',    desc:'Own all NES Capcom games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Capcom')    },
+  { id:'nes_konami',    cat:'publisher', console:'nes',  label:'Konami NES Set',    desc:'Own all NES Konami games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Konami')    },
+  { id:'nes_nintendo',  cat:'publisher', console:'nes',  label:'Nintendo NES Set',  desc:'Own all NES Nintendo games',   icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Nintendo')  },
+  { id:'nes_namco',     cat:'publisher', console:'nes',  label:'Namco NES Set',     desc:'Own all NES Namco games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Namco')     },
+  { id:'nes_hudson',    cat:'publisher', console:'nes',  label:'Hudson NES Set',    desc:'Own all NES Hudson games',     icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Hudson')    },
+  { id:'nes_tecmo',     cat:'publisher', console:'nes',  label:'Tecmo NES Set',     desc:'Own all NES Tecmo games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Tecmo')     },
+  { id:'nes_taito',     cat:'publisher', console:'nes',  label:'Taito NES Set',     desc:'Own all NES Taito games',      icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Taito')     },
+  { id:'nes_sunsoft',   cat:'publisher', console:'nes',  label:'Sunsoft NES Set',   desc:'Own all NES Sunsoft games',    icon:'🔴', color:'#e60012', check:(owned,games)=>checkPublisher(owned,games,'nes','Sunsoft')   },
+
+  // ── SNES Publisher/Developer ────────────────────────────────────────────────
+  { id:'snes_capcom',   cat:'publisher', console:'snes', label:'Capcom SNES Set',   desc:'Own all SNES Capcom games',    icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Capcom')   },
+  { id:'snes_konami',   cat:'publisher', console:'snes', label:'Konami SNES Set',   desc:'Own all SNES Konami games',    icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Konami')   },
+  { id:'snes_nintendo', cat:'publisher', console:'snes', label:'Nintendo SNES Set', desc:'Own all SNES Nintendo games',  icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Nintendo') },
+  { id:'snes_squaresoft',cat:'publisher',console:'snes', label:'Squaresoft Set',    desc:'Own all SNES Squaresoft games',icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Squaresoft') },
+  { id:'snes_enix',     cat:'publisher', console:'snes', label:'Enix SNES Set',     desc:'Own all SNES Enix games',      icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Enix')     },
+  { id:'snes_rare',     cat:'publisher', console:'snes', label:'Rare SNES Set',     desc:'Own all SNES Rare games',      icon:'🟣', color:'#7b2fff', check:(owned,games)=>checkPublisher(owned,games,'snes','Rare')     },
+
+  // ── N64 Publisher/Developer ─────────────────────────────────────────────────
+  { id:'n64_nintendo',  cat:'publisher', console:'n64',  label:'Nintendo N64 Set',  desc:'Own all N64 Nintendo games',   icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Nintendo')  },
+  { id:'n64_rare',      cat:'publisher', console:'n64',  label:'Rare N64 Set',      desc:'Own all N64 Rare games',       icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Rare')      },
+  { id:'n64_midway',    cat:'publisher', console:'n64',  label:'Midway N64 Set',    desc:'Own all N64 Midway games',     icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Midway')    },
+  { id:'n64_acclaim',   cat:'publisher', console:'n64',  label:'Acclaim N64 Set',   desc:'Own all N64 Acclaim games',    icon:'🟢', color:'#00a84f', check:(owned,games)=>checkPublisher(owned,games,'n64','Acclaim')   },
+
+  // ── Genre achievements ──────────────────────────────────────────────────────
+  { id:'rpg_5',   cat:'genre', label:'RPG Apprentice',  desc:'Own at least 5 RPGs across all consoles',   icon:'⚔️',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=5   },
+  { id:'rpg_15',  cat:'genre', label:'RPG Warrior',     desc:'Own at least 15 RPGs across all consoles',  icon:'🗡️',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=15  },
+  { id:'rpg_30',  cat:'genre', label:'RPG Master',      desc:'Own at least 30 RPGs across all consoles',  icon:'🧙',  color:'#e8a000', check:(owned,games)=>countGenre(owned,games,'RPG')>=30  },
+
+  { id:'platformer_10', cat:'genre', label:'Platformer Rookie',  desc:'Own at least 10 platformers',  icon:'🍄', color:'#00bcd4', check:(owned,games)=>countGenre(owned,games,'Platform')>=10 },
+  { id:'platformer_25', cat:'genre', label:'Platformer Pro',     desc:'Own at least 25 platformers',  icon:'⭐', color:'#00bcd4', check:(owned,games)=>countGenre(owned,games,'Platform')>=25 },
+
+  { id:'fighter_5',  cat:'genre', label:'Street Fighter',  desc:'Own at least 5 fighting games',   icon:'👊', color:'#ff5722', check:(owned,games)=>countGenre(owned,games,'Fight')>=5  },
+  { id:'fighter_15', cat:'genre', label:'Tournament Arc',  desc:'Own at least 15 fighting games',  icon:'🥋', color:'#ff5722', check:(owned,games)=>countGenre(owned,games,'Fight')>=15 },
+
+  { id:'sports_10', cat:'genre', label:'Sports Fan',    desc:'Own at least 10 sports games',   icon:'🏈', color:'#4caf50', check:(owned,games)=>countGenre(owned,games,'Sport')>=10 },
+  { id:'sports_25', cat:'genre', label:'Sports Addict', desc:'Own at least 25 sports games',   icon:'🏆', color:'#4caf50', check:(owned,games)=>countGenre(owned,games,'Sport')>=25 },
+
+  { id:'shooter_5',  cat:'genre', label:'Trigger Happy',   desc:'Own at least 5 shooters',   icon:'🔫', color:'#f44336', check:(owned,games)=>countGenre(owned,games,'Shoot')>=5  },
+  { id:'shooter_15', cat:'genre', label:'Gun Enthusiast',  desc:'Own at least 15 shooters',  icon:'💥', color:'#f44336', check:(owned,games)=>countGenre(owned,games,'Shoot')>=15 },
+
+  { id:'puzzle_5',  cat:'genre', label:'Puzzle Solver',  desc:'Own at least 5 puzzle games',   icon:'🧩', color:'#9c27b0', check:(owned,games)=>countGenre(owned,games,'Puzzle')>=5  },
+  { id:'puzzle_15', cat:'genre', label:'Puzzle Master',  desc:'Own at least 15 puzzle games',  icon:'🔮', color:'#9c27b0', check:(owned,games)=>countGenre(owned,games,'Puzzle')>=15 },
+
+  { id:'racing_5',  cat:'genre', label:'Pole Position',  desc:'Own at least 5 racing games',  icon:'🏎️', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=5  },
+  { id:'racing_15', cat:'genre', label:'Speed Demon',    desc:'Own at least 15 racing games', icon:'🏁', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=15 },
+
+  // ── Black Box ───────────────────────────────────────────────────────────────
+  { id:'nes_blackbox', cat:'console', console:'nes', label:'NES Black Box OG', desc:'Collect all 30 original Black Box NES games', icon:'🖤', color:'#e60012', check:(owned,games)=>checkBlackBox(owned,games) },
+
+  // ── Year achievements (generated below after game data is available) ─────────
+  // Injected dynamically by buildYearAchievements() at init time
+];
+
+// ── Year achievement helpers ──────────────────────────────────────────────────
+
+const YEAR_ACH_ICONS = ['📅','🗓️','⏳','🕹️','📼','💾','🎞️','🖥️'];
+const DECADE_ACH_ICONS = { 80:'📼', 90:'💿', 2000:'💿' };
+
+// Returns a check fn for "own all games on `con` released in `year`"
+function makeYearCheck(con, year) {
+  return function(_ownedSets, gameLists) {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const matches = (gameLists[con] || []).filter(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      return y === year;
+    });
+    if (matches.length === 0) return false;
+    return matches.every(g => saved[g.id]?.owned);
+  };
+}
+
+// Returns a check fn for "own all games on `con` in decade `startYear`–`endYear`"
+function makeDecadeCheck(con, startYear, endYear) {
+  return function(_ownedSets, gameLists) {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const matches = (gameLists[con] || []).filter(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      return y >= startYear && y <= endYear;
+    });
+    if (matches.length === 0) return false;
+    return matches.every(g => saved[g.id]?.owned);
+  };
+}
+
+// Returns progress for year/decade achievement
+function getYearAchProgress(def, gameLists) {
+  const con   = def.console;
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const matches = (gameLists[con] || []).filter(g => {
+    const y = Number(g.year || g.releaseYear || g.release_year);
+    if (def._decade) return y >= def._decade[0] && y <= def._decade[1];
+    return y === def._year;
+  });
+  const have = matches.filter(g => saved[g.id]?.owned).length;
+  return { have, total: matches.length };
+}
+
+// Build and inject year achievements from real game lists
+function buildYearAchievements() {
+  const conDefs = [
+    { con:'nes',  color:'#e60012', circleIcon:'🔴' },
+    { con:'snes', color:'#7b2fff', circleIcon:'🟣' },
+    { con:'n64',  color:'#00a84f', circleIcon:'🟢' },
+  ];
+
+  conDefs.forEach(({ con, color, circleIcon }) => {
+    const gameList = CONSOLE_CONFIG[con].games();
+    const label    = CONSOLE_CONFIG[con].label;
+
+    // Collect distinct years that actually exist in this console's library
+    const yearSet = new Set();
+    gameList.forEach(g => {
+      const y = Number(g.year || g.releaseYear || g.release_year);
+      if (y >= 1980 && y <= 2010) yearSet.add(y);
+    });
+    const years = [...yearSet].sort();
+
+    // Per-year achievements (skip years with 0 games — impossible — already filtered above)
+    years.forEach((year, i) => {
+      const count = gameList.filter(g => {
+        const y = Number(g.year || g.releaseYear || g.release_year);
+        return y === year;
+      }).length;
+      if (count === 0) return; // safety
+
+      const def = {
+        id:      `${con}_year_${year}`,
+        cat:     'year',
+        console: con,
+        label:   `${label} ${year}`,
+        desc:    `Own all ${count} ${label} game${count===1?'':'s'} from ${year}`,
+        icon:    circleIcon,
+        color,
+        _year:   year,
+        check:   makeYearCheck(con, year),
+      };
+      ACHIEVEMENT_DEFS.push(def);
+    });
+
+    // Decade achievements — only if real games span that decade
+    const decades = [
+      { start:1983, end:1989, labelSuffix:"80s Decade", icon:'📼' },
+      { start:1990, end:1999, labelSuffix:"90s Decade", icon:'💿' },
+      { start:2000, end:2009, labelSuffix:"2000s Decade", icon:'💾' },
+    ];
+    decades.forEach(({ start, end, labelSuffix, icon }) => {
+      const count = gameList.filter(g => {
+        const y = Number(g.year || g.releaseYear || g.release_year);
+        return y >= start && y <= end;
+      }).length;
+      if (count === 0) return;
+
+      const def = {
+        id:      `${con}_decade_${start}`,
+        cat:     'year',
+        console: con,
+        label:   `${label} ${labelSuffix}`,
+        desc:    `Own all ${count} ${label} games released in the ${labelSuffix.replace(' Decade','')} (${start}–${end})`,
+        icon,
+        color,
+        _decade: [start, end],
+        check:   makeDecadeCheck(con, start, end),
+      };
+      ACHIEVEMENT_DEFS.push(def);
+    });
+  });
+}
+
+
+const NES_BLACK_BOX_TITLES = [
+  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
+  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
+  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
+  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
+  'Popeye', 'Pro Wrestling', 'R.O.B. - Gyromite', 'Slalom',
+  'Soccer', 'Stack-Up', 'Super Mario Bros.', 'Tennis',
+  'Track & Field', 'Urban Champion', 'Volleyball', 'Wild Gunman',
+  'Wrecking Crew', 'Excitebike'
+];
+
+// Deduplicated canonical set of 30 unique titles
+const BLACK_BOX_SET = new Set([
+  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
+  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
+  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
+  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
+  'Popeye', 'Pro Wrestling', 'Slalom', 'Soccer',
+  'Stack-Up', 'Super Mario Bros.', 'Tennis', 'Track & Field',
+  'Urban Champion', 'Volleyball', 'Wild Gunman', 'Wrecking Crew',
+  'Gumshoe', 'Mach Rider'
+]);
+
+function checkBlackBox(ownedSets, gameLists) {
+  const key   = CONSOLE_CONFIG.nes.storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const nesGames = gameLists.nes;
+  // For each black box title, check if at least one matching owned game exists
+  for (const title of BLACK_BOX_SET) {
+    const tl = title.toLowerCase();
+    const match = nesGames.find(g => (g.title || '').toLowerCase().includes(tl));
+    if (!match || !saved[match.id]?.owned) return false;
+  }
+  return true;
+}
+
+function getBlackBoxProgress(gameLists) {
+  const key     = CONSOLE_CONFIG.nes.storageKey;
+  const saved   = JSON.parse(localStorage.getItem(key) || '{}');
+  const nesGames = gameLists.nes;
+  let have = 0;
+  for (const title of BLACK_BOX_SET) {
+    const tl = title.toLowerCase();
+    const match = nesGames.find(g => (g.title || '').toLowerCase().includes(tl));
+    if (match && saved[match.id]?.owned) have++;
+  }
+  return { have, total: BLACK_BOX_SET.size };
+}
+
+// ── Achievement helper functions ──────────────────────────────────────────────
+
+function getAllOwnedSets() {
+  const sets = { nes: new Set(), snes: new Set(), n64: new Set() };
+  ['nes','snes','n64'].forEach(con => {
+    const key = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    const gameList = CONSOLE_CONFIG[con].games();
+    gameList.forEach(g => { if (saved[g.id]?.owned) sets[con].add(g.id); });
+  });
+  return sets;
+}
+
+function getAllGameLists() {
+  const lists = { nes: [], snes: [], n64: [] };
+  ['nes','snes','n64'].forEach(con => {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    lists[con]  = CONSOLE_CONFIG[con].games().map(g => ({ ...g, ...(saved[g.id] || {}) }));
+  });
+  return lists;
+}
+
+function checkPublisher(owned, gameLists, con, publisher) {
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const pub   = publisher.toLowerCase();
+  const matches = gameLists[con].filter(g =>
+    (g.developer || '').toLowerCase().includes(pub) ||
+    (g.publisher || '').toLowerCase().includes(pub)
+  );
+  if (matches.length === 0) return false;
+  return matches.every(g => saved[g.id]?.owned);
+}
+
+function checkPublisherProgress(gameLists, con, publisher) {
+  const key   = CONSOLE_CONFIG[con].storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const pub   = publisher.toLowerCase();
+  const matches = gameLists[con].filter(g =>
+    (g.developer || '').toLowerCase().includes(pub) ||
+    (g.publisher || '').toLowerCase().includes(pub)
+  );
+  const have = matches.filter(g => saved[g.id]?.owned).length;
+  return { have, total: matches.length };
+}
+
+function countGenre(owned, gameLists, genreKeyword) {
+  const kw = genreKeyword.toLowerCase();
+  let count = 0;
+  ['nes','snes','n64'].forEach(con => {
+    const key   = CONSOLE_CONFIG[con].storageKey;
+    const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    gameLists[con].forEach(g => {
+      if (saved[g.id]?.owned && (g.genre || '').toLowerCase().includes(kw)) count++;
+    });
+  });
+  return count;
+}
+
+function getAchievementProgress(def, ownedSets, gameLists, totals) {
+  // Returns { have, total } for progress bar
+  if (def.cat === 'console' && def.id.endsWith('_complete')) {
+    const con = def.console;
+    return { have: ownedSets[con].size, total: totals[con] };
+  }
+  if (def.cat === 'console' && def.id.endsWith('_half')) {
+    const con = def.console;
+    return { have: ownedSets[con].size, total: Math.ceil(totals[con] * 0.5) };
+  }
+  if (def.cat === 'console' && /_\d+$/.test(def.id)) {
+    const match = def.id.match(/_(\d+)$/);
+    const target = parseInt(match[1]);
+    const con = def.console;
+    if (con) return { have: ownedSets[con].size, total: target };
+    // cross-console
+    return { have: ownedSets.nes.size + ownedSets.snes.size + ownedSets.n64.size, total: target };
+  }
+  if (def.cat === 'publisher') {
+    const pub = def.label.split(' ')[0]; // extract publisher name
+    const conKey = def.console;
+    return checkPublisherProgress(gameLists, conKey, pub);
+  }
+  if (def.cat === 'genre') {
+    const kws = { rpg:['RPG'], platformer:['Platform'], fighter:['Fight'], sports:['Sport'], shooter:['Shoot'], puzzle:['Puzzle'], racing:['Rac'] };
+    const match = def.id.match(/^([a-z]+)_\d+$/);
+    const target = parseInt(def.id.match(/_(\d+)$/)[1]);
+    if (match) {
+      const kw = (kws[match[1]] || [match[1]])[0];
+      return { have: countGenre(null, gameLists, kw), total: target };
+    }
+  }
+  if (def.id === 'nes_blackbox') {
+    return getBlackBoxProgress(gameLists);
+  }
+  if (def.cat === 'year') {
+    return getYearAchProgress(def, gameLists);
+  }
+  return null;
+}
+
+let achActiveCat     = 'all';
+let achConsoleFilter = 'all'; // 'all' | 'nes' | 'snes' | 'n64'
+
+function renderAchievements() {
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+
+  const evaluated = ACHIEVEMENT_DEFS.map(def => ({
+    ...def,
+    earned: def.check(ownedSets, gameLists, totals),
+    progress: getAchievementProgress(def, ownedSets, gameLists, totals),
+  }));
+
+  const total  = evaluated.length;
+  const earned = evaluated.filter(a => a.earned).length;
+
+  // Overall progress bar
+  document.getElementById('achProgressLabel').textContent = `${earned} / ${total}`;
+  document.getElementById('achProgressBar').style.width   = `${total ? (earned/total*100) : 0}%`;
+  document.getElementById('achProgressBar').style.background = CONSOLE_CONFIG[activeConsole].accent;
+
+  // ── Console filter row ──────────────────────────────────────────────────────
+  const consoleFilters = [
+    { key:'all',  label:'All Consoles' },
+    { key:'nes',  label:'NES',  color:'#e60012' },
+    { key:'snes', label:'SNES', color:'#7b2fff' },
+    { key:'n64',  label:'N64',  color:'#00a84f' },
+  ];
+
+  let consoleFilterEl = document.getElementById('achConsoleFilterRow');
+  if (!consoleFilterEl) {
+    consoleFilterEl = document.createElement('div');
+    consoleFilterEl.id = 'achConsoleFilterRow';
+    consoleFilterEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;';
+    const tabsEl = document.getElementById('achCatTabs');
+    tabsEl.parentNode.insertBefore(consoleFilterEl, tabsEl);
+  }
+  consoleFilterEl.innerHTML = '';
+
+  consoleFilters.forEach(({ key, label, color }) => {
+    const isActive = achConsoleFilter === key;
+    const dotColor = color || 'var(--muted)';
+    const activeColor = color || CONSOLE_CONFIG[activeConsole].accent;
+    const btn = document.createElement('button');
+    btn.style.cssText = `font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;padding:5px 11px;background:${isActive ? activeColor+'22' : 'transparent'};border:2px solid ${isActive ? activeColor : 'var(--border)'};color:${isActive ? activeColor : 'var(--muted)'};cursor:pointer;transition:all 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;border-radius:0;`;
+    if (color) {
+      const dot = document.createElement('span');
+      dot.style.cssText = `width:7px;height:7px;background:${dotColor};display:inline-block;flex-shrink:0;image-rendering:pixelated;`;
+      btn.appendChild(dot);
+    }
+    btn.appendChild(document.createTextNode(label));
+    btn.onclick = () => { achConsoleFilter = key; renderAchievements(); };
+    consoleFilterEl.appendChild(btn);
+  });
+
+  // ── Category tabs ───────────────────────────────────────────────────────────
+  // Apply console filter first so counts are scoped correctly
+  const consoleFiltered = achConsoleFilter === 'all'
+    ? evaluated
+    : evaluated.filter(a => !a.console || a.console === achConsoleFilter);
+
+  const cats = ['all', 'console', 'publisher', 'genre', 'year'];
+  const catLabels = { all:'All', console:'Console', publisher:'Publisher', genre:'Genre', year:'Year' };
+  const tabsEl = document.getElementById('achCatTabs');
+  tabsEl.innerHTML = '';
+  const accent = CONSOLE_CONFIG[activeConsole].accent;
+
+  cats.forEach(cat => {
+    const pool  = cat === 'all' ? consoleFiltered : consoleFiltered.filter(a => a.cat === cat);
+    const count = pool.filter(a => a.earned).length;
+    const total2 = pool.length;
+    const btn = document.createElement('button');
+    const isActive = achActiveCat === cat;
+    btn.style.cssText = `font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:0.08em;padding:7px 14px;background:${isActive ? accent : 'transparent'};border:2px solid ${isActive ? accent : 'var(--border)'};color:${isActive ? '#fff' : 'var(--muted)'};cursor:pointer;transition:all 0.15s;white-space:nowrap;`;
+    btn.textContent = `${catLabels[cat]} (${count}/${total2})`;
+    btn.onclick = () => { achActiveCat = cat; renderAchievements(); };
+    tabsEl.appendChild(btn);
+  });
+
+  // ── Grid ────────────────────────────────────────────────────────────────────
+  const grid = document.getElementById('achGrid');
+  grid.innerHTML = '';
+
+  let display = achActiveCat === 'all'
+    ? consoleFiltered
+    : consoleFiltered.filter(a => a.cat === achActiveCat);
+
+  // Sort: year tab → decade-grouped chronological; otherwise earned first then progress %
+  display.sort((a, b) => {
+    if (achActiveCat === 'year') {
+      // Each item gets a sort key: [decadeStart, isDecadeSweep ? 0 : 1, year]
+      // This places the decade sweep card first, then individual years within it.
+      const decadeOf = def => def._decade ? def._decade[0] : Math.floor((def._year || 0) / 10) * 10;
+      const ad = decadeOf(a), bd = decadeOf(b);
+      if (ad !== bd) return ad - bd;
+      // Same decade bucket: sweep (0) before individual years (1)
+      const aIsDecade = a._decade ? 0 : 1;
+      const bIsDecade = b._decade ? 0 : 1;
+      if (aIsDecade !== bIsDecade) return aIsDecade - bIsDecade;
+      // Both individual years: sort ascending
+      return (a._year || 0) - (b._year || 0);
+    }
+    if (a.earned !== b.earned) return a.earned ? -1 : 1;
+    const ap = a.progress ? a.progress.have / (a.progress.total || 1) : 0;
+    const bp = b.progress ? b.progress.have / (b.progress.total || 1) : 0;
+    if (bp !== ap) return bp - ap;
+    if (a.cat === 'year' && b.cat === 'year') {
+      const ay = a._year || a._decade?.[0] || 0;
+      const by = b._year || b._decade?.[0] || 0;
+      return ay - by;
+    }
+    return 0;
+  });
+
+  if (display.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:24px 0;">No achievements in this view.</div>`;
+    return;
+  }
+
+  display.forEach(ach => {
+    const pct = ach.progress && ach.progress.total ? Math.min(ach.progress.have / ach.progress.total * 100, 100) : (ach.earned ? 100 : 0);
+    const card = document.createElement('div');
+    const isYearCard = ach.cat === 'year';
+    card.style.cssText = `background:var(--surface);border:2px solid ${ach.earned ? ach.color : 'var(--border)'};padding:16px;position:relative;transition:border-color 0.2s,transform 0.15s;box-shadow:${ach.earned ? `0 0 12px ${ach.color}44` : 'none'};${isYearCard ? 'cursor:pointer;' : ''}`;
+
+    if (isYearCard) {
+      card.addEventListener('mouseenter', () => {
+        if (!ach.earned) card.style.borderColor = ach.color + '88';
+        card.style.transform = 'translateY(-2px)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.borderColor = ach.earned ? ach.color : 'var(--border)';
+        card.style.transform = '';
+      });
+      card.addEventListener('click', () => {
+        openYearModal(
+          ach.console,
+          ach._year ?? ach._decade?.[0],
+          ach._decade ? ach._decade[1] : null,
+          ach.label,
+          ach.color
+        );
+      });
+    }
+
+    // Console badge for year achievements when "All Consoles" is selected
+    const consoleBadge = (ach.cat === 'year' && achConsoleFilter === 'all' && ach.console)
+      ? `<span style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};border:1px solid ${ach.color}44;padding:1px 5px;margin-bottom:6px;display:inline-block;letter-spacing:0.08em;">${CONSOLE_CONFIG[ach.console].label}</span><br>`
+      : '';
+
+    const progressBar = ach.progress ? `
+      <div style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);">${ach.progress.have} / ${ach.progress.total}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};">${Math.round(pct)}%</div>
+        </div>
+        <div style="height:4px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${ach.earned ? ach.color : '#555'};transition:width 0.5s;"></div>
+        </div>
+      </div>` : '';
+
+    card.innerHTML = `
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:28px;line-height:1;filter:${ach.earned ? 'none' : 'grayscale(1) opacity(0.3)'};">${ach.icon}</div>
+        <div style="flex:1;min-width:0;">
+          ${consoleBadge}
+          <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:${ach.earned ? ach.color : 'var(--muted)'};margin-bottom:6px;line-height:1.5;">${ach.label}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.4;">${ach.desc}</div>
+          ${progressBar}
+          ${isYearCard ? `<div style="font-family:'Space Mono',monospace;font-size:8px;color:${ach.color};opacity:0.6;margin-top:8px;letter-spacing:0.1em;">▶ VIEW GAMES</div>` : ''}
+        </div>
+        ${ach.earned ? `<div style="font-size:14px;flex-shrink:0;">✅</div>` : ''}
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
 // ─── Console switcher ────────────────────────────────────────────────────────
+function updateToggleTheme(cfg) {
+  document.documentElement.style.setProperty('--toggle-knob-dark', cfg.accent);
+}
+
 function switchConsole(console) {
   if (console === activeConsole) return;
   activeConsole = console;
@@ -1867,25 +2799,14 @@ function switchConsole(console) {
   root.style.setProperty('--red',     cfg.accent);
   root.style.setProperty('--glow',    cfg.glow);
 
+  // Update toggle theme
+  updateToggleTheme(cfg);
+
   // Update trailer base URL
   TRAILER_BASE_URL = cfg.trailerBase;
 
-  // Update tab button styles
-  Object.values(CONSOLE_CONFIG).forEach(c => {
-    const btn = document.getElementById(c.tabId);
-    if (!btn) return;
-    if (c.tabId === cfg.tabId) {
-      btn.style.background   = cfg.accent;
-      btn.style.borderColor  = cfg.accent;
-      btn.style.color        = '#fff';
-      btn.style.boxShadow    = '3px 3px 0 rgba(0,0,0,0.4)';
-    } else {
-      btn.style.background   = 'transparent';
-      btn.style.borderColor  = '#444';
-      btn.style.color        = '#888';
-      btn.style.boxShadow    = '3px 3px 0 #222';
-    }
-  });
+  // Update carousel display
+  updateCarouselDisplay();
 
   // Load games for this console
   const savedState = JSON.parse(localStorage.getItem(cfg.storageKey) || '{}');
@@ -1895,6 +2816,7 @@ function switchConsole(console) {
   const tbody = document.getElementById('tbody');
   if (tbody) {
     tbody.classList.toggle('snes-covers', console === 'snes');
+    tbody.classList.toggle('n64-covers', console === 'n64');
   }
 
   // Reset filters and re-render
@@ -1904,6 +2826,7 @@ function switchConsole(console) {
   document.getElementById('statusFilter').value = 'all';
   document.getElementById('developerFilter').value = 'all';
   document.getElementById('yearFilter').value = 'all';
+  document.getElementById('sortFilter').value = 'title|asc';
   _prevMilestonesReached = new Set();
   populateFilters();
   render();
@@ -1923,7 +2846,15 @@ document.querySelectorAll('#table-header .sortable').forEach(el => {
   });
 });
 
-// ─── Chiptune collect sound ──────────────────────────────────────────────────
+// ─── Mobile sort dropdown ────────────────────────────────────────────────────
+document.getElementById('sortFilter').addEventListener('change', e => {
+  const [key, dir] = e.target.value.split('|');
+  sortKey = key;
+  sortDir = dir;
+  render();
+});
+
+
 function playCollectSound() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -2105,7 +3036,78 @@ document.getElementById('tbody').addEventListener('mouseout', e => {
   if (saved === 'light') { toggle.checked = true; applyTheme(true); }
 })();
 
-// ─── Auto-shrink stat values to fit on one line ───────────────────────────────
+// ─── Stats collapse ───────────────────────────────────────────────────────────
+let _statsOpen = localStorage.getItem('stats-collapsed') !== 'true';
+
+function toggleStats() {
+  _statsOpen = !_statsOpen;
+  const panel   = document.getElementById('statsPanel');
+  const chevron = document.getElementById('statsToggleChevron');
+  const label   = document.getElementById('statsToggleLabel');
+  if (_statsOpen) {
+    panel.style.maxHeight = '600px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+    label.textContent = 'Stats';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+    label.textContent = 'Stats';
+  }
+  localStorage.setItem('stats-collapsed', !_statsOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore collapse state on load
+(function() {
+  if (localStorage.getItem('stats-collapsed') === 'true') {
+    _statsOpen = false;
+    const panel   = document.getElementById('statsPanel');
+    const chevron = document.getElementById('statsToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
+})();
+
+// ─── Filters collapse ─────────────────────────────────────────────────────────
+let _filtersOpen = localStorage.getItem('filters-collapsed') !== 'true';
+
+function toggleFilters() {
+  _filtersOpen = !_filtersOpen;
+  const panel   = document.getElementById('filtersPanel');
+  const chevron = document.getElementById('filtersToggleChevron');
+  if (_filtersOpen) {
+    panel.style.maxHeight = '300px';
+    panel.style.opacity   = '1';
+    chevron.style.transform = 'rotate(0deg)';
+  } else {
+    panel.style.maxHeight = '0px';
+    panel.style.opacity   = '0';
+    chevron.style.transform = 'rotate(-90deg)';
+  }
+  localStorage.setItem('filters-collapsed', !_filtersOpen);
+  requestAnimationFrame(() => requestAnimationFrame(updateStickyTheadTop));
+}
+
+// Restore filters collapse state on load
+(function() {
+  if (localStorage.getItem('filters-collapsed') === 'true') {
+    _filtersOpen = false;
+    const panel   = document.getElementById('filtersPanel');
+    const chevron = document.getElementById('filtersToggleChevron');
+    if (panel)   { panel.style.maxHeight = '0px'; panel.style.opacity = '0'; panel.style.transition = 'none'; }
+    if (chevron) { chevron.style.transform = 'rotate(-90deg)'; }
+    requestAnimationFrame(() => {
+      if (panel) panel.style.transition = 'max-height 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.25s';
+    });
+  }
+})();
+
+
 function fitStatValues() {
   document.querySelectorAll('.stat-value').forEach(el => {
     el.style.fontSize = '18px';
@@ -2135,6 +3137,8 @@ function updateStickyTheadTop() {
 window.addEventListener('resize', updateStickyTheadTop);
 
 populateFilters();
+updateCarouselDisplay();
+buildYearAchievements(); // inject year/decade achievements from real game data
 // Pre-seed reached milestones so initial render doesn't trigger achievement flashes
 {
   const owned = games.filter(g => g.owned).length;
@@ -2176,12 +3180,12 @@ render();
     <div id="trailerError" style="display:none;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);text-align:center;padding:20px 0 12px;letter-spacing:0.06em;">! NO VIDEO FILE FOUND !</div>
     <div style="position:relative;">
       <video id="trailerVideo"
-        controls autoplay
+        controls autoplay loop
         style="width:100%;border:2px solid var(--border);background:#000;display:block;image-rendering:pixelated;"
         onerror="showTrailerError()">
       </video>
       <img id="trailerClearLogo" alt=""
-        style="position:absolute;bottom:48px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
+        style="position:absolute;bottom:12px;right:12px;max-width:140px;max-height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.85));opacity:0.92;display:none;">
     </div>
   </div>
 </div>
@@ -2309,6 +3313,127 @@ document.addEventListener('keydown', e => {
 <script>
 document.getElementById('imageLightbox').addEventListener('click', e => {
   if (e.target === document.getElementById('imageLightbox')) closeLightbox();
+});
+</script>
+
+<!-- Floating "Top" button (mobile only) -->
+<style>
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  z-index: 1500;
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #8b0000, inset -2px -2px 0 #8b0000, inset 2px 2px 0 #ff4444;
+  image-rendering: pixelated;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.2s, transform 0.2s;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #fff;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+}
+#scrollTopBtn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#scrollTopBtn:active {
+  transform: scale(0.93);
+}
+@media (max-width: 900px) {
+  #scrollTopBtn { display: flex; }
+}
+</style>
+
+<button id="scrollTopBtn" title="Back to top" aria-label="Scroll to top">
+  <svg width="18" height="14" viewBox="0 0 9 7" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block;flex-shrink:0;">
+    <rect x="4" y="0" width="1" height="1" fill="white"/>
+    <rect x="3" y="1" width="1" height="1" fill="white"/>
+    <rect x="5" y="1" width="1" height="1" fill="white"/>
+    <rect x="2" y="2" width="1" height="1" fill="white"/>
+    <rect x="6" y="2" width="1" height="1" fill="white"/>
+    <rect x="1" y="3" width="1" height="1" fill="white"/>
+    <rect x="7" y="3" width="1" height="1" fill="white"/>
+    <rect x="3" y="5" width="3" height="2" fill="white"/>
+  </svg>
+  <span>TOP</span>
+</button>
+
+<script>
+(function () {
+  const btn = document.getElementById('scrollTopBtn');
+  const THRESHOLD = 300; // px scrolled before button appears
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > THRESHOLD);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    const start = window.scrollY;
+    const duration = Math.min(300, start * 0.15); // fast: ~150ms for typical list scroll
+    const startTime = performance.now();
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const ease = 1 - Math.pow(1 - progress, 3);
+      window.scrollTo(0, start * (1 - ease));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  });
+})();
+</script>
+
+<!-- PWA Service Worker Registration -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('[RetroQuest] Service worker registered:', reg.scope);
+
+        // Check for updates every time the app loads
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available — could show a toast here in future
+              console.log('[RetroQuest] New version available.');
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[RetroQuest] Service worker registration failed:', err));
+  });
+}
+
+// PWA install prompt — store for use in a future "Install App" button
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Future: show a custom "Add to Home Screen" banner
+  console.log('[RetroQuest] Install prompt ready.');
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  console.log('[RetroQuest] App installed successfully.');
 });
 </script>
 
