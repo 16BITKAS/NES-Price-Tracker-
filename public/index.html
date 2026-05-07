@@ -2713,7 +2713,7 @@ function renderAchievements() {
     const pct = ach.progress && ach.progress.total ? Math.min(ach.progress.have / ach.progress.total * 100, 100) : (ach.earned ? 100 : 0);
     const card = document.createElement('div');
     const isYearCard = ach.cat === 'year';
-    card.style.cssText = `background:var(--surface);border:2px solid ${ach.earned ? ach.color : 'var(--border)'};padding:16px;position:relative;transition:border-color 0.2s,transform 0.15s;box-shadow:${ach.earned ? `0 0 12px ${ach.color}44` : 'none'};${isYearCard ? 'cursor:pointer;' : ''}`;
+    card.style.cssText = `background:var(--surface);border:2px solid ${ach.earned ? ach.color : 'var(--border)'};padding:16px;padding-bottom:${ach.earned ? '36px' : '16px'};position:relative;transition:border-color 0.2s,transform 0.15s;box-shadow:${ach.earned ? `0 0 12px ${ach.color}44` : 'none'};${isYearCard ? 'cursor:pointer;' : ''}`;
 
     if (isYearCard) {
       card.addEventListener('mouseenter', () => {
@@ -2765,15 +2765,27 @@ function renderAchievements() {
       </div>
       ${ach.earned ? `
       <div style="position:absolute;bottom:8px;right:8px;">
-        <svg width="20" height="20" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="display:block;image-rendering:pixelated;">
-          <rect x="0" y="3" width="1" height="1" fill="${ach.color}"/>
-          <rect x="1" y="4" width="1" height="1" fill="${ach.color}"/>
+        <svg width="22" height="22" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg" style="display:block;image-rendering:pixelated;">
+          <!-- Pixel border: top row -->
+          <rect x="1" y="0" width="9" height="1" fill="${ach.color}"/>
+          <!-- sides -->
+          <rect x="0" y="1" width="1" height="9" fill="${ach.color}"/>
+          <rect x="10" y="1" width="1" height="9" fill="${ach.color}"/>
+          <!-- bottom row -->
+          <rect x="1" y="10" width="9" height="1" fill="${ach.color}"/>
+          <!-- corner pixels -->
+          <rect x="0" y="0" width="1" height="1" fill="${ach.color}"/>
+          <rect x="10" y="0" width="1" height="1" fill="${ach.color}"/>
+          <rect x="0" y="10" width="1" height="1" fill="${ach.color}"/>
+          <rect x="10" y="10" width="1" height="1" fill="${ach.color}"/>
+          <!-- Checkmark -->
           <rect x="2" y="5" width="1" height="1" fill="${ach.color}"/>
           <rect x="3" y="6" width="1" height="1" fill="${ach.color}"/>
-          <rect x="4" y="5" width="1" height="1" fill="${ach.color}"/>
-          <rect x="5" y="4" width="1" height="1" fill="${ach.color}"/>
-          <rect x="6" y="3" width="1" height="1" fill="${ach.color}"/>
-          <rect x="7" y="2" width="1" height="1" fill="${ach.color}"/>
+          <rect x="4" y="7" width="1" height="1" fill="${ach.color}"/>
+          <rect x="5" y="6" width="1" height="1" fill="${ach.color}"/>
+          <rect x="6" y="5" width="1" height="1" fill="${ach.color}"/>
+          <rect x="7" y="4" width="1" height="1" fill="${ach.color}"/>
+          <rect x="8" y="3" width="1" height="1" fill="${ach.color}"/>
         </svg>
       </div>` : ''}`;
 
