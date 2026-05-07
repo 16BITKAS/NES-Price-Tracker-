@@ -1901,26 +1901,15 @@ function _renderLightbox() {
   ctr.textContent = (_lbIndex + 1) + ' / ' + imgs.length;
 
   // Force identical dimensions for box art only
-  const isBoxArt = item.label === 'Box Front' || item.label === 'Box Back';
-  const isSNES   = activeConsole === 'snes';
-  if (isBoxArt) {
-    if (isSNES) {
-      // SNES boxes are landscape (~170×120 ratio)
-      img.style.width      = '560px';
-      img.style.height     = '395px';
-    } else {
-      // NES boxes are portrait (~113×155 ratio)
-      img.style.width      = '400px';
-      img.style.height     = '560px';
-    }
-    img.style.objectFit  = 'fill';
-    img.style.flexShrink = '0';
-  } else {
-    img.style.width      = '';
-    img.style.height     = '';
-    img.style.objectFit  = 'contain';
-    img.style.flexShrink = '';
-  }
+  const isBoxArt    = item.label === 'Box Front' || item.label === 'Box Back';
+  const isLandscape = activeConsole === 'snes' || activeConsole === 'n64';
+  // All images use the same responsive sizing — let CSS handle dimensions
+  img.style.width      = '';
+  img.style.height     = '';
+  img.style.objectFit  = 'contain';
+  img.style.flexShrink = '';
+  img.style.maxWidth   = '100%';
+  img.style.maxHeight  = isBoxArt && !isLandscape ? '80vh' : '70vh';
 
   // Update dot indicators
   document.querySelectorAll('.lb-dot').forEach((d, i) => {
