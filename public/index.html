@@ -551,6 +551,66 @@ h1 span { color: var(--accent); }
   100% { color: var(--muted); text-shadow: none; }
 }
 
+/* Achievement toast popup */
+#achievementToast {
+  position: fixed;
+  bottom: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 24px var(--accent), 0 4px 32px rgba(0,0,0,0.7);
+  padding: 14px 20px 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 280px;
+  max-width: 90vw;
+  transition: bottom 0.4s cubic-bezier(0.175,0.885,0.32,1.275), border-color 0.3s, box-shadow 0.3s;
+  pointer-events: none;
+}
+#achievementToast.show {
+  bottom: 32px;
+}
+#achievementToast .toast-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+#achievementToast .toast-body {
+  flex: 1;
+  min-width: 0;
+}
+#achievementToast .toast-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+#achievementToast .toast-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #fff;
+  line-height: 1.5;
+  word-break: break-word;
+}
+@keyframes toastScanline {
+  0%   { opacity: 0.18; }
+  50%  { opacity: 0.08; }
+  100% { opacity: 0.18; }
+}
+#achievementToast::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.03) 3px, rgba(255,255,255,0.03) 4px);
+  pointer-events: none;
+  animation: toastScanline 2s ease-in-out infinite;
+}
+
 /* Controls */
 .controls {
   display: flex;
@@ -2630,6 +2690,28 @@ function getAllGameLists() {
 }
 
 // ─── Achievement unlock notifications ─────────────────────────────────────────
+let _toastTimer = null;
+function showAchievementToast(def) {
+  const toast = document.getElementById('achievementToast');
+  const icon  = document.getElementById('toastIcon');
+  const title = document.getElementById('toastTitle');
+  if (!toast) return;
+
+  // Colour the border to match the achievement
+  toast.style.borderColor = def.color;
+  toast.style.boxShadow   = `0 0 24px ${def.color}99, 0 4px 32px rgba(0,0,0,0.7)`;
+  icon.textContent  = def.icon || '🏆';
+  title.textContent = def.label;
+  title.style.color = def.color;
+
+  // Slide up
+  clearTimeout(_toastTimer);
+  toast.classList.add('show');
+
+  // Slide back down after 4 s
+  _toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
 function checkAchievementUnlocks() {
   if (!ACHIEVEMENT_DEFS || !ACHIEVEMENT_DEFS.length) return;
   const ownedSets = getAllOwnedSets();
@@ -2648,14 +2730,8 @@ function checkAchievementUnlocks() {
   }
 
   if (newlyEarned) {
-    const el = document.getElementById('milestoneAchieved');
-    if (el) {
-      el.textContent = '🏆 ' + newlyEarned.label + ' UNLOCKED!';
-      el.classList.remove('flash');
-      void el.offsetWidth;
-      el.classList.add('flash');
-      playCollectSound && playCollectSound();
-    }
+    showAchievementToast(newlyEarned);
+    playCollectSound && playCollectSound();
     if (typeof renderAchievements === 'function') renderAchievements();
   }
 }
@@ -3630,6 +3706,15 @@ window.addEventListener('appinstalled', () => {
   console.log('[RetroQuest] App installed successfully.');
 });
 </script>
+
+<!-- Achievement unlock toast -->
+<div id="achievementToast">
+  <div class="toast-icon" id="toastIcon">🏆</div>
+  <div class="toast-body">
+    <div class="toast-label">Achievement Unlocked</div>
+    <div class="toast-title" id="toastTitle"></div>
+  </div>
+</div>
 
 </body>
 </html>
