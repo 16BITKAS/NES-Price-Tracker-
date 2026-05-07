@@ -1571,7 +1571,8 @@ function valueOf(g) { return Number(g.estimate) || 0; }
 // ─── Milestones ───────────────────────────────────────────────────────────────
 // 7 milestones: 10%, 25%, 50%, 75%, 90% (10% left), last-5, 100%
 // last-5 and 90% positions are computed from total at runtime
-let _prevMilestonesReached = new Set();
+let _prevMilestonesReached   = new Set();
+let _prevAchievementsEarned  = new Set();
 
 function getMilestones(total) {
   const last5pct = ((total - 5) / total * 100);
@@ -1642,6 +1643,37 @@ function renderStats() {
   document.getElementById('collectionValue').textContent = fmt(owned.reduce((s,g) => s + valueOf(g), 0));
   document.getElementById('setValue').textContent = fmt(games.reduce((s,g) => s + valueOf(g), 0));
   renderMilestoneBar(owned.length, total);
+}
+
+// ─── Achievement unlock notifications ─────────────────────────────────────────
+function checkAchievementUnlocks() {
+  if (!window.ACHIEVEMENT_DEFS || !ACHIEVEMENT_DEFS.length) return;
+  const ownedSets = getAllOwnedSets();
+  const gameLists = getAllGameLists();
+  const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+
+  let newlyEarned = null;
+  for (const def of ACHIEVEMENT_DEFS) {
+    if (_prevAchievementsEarned.has(def.id)) continue;
+    let earned = false;
+    try { earned = def.check(ownedSets, gameLists, totals); } catch(e) {}
+    if (earned) {
+      _prevAchievementsEarned.add(def.id);
+      newlyEarned = def;
+    }
+  }
+
+  if (newlyEarned) {
+    const el = document.getElementById('milestoneAchieved');
+    if (el) {
+      el.textContent = '🏆 ' + newlyEarned.label + ' UNLOCKED!';
+      el.classList.remove('flash');
+      void el.offsetWidth;
+      el.classList.add('flash');
+      playCollectSound && playCollectSound();
+    }
+    if (typeof renderAchievements === 'function') renderAchievements();
+  }
 }
 
 // ─── Filters ──────────────────────────────────────────────────────────────────
@@ -3075,6 +3107,7 @@ document.getElementById('tbody').addEventListener('click', e => {
   if (g.owned) playCollectSound(); else playUncheckSound();
   save();
   renderStats();
+  checkAchievementUnlocks();
 });
 
 document.getElementById('tbody').addEventListener('change', e => {
@@ -3084,6 +3117,7 @@ document.getElementById('tbody').addEventListener('change', e => {
   if (e.target.classList.contains('owned-check')) g.owned = e.target.checked;
   save();
   renderStats();
+  checkAchievementUnlocks();
 });
 
 // ─── Filter listeners ─────────────────────────────────────────────────────────
@@ -3292,13 +3326,20 @@ window.addEventListener('resize', updateStickyTheadTop);
 populateFilters();
 updateCarouselDisplay();
 buildYearAchievements(); // inject year/decade achievements from real game data
-// Pre-seed reached milestones so initial render doesn't trigger achievement flashes
+// Pre-seed reached milestones and already-earned achievements so initial render doesn't trigger flashes
 {
   const owned = games.filter(g => g.owned).length;
   const total = games.length;
   const pct = owned / total * 100;
   getMilestones(total).forEach(m => {
     if (pct >= m.pct) _prevMilestonesReached.add(m.label.replace(/\s/g,'_'));
+  });
+  // Pre-seed achievements — run after buildYearAchievements so ACHIEVEMENT_DEFS is complete
+  const os = getAllOwnedSets();
+  const gl = getAllGameLists();
+  const tt = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
+  ACHIEVEMENT_DEFS.forEach(def => {
+    try { if (def.check(os, gl, tt)) _prevAchievementsEarned.add(def.id); } catch(e) {}
   });
 }
 render();
