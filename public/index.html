@@ -2181,19 +2181,7 @@ const ACHIEVEMENT_DEFS = [
   { id:'nes_blackbox', cat:'console', console:'nes', label:'NES Black Box OG', desc:'Collect all 30 original Black Box NES games', icon:'🖤', color:'#e60012', check:(owned,games)=>checkBlackBox(owned,games) },
 ];
 
-// ── Black Box NES game titles (all 30 originals) ─────────────────────────────
-const NES_BLACK_BOX_TITLES = [
-  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
-  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
-  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
-  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
-  'Popeye', 'Pro Wrestling', 'R.O.B. - Gyromite', 'Slalom',
-  'Soccer', 'Stack-Up', 'Super Mario Bros.', 'Tennis',
-  'Track & Field', 'Urban Champion', 'Volleyball', 'Wild Gunman',
-  'Wrecking Crew', 'Excitebike'
-];
-
-// Deduplicated canonical set of 30 unique titles
+// ── Black Box NES canonical set of 30 unique titles ──────────────────────────
 const BLACK_BOX_SET = new Set([
   '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
   'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
