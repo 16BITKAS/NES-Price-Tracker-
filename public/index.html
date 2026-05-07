@@ -2735,6 +2735,15 @@ function checkAchievementUnlocks() {
   const gameLists = getAllGameLists();
   const totals    = { nes: CONSOLE_CONFIG.nes.games().length, snes: CONSOLE_CONFIG.snes.games().length, n64: CONSOLE_CONFIG.n64.games().length };
 
+  // If a previously-earned achievement is no longer satisfied (game was un-toggled),
+  // remove it so it can fire again when the condition is re-met.
+  for (const def of ACHIEVEMENT_DEFS) {
+    if (!_prevAchievementsEarned.has(def.id)) continue;
+    let stillEarned = false;
+    try { stillEarned = def.check(ownedSets, gameLists, totals); } catch(e) {}
+    if (!stillEarned) _prevAchievementsEarned.delete(def.id);
+  }
+
   let anyNewlyEarned = false;
   for (const def of ACHIEVEMENT_DEFS) {
     if (_prevAchievementsEarned.has(def.id)) continue;
