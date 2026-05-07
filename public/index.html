@@ -2541,13 +2541,21 @@ function renderAchievements() {
     ? consoleFiltered
     : consoleFiltered.filter(a => a.cat === achActiveCat);
 
-  // Sort: earned first, then by progress %
+  // Sort: year tab → chronological; otherwise earned first then progress %
   display.sort((a, b) => {
+    if (achActiveCat === 'year') {
+      const ay = a._year || a._decade?.[0] || 0;
+      const by = b._year || b._decade?.[0] || 0;
+      if (ay !== by) return ay - by;
+      // Within the same year, per-year before decade sweep
+      if (a._year && b._decade) return -1;
+      if (a._decade && b._year) return 1;
+      return 0;
+    }
     if (a.earned !== b.earned) return a.earned ? -1 : 1;
     const ap = a.progress ? a.progress.have / (a.progress.total || 1) : 0;
     const bp = b.progress ? b.progress.have / (b.progress.total || 1) : 0;
     if (bp !== ap) return bp - ap;
-    // Secondary: year achievements sorted by year/decade
     if (a.cat === 'year' && b.cat === 'year') {
       const ay = a._year || a._decade?.[0] || 0;
       const by = b._year || b._decade?.[0] || 0;
