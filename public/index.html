@@ -1391,6 +1391,34 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 
 </main>
 
+<!-- Achievements Page -->
+<div id="achievementsPage" style="display:none;max-width:1380px;margin:0 auto;padding:28px;position:relative;z-index:1;">
+
+  <!-- Header -->
+  <div style="margin-bottom:24px;">
+    <div style="font-family:'Press Start 2P',monospace;font-size:13px;color:var(--ink);letter-spacing:0.08em;margin-bottom:8px;">ACHIEVEMENTS</div>
+    <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);">Track your collection milestones across all three consoles.</div>
+  </div>
+
+  <!-- Overall progress bar -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);letter-spacing:0.1em;">PROGRESS</div>
+      <div id="achProgressLabel" style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);">0 / 0</div>
+    </div>
+    <div style="height:8px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;">
+      <div id="achProgressBar" style="height:100%;width:0%;background:var(--accent);transition:width 0.6s cubic-bezier(0.4,0,0.2,1);"></div>
+    </div>
+  </div>
+
+  <!-- Category filter tabs -->
+  <div id="achCatTabs" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
+
+  <!-- Achievement grid -->
+  <div id="achGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;"></div>
+
+</div>
+
 <!-- Art hover popup -->
 <div id="artPopup">
   <img id="artPopupImg" src="" alt="">
@@ -2148,7 +2176,60 @@ const ACHIEVEMENT_DEFS = [
 
   { id:'racing_5',  cat:'genre', label:'Pole Position',  desc:'Own at least 5 racing games',  icon:'🏎️', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=5  },
   { id:'racing_15', cat:'genre', label:'Speed Demon',    desc:'Own at least 15 racing games', icon:'🏁', color:'#ff9800', check:(owned,games)=>countGenre(owned,games,'Rac')>=15 },
+
+  // ── Black Box ───────────────────────────────────────────────────────────────
+  { id:'nes_blackbox', cat:'console', console:'nes', label:'NES Black Box OG', desc:'Collect all 30 original Black Box NES games', icon:'🖤', color:'#e60012', check:(owned,games)=>checkBlackBox(owned,games) },
 ];
+
+// ── Black Box NES game titles (all 30 originals) ─────────────────────────────
+const NES_BLACK_BOX_TITLES = [
+  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
+  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
+  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
+  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
+  'Popeye', 'Pro Wrestling', 'R.O.B. - Gyromite', 'Slalom',
+  'Soccer', 'Stack-Up', 'Super Mario Bros.', 'Tennis',
+  'Track & Field', 'Urban Champion', 'Volleyball', 'Wild Gunman',
+  'Wrecking Crew', 'Excitebike'
+];
+
+// Deduplicated canonical set of 30 unique titles
+const BLACK_BOX_SET = new Set([
+  '10-Yard Fight', 'Balloon Fight', 'Baseball', 'Clu Clu Land',
+  'Donkey Kong', 'Donkey Kong Jr.', 'Donkey Kong 3', 'Duck Hunt',
+  'Excitebike', 'Golf', 'Gyromite', 'Hogan\'s Alley',
+  'Ice Climber', 'Kung Fu', 'Mario Bros.', 'Pinball',
+  'Popeye', 'Pro Wrestling', 'Slalom', 'Soccer',
+  'Stack-Up', 'Super Mario Bros.', 'Tennis', 'Track & Field',
+  'Urban Champion', 'Volleyball', 'Wild Gunman', 'Wrecking Crew',
+  'Gumshoe', 'Mach Rider'
+]);
+
+function checkBlackBox(ownedSets, gameLists) {
+  const key   = CONSOLE_CONFIG.nes.storageKey;
+  const saved = JSON.parse(localStorage.getItem(key) || '{}');
+  const nesGames = gameLists.nes;
+  // For each black box title, check if at least one matching owned game exists
+  for (const title of BLACK_BOX_SET) {
+    const tl = title.toLowerCase();
+    const match = nesGames.find(g => (g.title || '').toLowerCase().includes(tl));
+    if (!match || !saved[match.id]?.owned) return false;
+  }
+  return true;
+}
+
+function getBlackBoxProgress(gameLists) {
+  const key     = CONSOLE_CONFIG.nes.storageKey;
+  const saved   = JSON.parse(localStorage.getItem(key) || '{}');
+  const nesGames = gameLists.nes;
+  let have = 0;
+  for (const title of BLACK_BOX_SET) {
+    const tl = title.toLowerCase();
+    const match = nesGames.find(g => (g.title || '').toLowerCase().includes(tl));
+    if (match && saved[match.id]?.owned) have++;
+  }
+  return { have, total: BLACK_BOX_SET.size };
+}
 
 // ── Achievement helper functions ──────────────────────────────────────────────
 
@@ -2241,6 +2322,9 @@ function getAchievementProgress(def, ownedSets, gameLists, totals) {
       const kw = (kws[match[1]] || [match[1]])[0];
       return { have: countGenre(null, gameLists, kw), total: target };
     }
+  }
+  if (def.id === 'nes_blackbox') {
+    return getBlackBoxProgress(gameLists);
   }
   return null;
 }
