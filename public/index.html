@@ -2089,6 +2089,13 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
     if (gCon === activeConsole) {
       const gObj = games.find(x => x.id === gId);
       if (gObj) gObj.owned = !wasOwned;
+      const mainRow = document.querySelector(`#tbody tr[data-id="${gId}"]`);
+      if (mainRow) {
+        const pc = mainRow.querySelector('.pixel-check');
+        const cb = mainRow.querySelector('.owned-check');
+        if (pc) pc.classList.toggle('is-checked', !wasOwned);
+        if (cb) cb.checked = !wasOwned;
+      }
       renderStats();
     }
 
@@ -2201,6 +2208,20 @@ function openPublisherModal(con, publisher, label, color) {
 
     check.classList.toggle('is-checked', !wasOwned);
     check.closest('.yrm-row')?.classList.toggle('yrm-row--owned', !wasOwned);
+
+    // Sync in-memory games array and main page DOM row
+    if (gCon === activeConsole) {
+      const gObj = games.find(x => x.id === gId);
+      if (gObj) gObj.owned = !wasOwned;
+      const mainRow = document.querySelector(`#tbody tr[data-id="${gId}"]`);
+      if (mainRow) {
+        const pc = mainRow.querySelector('.pixel-check');
+        const cb = mainRow.querySelector('.owned-check');
+        if (pc) pc.classList.toggle('is-checked', !wasOwned);
+        if (cb) cb.checked = !wasOwned;
+      }
+      renderStats();
+    }
 
     // Update header count / bar
     const newSaved = JSON.parse(localStorage.getItem(gKey) || '{}');
