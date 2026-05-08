@@ -2035,14 +2035,13 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
           </svg>
         </div>
         <img src="${localImgUrl('boxfronts', g.title)}" alt="${esc(g.title)}"
-          style="width:54px;height:50px;object-fit:contain;flex-shrink:0;background:var(--surface2);border:1px solid var(--border);"
+          style="width:68px;height:63px;object-fit:contain;flex-shrink:0;background:var(--surface2);border:1px solid var(--border);"
           onerror="this.style.opacity='0.2'">
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
             >${esc(g.title)}</div>
           <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;">${esc(dev)}${isDecade ? ' · ' + yr : ''}</div>
         </div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? color : 'var(--muted)'};flex-shrink:0;text-align:right;">${hasPrice ? fmt(g.estimate) : '—'}</div>
       </div>`;
   }).join('');
 
@@ -2156,13 +2155,12 @@ function openPublisherModal(con, publisher, label, color) {
           </svg>
         </div>
         <img src="${localImgUrl('boxfronts', g.title)}" alt="${esc(g.title)}"
-          style="width:54px;height:50px;object-fit:contain;flex-shrink:0;background:var(--surface2);border:1px solid var(--border);"
+          style="width:68px;height:63px;object-fit:contain;flex-shrink:0;background:var(--surface2);border:1px solid var(--border);"
           onerror="this.style.opacity='0.2'">
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(g.title)}</div>
           <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;">${esc(yr)}</div>
         </div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:${hasPrice ? color : 'var(--muted)'};flex-shrink:0;text-align:right;">${hasPrice ? fmt(g.estimate) : '—'}</div>
       </div>`;
   }).join('');
 
