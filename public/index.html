@@ -1842,6 +1842,141 @@ function render() {
   }).join('');
 }
 
+
+
+// ─── Marketplace UI ──────────────────────────────────────────────────────────
+function marketMoney(n) {
+  const v = Number(n);
+  return Number.isFinite(v) ? v.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) : '$0.00';
+}
+
+function marketSignedOutHTML() {
+  return `<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;">Sign in to want, have, or sell this game.</div>`;
+}
+
+async function renderMarketplace(g) {
+  const el = document.getElementById('marketSection');
+  if (!el) return;
+
+  if (!window.RQ || !window.RQ.getMarketplaceData) {
+    el.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);">Marketplace is loading...</div>`;
+    return;
+  }
+
+  el.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);">Loading marketplace...</div>`;
+
+  try {
+    const data = await window.RQ.getMarketplaceData(activeConsole, g.id);
+    const listings = data.listings || [];
+    const wants = data.wants || [];
+    const haves = data.haves || [];
+    const signedIn = !!data.currentUserId;
+
+    const rows = listings.length ? listings.map(l => {
+      const mine = data.currentUserId && l.sellerUid === data.currentUserId;
+      const ship = Number(l.shipping) > 0 ? ` + ${marketMoney(l.shipping)} ship` : '';
+      return `<div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);margin-bottom:6px;">${marketMoney(l.price)}<span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);">${ship}</span></div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--ink);">${esc(l.condition || 'Loose')}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px;">Seller: ${esc(l.sellerEmail || 'Collector')}</div>
+          ${l.notes ? `<div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;">${esc(l.notes)}</div>` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          ${l.sellerEmail ? `<a href="mailto:${esc(l.sellerEmail)}?subject=${encodeURIComponent('RetroQuest: ' + g.title)}" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--ink);text-decoration:none;border:1px solid var(--border);border-radius:8px;padding:6px 8px;white-space:nowrap;">CONTACT</a>` : ''}
+          ${mine ? `<button onclick="deleteMarketListing('${esc(String(g.id))}','${esc(l.id)}')" style="font-size:9px;padding:5px 8px;background:transparent;color:var(--red);border:1px solid rgba(255,77,106,0.35);border-radius:8px;">DELETE</button>` : ''}
+        </div>
+      </div>`;
+    }).join('') : `<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:10px 0;">No copies listed yet. Be the first cartridge goblin to post one.</div>`;
+
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--ink);letter-spacing:0.06em;">MARKETPLACE</div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">${listings.length} for sale · ${wants.length} wanted · ${haves.length} have/trade</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+        <button onclick="toggleMarketWant('${esc(String(g.id))}')" ${signedIn ? '' : 'disabled'} style="padding:8px 6px;font-size:10px;background:${data.userWants ? 'var(--accent)' : 'var(--surface)'};color:${data.userWants ? '#fff' : 'var(--ink)'};border:1px solid var(--border);border-radius:8px;">${data.userWants ? 'WANTED' : 'I WANT THIS'}</button>
+        <button onclick="toggleMarketHave('${esc(String(g.id))}')" ${signedIn ? '' : 'disabled'} style="padding:8px 6px;font-size:10px;background:${data.userHas ? 'var(--accent)' : 'var(--surface)'};color:${data.userHas ? '#fff' : 'var(--ink)'};border:1px solid var(--border);border-radius:8px;">${data.userHas ? 'HAVE/TRADING' : 'I HAVE THIS'}</button>
+        <button onclick="toggleListingForm()" ${signedIn ? '' : 'disabled'} style="padding:8px 6px;font-size:10px;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:8px;">SELL COPY</button>
+      </div>
+
+      ${signedIn ? '' : marketSignedOutHTML()}
+
+      <div id="listingForm" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin:12px 0;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <select id="marketCondition" style="background:var(--surface2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'Space Mono',monospace;font-size:11px;">
+            <option>Loose</option><option>Cart + Manual</option><option>CIB</option><option>Sealed</option><option>For Trade</option>
+          </select>
+          <input id="marketPrice" type="number" min="0" step="0.01" placeholder="Price" style="background:var(--surface2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'Space Mono',monospace;font-size:11px;">
+          <input id="marketShipping" type="number" min="0" step="0.01" placeholder="Shipping" style="background:var(--surface2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'Space Mono',monospace;font-size:11px;">
+          <input id="marketNotes" maxlength="500" placeholder="Notes" style="background:var(--surface2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'Space Mono',monospace;font-size:11px;">
+        </div>
+        <button onclick="createMarketListing('${esc(String(g.id))}')" class="primary" style="width:100%;">CREATE LISTING</button>
+        <div id="marketMsg" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;"></div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">For Sale</div>
+        ${rows}
+      </div>`;
+  } catch (e) {
+    el.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--red);">Marketplace error: ${esc(e.message || e)}</div>`;
+  }
+}
+
+function currentGameById(gameId) {
+  return games.find(x => String(x.id) === String(gameId));
+}
+
+function toggleListingForm() {
+  const el = document.getElementById('listingForm');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function toggleMarketWant(gameId) {
+  const g = currentGameById(gameId); if (!g || !window.RQ) return;
+  const data = await window.RQ.getMarketplaceData(activeConsole, g.id);
+  if (data.userWants) await window.RQ.removeWant(activeConsole, g.id);
+  else await window.RQ.addWant(activeConsole, g.id, g.title);
+  renderMarketplace(g);
+}
+
+async function toggleMarketHave(gameId) {
+  const g = currentGameById(gameId); if (!g || !window.RQ) return;
+  const data = await window.RQ.getMarketplaceData(activeConsole, g.id);
+  if (data.userHas) await window.RQ.removeHave(activeConsole, g.id);
+  else await window.RQ.addHave(activeConsole, g.id, g.title);
+  renderMarketplace(g);
+}
+
+async function createMarketListing(gameId) {
+  const g = currentGameById(gameId); if (!g || !window.RQ) return;
+  const msg = document.getElementById('marketMsg');
+  try {
+    await window.RQ.createListing(activeConsole, g.id, g.title, {
+      condition: document.getElementById('marketCondition').value,
+      price: document.getElementById('marketPrice').value,
+      shipping: document.getElementById('marketShipping').value,
+      notes: document.getElementById('marketNotes').value
+    });
+    renderMarketplace(g);
+  } catch (e) {
+    if (msg) msg.textContent = e.message || String(e);
+  }
+}
+
+async function deleteMarketListing(gameId, listingId) {
+  const g = currentGameById(gameId); if (!g || !window.RQ) return;
+  if (!confirm('Delete this listing?')) return;
+  try {
+    await window.RQ.deleteListing(activeConsole, g.id, listingId);
+    renderMarketplace(g);
+  } catch (e) {
+    alert(e.message || String(e));
+  }
+}
+
 // ─── Game Detail Modal ────────────────────────────────────────────────────────
 function closeModal() {
   document.getElementById('gameModal').style.display = 'none';
@@ -1965,7 +2100,13 @@ function openModal(gameId) {
       </div>
 
     </div>
+
+    <div id="marketSection" style="margin-top:20px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);">Loading marketplace...</div>
+    </div>
   `;
+
+  renderMarketplace(g);
 
   // Track images available for this game for lightbox navigation
   window._modalImages = [
