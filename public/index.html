@@ -1277,8 +1277,17 @@ tbody tr:hover td:first-child { border-left-color: rgba(0,229,192,0.3); }
 }
 
 </style>
+<!-- Firebase -->
+<script type="module" src="firebase.js"></script>
 </head>
 <body>
+
+<!-- Auth bar -->
+<div id="authBar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;align-items:center;justify-content:flex-end;gap:12px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;">
+  <span id="authUserLabel" style="color:var(--muted);">Not signed in</span>
+  <button id="authSignInBtn" onclick="openAuthModal()" style="background:var(--accent);color:#fff;border:none;padding:4px 12px;font-family:'Press Start 2P',monospace;font-size:8px;cursor:pointer;letter-spacing:0.08em;">SIGN IN</button>
+  <button id="authSignOutBtn" onclick="window.RQ.logOut()" style="display:none;background:transparent;color:var(--muted);border:1px solid var(--border);padding:4px 12px;font-family:'Press Start 2P',monospace;font-size:8px;cursor:pointer;letter-spacing:0.08em;">SIGN OUT</button>
+</div>
 
 <!-- Pixel art light/dark toggle is now inside header -->
 <header>
@@ -1577,6 +1586,10 @@ function save() {
     if (owned || estimate) out[id] = { owned, estimate, resultCount, updatedAt };
   });
   localStorage.setItem(getStorageKey(), JSON.stringify(out));
+  // Also sync to cloud if signed in
+  if (window.RQ && window.RQ.saveToCloud) {
+    window.RQ.saveToCloud(activeConsole, out);
+  }
 }
 
 // ─── Image URL helper ─────────────────────────────────────────────────────────
@@ -1606,10 +1619,10 @@ function imgUrl(folder, title) {
   const entry = manifest[title];
 
   const folderKeyMap = {
-    boxfronts: 'boxfront',
-    boxbacks: 'boxback',
-    cartridges: 'cartridge',
-    clearlogos: 'clearlogo',
+    boxfronts: 'boxfronts',
+    boxbacks: 'boxbacks',
+    cartridges: 'cartridges',
+    clearlogos: 'clearlogos',
     snaps: 'snap',
     titles: 'title'
   };
@@ -1989,7 +2002,7 @@ function openYearModal(con, yearOrDecade, decadeEnd, label, color) {
 
   // Local image URL builder that doesn't touch activeConsole
   function localImgUrl(folder, title) {
-    const folderKeyMap = { boxfronts:'boxfront', boxbacks:'boxback', cartridges:'cartridge', clearlogos:'clearlogo', snaps:'snap', titles:'title' };
+    const folderKeyMap = { boxfronts:'boxfronts', boxbacks:'boxbacks', cartridges:'cartridges', clearlogos:'clearlogos', snaps:'snaps', titles:'titles' };
     const key2 = folderKeyMap[folder];
     const entry = manifest[title];
     if (entry && entry[key2]) {
@@ -2128,7 +2141,7 @@ function openPublisherModal(con, publisher, label, color) {
   const pub      = publisher.toLowerCase();
 
   function localImgUrl(folder, title) {
-    const folderKeyMap = { boxfronts:'boxfront', boxbacks:'boxback', cartridges:'cartridge', clearlogos:'clearlogo', snaps:'snap', titles:'title' };
+    const folderKeyMap = { boxfronts:'boxfronts', boxbacks:'boxbacks', cartridges:'cartridges', clearlogos:'clearlogos', snaps:'snaps', titles:'titles' };
     const key2  = folderKeyMap[folder];
     const entry = manifest[title];
     if (entry && entry[key2]) return BASE + entry[key2].split('/').map(encodeURIComponent).join('/');
@@ -3760,6 +3773,77 @@ window.addEventListener('appinstalled', () => {
     <div class="toast-title" id="toastTitle"></div>
   </div>
 </div>
+
+
+<!-- Auth Modal -->
+<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--surface);border:2px solid var(--border);padding:32px;max-width:340px;width:90%;font-family:'Space Mono',monospace;position:relative;">
+    <button onclick="closeAuthModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;">✕</button>
+    <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--accent);margin-bottom:20px;letter-spacing:0.08em;" id="authModalTitle">SIGN IN</div>
+    <div id="authError" style="color:#ff4444;font-size:10px;margin-bottom:12px;display:none;"></div>
+    <input id="authEmail" type="email" placeholder="Email" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);color:var(--ink);padding:10px;margin-bottom:10px;font-family:'Space Mono',monospace;font-size:12px;">
+    <input id="authPassword" type="password" placeholder="Password" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);color:var(--ink);padding:10px;margin-bottom:20px;font-family:'Space Mono',monospace;font-size:12px;">
+    <button onclick="submitAuth()" style="width:100%;background:var(--accent);color:#fff;border:none;padding:12px;font-family:'Press Start 2P',monospace;font-size:10px;cursor:pointer;letter-spacing:0.08em;" id="authSubmitBtn">SIGN IN</button>
+    <div style="text-align:center;margin-top:14px;font-size:10px;color:var(--muted);">
+      <span id="authToggleText">No account?</span>
+      <a href="#" onclick="toggleAuthMode(event)" style="color:var(--accent);text-decoration:none;" id="authToggleLink">Create one</a>
+    </div>
+  </div>
+</div>
+
+<script>
+let _authMode = 'signin';
+
+function openAuthModal() {
+  document.getElementById('authModal').style.display = 'flex';
+}
+function closeAuthModal() {
+  document.getElementById('authModal').style.display = 'none';
+  document.getElementById('authError').style.display = 'none';
+}
+function toggleAuthMode(e) {
+  e.preventDefault();
+  _authMode = _authMode === 'signin' ? 'signup' : 'signin';
+  const isSignup = _authMode === 'signup';
+  document.getElementById('authModalTitle').textContent = isSignup ? 'CREATE ACCOUNT' : 'SIGN IN';
+  document.getElementById('authSubmitBtn').textContent  = isSignup ? 'CREATE ACCOUNT' : 'SIGN IN';
+  document.getElementById('authToggleText').textContent = isSignup ? 'Have an account?' : 'No account?';
+  document.getElementById('authToggleLink').textContent = isSignup ? 'Sign in' : 'Create one';
+  document.getElementById('authError').style.display = 'none';
+}
+async function submitAuth() {
+  const email    = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl    = document.getElementById('authError');
+  errEl.style.display = 'none';
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; return; }
+  try {
+    if (_authMode === 'signup') {
+      await window.RQ.signUp(email, password);
+    } else {
+      await window.RQ.signIn(email, password);
+    }
+    closeAuthModal();
+  } catch(e) {
+    errEl.textContent = e.message.replace('Firebase: ', '').replace(/ \(auth.*\)\.?/, '');
+    errEl.style.display = 'block';
+  }
+}
+
+// Load cloud collection when user signs in
+window.onUserSignedIn = async function(user) {
+  if (!window.RQ || !window.RQ.loadFromCloud) return;
+  const consoles = ['nes', 'snes', 'n64'];
+  for (const con of consoles) {
+    const cloud = await window.RQ.loadFromCloud(con);
+    if (cloud && Object.keys(cloud).length > 0) {
+      localStorage.setItem(CONSOLE_CONFIG[con].storageKey, JSON.stringify(cloud));
+    }
+  }
+  // Re-init current console with cloud data
+  initConsole(activeConsole);
+};
+</script>
 
 </body>
 </html>
